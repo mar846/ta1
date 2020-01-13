@@ -1,0 +1,22 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Catalog extends Model
+{
+  protected $table = "catalogs";
+  protected $primaryKey = 'id';
+  protected $guarded = [];
+  public $timestamps =false;
+
+  public function inverters()
+  {
+    return $this->belongsToMany('App\Inverter')->withPivot('qty');
+  }
+  public function panels()
+  {
+    return $this->belongsToMany('App\Panel')->withPivot('qty');
+  }
+}
