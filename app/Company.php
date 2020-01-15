@@ -15,13 +15,23 @@ class Company extends Model
   {
       return $this->belongsToMany('App\Good');
   }
-  public function sales(){
+  public function addresses()
+  {
+      return $this->hasMany('App\Address');
+  }
+  public function sales()
+  {
      return $this->hasMany('App\Sale','sales_id');
   }
-  public function purchases(){
+  public function purchases()
+  {
      return $this->hasMany('App\Purchase','purchase_id');
   }
 
+  public function scopeIsCustomer($query)
+  {
+    return $query->where('type','customer');
+  }
   public function scopeSearchID($query,$name)
   {
     return $query->select('id')->where('name',$name);

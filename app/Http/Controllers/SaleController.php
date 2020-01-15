@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use DB;
 use Validator;
 
+use App\Address;
 use App\Sale;
 use App\Company;
-use App\Panel;
-use App\Inverter;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,10 +32,8 @@ class SaleController extends Controller
      */
     public function create()
     {
-      $company = Company::where('type','costumer')->get();
-      $panel = Panel::all();
-      $inverter = Inverter::all();
-      return view('sales.saleAdd',compact('company','panel','inverter'));
+      $company = Company::IsCustomer()->get();
+      return view('sales.saleAdd', compact('company'));
     }
 
     /**
@@ -48,33 +45,25 @@ class SaleController extends Controller
     public function store(Request $request)
     {
       $this->authorize('create',Sale::class);
-      // $data = $request->validate([
-      //   'costumer'=>'required|max:191',
-      //   'address'=>'required|max:191',
-      //   'phone'=>'required|numeric',
-      //   'reference'=>'',
-      //   'referenceDate'=>'date',
-      // ]);
-      $companyID = Company::SearchID($request['costumer'])->first();
-      if ($companyID ==   null) {
-        $companyID = Company::create(['name'=>$request['costumer'], 'address'=>$request['address'], 'phone'=>$request['phone'], 'type'=>'costumer']);
-      }
-      $sale = Sale::create([
-        'company_id' => $companyID->id,
-        'so' => str_pad(date('y',time()), 3, '0').'1',
-        'reference' => $request['reference'],
-        'referenceDate' => date('Y-m-d',strtotime($request['referenceDate'])),
-        'total' => '1000',
-        'created_at' => time(),
-        'updated_at' => time(),
+      $data = $request->validate([
+        'customer'=>'required',
+        'billTo'=>'required',
+        'shipTo'=>'required',
+        'phone'=>'required|numeric',
+        'reference'=>'',
+        'referenceDate'=>'',
       ]);
-      for ($i=0; $i <= $request['totalItem'] ; $i++) {
-        if ($request['item'.$i] != '') {
-          $panelID = Panel::SearchID($request['item'.$i])->first();
-          $inverterID = Inverter::SearchID($request['item'.$i])->first();
-          
-        }
-      }
+      $billTo = Address::SearchOrInsert($data,'billTo');
+      $shipTo = Address::SearchOrInsert($data,'shipTo');
+      // $sale = Sale::create([
+      //   'company_id' => $companyID->id,
+      //   'so' => str_pad(date('y',time()), 3, '0').'1',
+      //   'reference' => $request['reference'],
+      //   'referenceDate' => date('Y-m-d',strtotime($request['referenceDate'])),
+      //   'total' => '1000',
+      //   'created_at' => time(),
+      //   'updated_at' => time(),
+      // ]);
       // return redirect(actionn('SaleController@index'));
     }
 

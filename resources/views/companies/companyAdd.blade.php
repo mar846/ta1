@@ -17,6 +17,21 @@
       </div>
     </div>
     <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Type</label>
+      <div class="col-sm-10">
+        <select class="form-control" name="type">
+          <option value="supplier">Supplier</option>
+          <option value="costumer">Costumer</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Branch</label>
+      <div class="col-sm-10">
+        <input name="branch" class="form-control">
+      </div>
+    </div>
+    <div class="form-group row">
       <label class="col-sm-2 col-form-label">Address</label>
       <div class="col-sm-10">
         <textarea name="address" class="form-control" rows="8" cols="80"></textarea>
@@ -26,15 +41,6 @@
       <label class="col-sm-2 col-form-label">Phone</label>
       <div class="col-sm-10">
         <input type="text" name="phone" class="form-control">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Type</label>
-      <div class="col-sm-10">
-        <select class="form-control" name="type">
-          <option value="supplier">Supplier</option>
-          <option value="costumer">Costumer</option>
-        </select>
       </div>
     </div>
     <div class="form-group row">

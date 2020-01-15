@@ -10,8 +10,8 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Customer</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control @error('name') is-invalid @enderror" name="costumer" value="{{ old('costumer') }}" list="dataCustomer" onchange="getCustomerID(this)">
-            @error('costumer')
+            <input type="text" class="form-control @error('customer') is-invalid @enderror" name="customer" value="{{ old('customer') }}" list="dataCustomer" onchange="getCustomerData(this)">
+            @error('customer')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -19,20 +19,42 @@
           </div>
         </div>
         <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Bill To</label>
+          <div class="col-sm-10">
+            <input type="text" name="billTo" class="form-control @error('billTo') is-invalid @enderror" value="{{ old('billTo') }}" list="addresses">
+            @error('billTo')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Ship To</label>
+          <div class="col-sm-10">
+            <input type="text" name="shipTo" class="form-control @error('shipTo') is-invalid @enderror" value="{{ old('shipTo') }}" list="addresses">
+            @error('shipTo')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+          </div>
+        </div>
+        <!-- <div class="form-group row">
           <label class="col-sm-2 col-form-label">Address</label>
           <div class="col-sm-10">
-            <textarea name="address" class="form-control @error('address') is-invalid @enderror" rows="8" cols="80">{{ old('address') }}</textarea>
+            <textarea name="address" id="address" class="form-control @error('address') is-invalid @enderror" rows="8" cols="80">{{ old('address') }}</textarea>
             @error('capacity')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
           </div>
-        </div>
+        </div> -->
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Phone</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}">
+            <input type="text" id="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}">
             @error('phone')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -68,7 +90,7 @@
         for ($i=0; $i < 11; $i++) {
           ?>
           <tr>
-            <td><input type="text" name="item{{ $i }}" class="form-control" list="dataBarang"></td>
+            <td><input type="text" name="item{{ $i }}" class="form-control"></td>
             <td>
               <div class="input-group mb-2">
                 <input type="number" class="form-control" name="qty{{ $i }}" placeholder="1" onkeyup="calculate(this)" id="qty{{ $i }}">
@@ -108,14 +130,7 @@
     <option value="{{ $data->name }}">
   @endforeach
 </datalist>
-<datalist id="dataBarang">
-  @foreach($panel as $data)
-    <option value="{{ $data->name }}">
-  @endforeach
-  @foreach($inverter as $data)
-    <option value="{{ $data->name }}">
-  @endforeach
-</datalist>
+<datalist id="addresses"></datalist>
 @endsection
 @section('script')
 <script type="text/javascript">
@@ -123,6 +138,15 @@
     var row = id.name.substring(id.name.length-1,id.name.length);
     console.log(row);
     $('#subtotal'+row).val($('#qty'+row).val()*$('#price'+row).val());
+  }
+  function getCustomerData(name) {
+    $.post("{{ route('getCompanyData') }}",{name:name.value,_token:'{{ Session::token() }}'},function(data){
+      $('#addresses').html();
+      for (var i = 0; i < data.length; i++) {
+        $('#addresses').append('<option value="' + data[i].address + '">');
+      }
+      $('#phone').val(data.phone);
+    });
   }
 </script>
 @endsection

@@ -11,12 +11,5 @@ class Catalog extends Model
   protected $guarded = [];
   public $timestamps =false;
 
-  public function inverters()
-  {
-    return $this->belongsToMany('App\Inverter')->withPivot('qty');
-  }
-  public function panels()
-  {
-    return $this->belongsToMany('App\Panel')->withPivot('qty');
-  }
+  
 }

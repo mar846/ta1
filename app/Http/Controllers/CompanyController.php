@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use Validator;
 
+use App\Address;
 use App\Company;
 
 use Illuminate\Http\Request;
@@ -46,10 +47,20 @@ class CompanyController extends Controller
       $data = $request->validate([
         'name' => 'required|unique:companies|max:191',
         'address' => 'required|max:191',
+        'branch' => '',
         'phone' => 'nullable|numeric',
         'type'=>'required'
       ]);
-      Company::create($data);
+      $insertCompany = Company::create([
+        'name' => $data['name'],
+        'type' => $data['type'],
+      ]);
+      $insertAddress = Address::create([
+        'company_id' => $insertCompany['id'],
+        'name' => $data['branch'],
+        'address' => $data['address'],
+        'phone' => $data['phone'],
+      ]);
       return redirect(action('CompanyController@index'));
     }
 
@@ -107,5 +118,17 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         //
+    }
+
+    /**
+    * AJAX SECTION
+    */
+    public function getCompanyData(Request $request)
+    {
+      if ($request->ajax()) {
+        $company = Company::where('name','like',$request->name)->first();
+        $address = Address::where('company_id', $company['id'])->get();
+        return response()->json($address);
+      }
     }
 }

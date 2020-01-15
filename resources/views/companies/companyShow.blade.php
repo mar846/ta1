@@ -7,7 +7,7 @@
   @endforeach
 @endif
 <div class="">
-  <div class="row justify-content-between">
+  <div class="row justify-content-between mx-1 my-2">
     <h3>Show Company</h3>
     <a href="{{ route('companies.edit',[$company->id]) }}"><button type="button" class="btn btn-warning" name="button">Edit</button></a>
   </div>
@@ -15,39 +15,15 @@
     <label class="col-sm-2 col-form-label">Name</label>
     <label>{{ $company->name }}</label>
   </div>
-  <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Address</label>
-    <label>{{ $company->address }}</label>
+  @foreach($company->addresses as $data)
+  <div class="card my-3">
+    <h5 class="card-header">{{ $data->name }}</h5>
+    <div class="card-body">
+      <h6 class="card-subtitle mb-2 text-muted">{{ $data->phone }}</h6>
+      <p class="card-text">{{ $data->address }}</p>
+      <a href="{{ route('addresses.edit',$data->id) }}" class="btn btn-warning">Edit</a>
+    </div>
   </div>
-  <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Phone</label>
-    <label>{{ $company->phone }}</label>
-  </div>
-  <h5>Panels</h5>
-  <table class="table">
-    <tr>
-      <th>Name</th>
-      <th>Maximum Power</th>
-    </tr>
-    @foreach($company->panels as $data)
-    <tr>
-      <td><a href="{{ route('panels.show',[$data->id]) }}">{{ $data->name }}</a></td>
-      <td>{{ $data->Pmax }} W</td>
-    </tr>
-    @endforeach
-  </table>
-  <h5>Inverters</h5>
-  <table class="table">
-    <tr>
-      <th>Name</th>
-      <th>Nominal Output Power</th>
-    </tr>
-    @foreach($company->inverters as $data)
-    <tr>
-      <td><a href="{{ route('inverters.show',[$data->id]) }}">{{ $data->name }}</a></td>
-      <td>{{ $data->nominalOutputPower }} kW</td>
-    </tr>
-    @endforeach
-  </table>
+  @endforeach
 </div>
 @endsection

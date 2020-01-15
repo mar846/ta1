@@ -12,8 +12,6 @@
     <tr>
       <th>ID</th>
       <th>Name</th>
-      <th>Address</th>
-      <th>Phone</th>
       <th>Type</th>
       <th></th>
     </tr>
@@ -21,15 +19,10 @@
       <tr>
         <td>{{ $data->id }}</td>
         <td>{{ $data->name }}</td>
-        <td>{{ $data->address }}</td>
-        <td>{{ $data->phone }}</td>
         <td>{{ ucfirst($data->type) }}</td>
         <td>
           @can('view',$data)
           <a href="{{ route('companies.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>
-          @endcan
-          @can('update',$data)
-            <a href="{{ route('companies.edit',[$data->id]) }}"><button type="button" class="btn btn-warning" name="button">Edit</button></a>
           @endcan
         </td>
       </tr>

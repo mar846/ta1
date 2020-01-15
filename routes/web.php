@@ -11,17 +11,21 @@
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/reports','ReportController@index')->name('reports');
 Route::get('/reports/{page}','ReportController@show')->name('reportPage');
-Auth::routes();
+
+Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompanyData');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('catalogs','CatalogController');
 Route::resource('companies', 'CompanyController');
+Route::resource('addresses', 'AddressController');
 Route::resource('goods','GoodController');
 Route::resource('sales', 'SaleController');
 Route::resource('purchases', 'PurchaseController');
