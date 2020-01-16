@@ -13,15 +13,16 @@ class CreateSaleDetailsTable extends Migration
      */
     public function up()
     {
-        // Schema::create('sale_details', function (Blueprint $table) {
-        //   $table->unsignedBigInteger('sale_id');
-        //   $table->foreign('sale_id')->references('id')->on('sales');
-        //   $table->unsignedBigInteger('good_id');
-        //   $table->foreign('good_id')->references('id')->on('goods');
-        //   $table->integer('qty');
-        //   $table->integer('price');
-        //   $table->integer('subtotal');
-        // });
+        Schema::create('sale_details', function (Blueprint $table) {
+          $table->unsignedBigInteger('sale_id');
+          $table->foreign('sale_id')->references('id')->on('sales');
+          $table->unsignedBigInteger('good_id');
+          $table->foreign('good_id')->references('id')->on('goods');
+          $table->integer('qty');
+          $table->integer('price');
+          $table->integer('subtotal');
+          $table->string('memo');
+        });
     }
 
     /**

@@ -8,6 +8,8 @@ use Validator;
 use App\Address;
 use App\Sale;
 use App\Company;
+use App\Good;
+use App\Unit;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,7 +35,9 @@ class SaleController extends Controller
     public function create()
     {
       $company = Company::IsCustomer()->get();
-      return view('sales.saleAdd', compact('company'));
+      $good = Good::IsProduct()->get();
+      $unit = Unit::limit(4)->get();
+      return view('sales.saleAdd', compact('company', 'good', 'unit'));
     }
 
     /**
@@ -46,24 +50,47 @@ class SaleController extends Controller
     {
       $this->authorize('create',Sale::class);
       $data = $request->validate([
-        'customer'=>'required',
+        'company'=>'required',
         'billTo'=>'required',
         'shipTo'=>'required',
-        'phone'=>'required|numeric',
+        'phone'=>'numeric',
         'reference'=>'',
         'referenceDate'=>'',
+        'totalItem' => 'required|numeric'
       ]);
-      $billTo = Address::SearchOrInsert($data,'billTo');
-      $shipTo = Address::SearchOrInsert($data,'shipTo');
-      // $sale = Sale::create([
-      //   'company_id' => $companyID->id,
-      //   'so' => str_pad(date('y',time()), 3, '0').'1',
-      //   'reference' => $request['reference'],
-      //   'referenceDate' => date('Y-m-d',strtotime($request['referenceDate'])),
-      //   'total' => '1000',
-      //   'created_at' => time(),
-      //   'updated_at' => time(),
-      // ]);
+      $itemRules=[];
+      for ($i=0; $i < $data['totalItem']; $i++) {
+        $itemRules['item'.$i] = 'nullable';
+        $itemRules['qty'.$i] = 'nullable|numeric|min:1';
+        $itemRules['unit'.$i] = 'nullable';
+        $itemRules['price'.$i] = 'nullable|numeric|min:1';
+        $itemRules['subtotal'.$i] = 'nullable|numeric|min:1';
+      }
+      $itemData = $request->validate($itemRules);
+      $billTo = Address::SearchOrInsert($data,'billTo', 'customer');
+      $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
+      $countSale = Sale::CountSale();
+      $sale = Sale::create([
+        'billTo' => $billTo['id'],
+        'shipTo' => $shipTo['id'],
+        'so' => str_pad(date('y',time()), 3, '0').$countSale,
+        'reference' => $request['reference'],
+        'referenceDate' => date('Y-m-d',strtotime($request['referenceDate'])),
+        'total' => '1000',
+      ]);
+      for ($i=0; $i < $data['totalItem']; $i++) {
+        if ($itemData['item'.$i] != '') {
+          $good = Good::SearchOrInsert($itemData, $i, 'Product');
+          $sale->goods()->syncWithoutDetaching([
+            $good['id'] => [
+              'qty' => $itemData['qty'.$i],
+              'price' => $itemData['price'.$i],
+              'subtotal' => $itemData['subtotal'.$i],
+              'memo' => '',
+            ]
+          ]);
+        }
+      }
       // return redirect(actionn('SaleController@index'));
     }
 

@@ -13,15 +13,16 @@ class CreatePurchaseDetailsTable extends Migration
      */
     public function up()
     {
-        // Schema::create('purchase_details', function (Blueprint $table) {
-        //   $table->unsignedBigInteger('purchase_id');
-        //   $table->foreign('purchase_id')->references('id')->on('purchases');
-        //   $table->unsignedBigInteger('good_id');
-        //   $table->foreign('good_id')->references('id')->on('goods');
-        //   $table->integer('qty');
-        //   $table->double('price');
-        //   $table->double('subtotal');
-        // });
+        Schema::create('purchase_details', function (Blueprint $table) {
+          $table->unsignedBigInteger('purchase_id');
+          $table->foreign('purchase_id')->references('id')->on('purchases');
+          $table->unsignedBigInteger('good_id');
+          $table->foreign('good_id')->references('id')->on('goods');
+          $table->integer('qty');
+          $table->double('price');
+          $table->double('subtotal');
+          $table->string('memo');
+        });
     }
 
     /**

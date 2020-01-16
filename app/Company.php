@@ -28,6 +28,10 @@ class Company extends Model
      return $this->hasMany('App\Purchase','purchase_id');
   }
 
+  public function scopeIsSupplier($query)
+  {
+    return $query->where('type','supplier');
+  }
   public function scopeIsCustomer($query)
   {
     return $query->where('type','customer');

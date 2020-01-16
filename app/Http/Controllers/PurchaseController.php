@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use DB;
 use Validator;
 
+use App\Address;
 use App\Purchase;
 use App\Company;
-
+use App\Good;
+use App\Unit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -32,8 +34,10 @@ class PurchaseController extends Controller
     public function create()
     {
       $this->authorize('create',Purchase::class);
-      $company = Company::where('type', 'supplier')->get();
-      return view('purchases.purchaseAdd',compact('company'));
+      $company = Company::IsSupplier()->get();
+      $good = Good::IsRaw()->get();
+      $unit = Unit::limit(3)->get();
+      return view('purchases.purchaseAdd',compact('company', 'good', 'unit'));
     }
 
     /**
@@ -45,10 +49,47 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
       $this->authorize('create',Purchase::class);
-      $companyID = Company::SearchID($request['supplier'])->first();
-      if ($companyID == null) {
-        $companyID = Company::create(['name'=>$request['supplier'], 'address'=>$request['address'], 'phone'=>$request['phone'], 'type'=>'supplier']);
+      $data = $request->validate([
+        'company' => 'required',
+        'address' => 'required',
+        'phone' => '',
+        'reference' => '',
+        'referenceDate' => '',
+        'totalItem' => 'bail|required|numeric|min:1',
+      ]);
+      $itemRules=[];
+      for ($i=0; $i < $data['totalItem']; $i++) {
+        $itemRules['item'.$i] = 'nullable';
+        $itemRules['qty'.$i] = 'nullable|numeric|min:1';
+        $itemRules['unit'.$i] = 'nullable';
+        $itemRules['price'.$i] = 'nullable|numeric|min:1';
+        $itemRules['subtotal'.$i] = 'nullable|numeric|min:1';
       }
+      $itemData = $request->validate($itemRules);
+      $supplier = Address::SearchOrInsert($data, 'address', 'supplier');
+      $countPurchase = Purchase::CountPurchase();
+      $purchase = Purchase::create([
+        'company_id' => $supplier['id'],
+        'po' => $countPurchase.date('Ymd',time()),
+        'reference' => $data['reference'],
+        'referenceDate' => date('Y-m-d', strtotime($data['referenceDate'])),
+        'total' => '7750000',
+      ]);
+      for ($i=0; $i < $data['totalItem'] ; $i++) {
+        if ($itemData['item'.$i] != '') {
+          $good = Good::SearchOrInsert($itemData, $i, 'Raw');
+          $purchase->goods()->syncWithoutDetaching([
+            $good['id'] => [
+              'qty' => $itemData['qty'.$i],
+              'price' => $itemData['price'.$i],
+              'subtotal' => $itemData['subtotal'.$i],
+              'memo' => '',
+            ]
+          ]);
+          $good->companies()->syncWithoutDetaching($supplier['id']);
+        }
+      }
+      return redirect(action('PurchaseController@index'));
     }
 
     /**

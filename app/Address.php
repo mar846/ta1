@@ -18,20 +18,20 @@ class Address extends Model
   {
     return $query->select('id')->where('address', $request);
   }
-  public function scopeSearchOrInsert($query, $request, $type)
+  public function scopeSearchOrInsert($query, $request, $type, $transaction)
   {
     if(Address::SearchAddress($request[$type])->first() == null){
-      if (Company::SearchID($request['customer'])->first() == null){
-          $customer = Company::create(['name' => $request['customer'],'type' => 'customer']);
+      if (Company::SearchID($request['company'])->first() == null){
+          $customer = Company::create(['name' => ucwords($request['company']),'type' => $transaction]);
           return Address::create([
             'company_id' => $customer['id'],
             'name' => 'primary',
-            'address' => ucwords(strtolower($request[$type])),
+            'address' => ucwords($request[$type]),
             'phone' => $request['phone'],
           ]);
         }
         else {
-          $customer = Company::SearchID($request['customer'])->first();
+          $customer = Company::SearchID(ucwords($request['company']))->first();
           return Address::create([
             'company_id' => $customer['id'],
             'name' => 'primary',

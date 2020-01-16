@@ -10,4 +10,9 @@ class Unit extends Model
   protected $primaryKey = 'id';
   protected $guarded = [];
   public $timestamps = false;
+
+  public function scopeSearchUnit($query, $request)
+  {
+    return $query->select('id')->where('name',$request);
+  }
 }

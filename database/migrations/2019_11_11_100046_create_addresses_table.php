@@ -19,7 +19,7 @@ class CreateAddressesTable extends Migration
             $table->foreign('company_id')->references('id')->on('companies');
             $table->string('name');
             $table->string('address');
-            $table->string('phone');
+            $table->string('phone')->nullable();
         });
     }
 

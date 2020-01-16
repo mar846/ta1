@@ -10,8 +10,8 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Customer</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control @error('customer') is-invalid @enderror" name="customer" value="{{ old('customer') }}" list="dataCustomer" onchange="getCustomerData(this)">
-            @error('customer')
+            <input type="text" class="form-control @error('company') is-invalid @enderror" name="company" value="{{ old('company') }}" list="dataCustomer" onchange="getCustomerData(this)">
+            @error('company')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -90,12 +90,12 @@
         for ($i=0; $i < 11; $i++) {
           ?>
           <tr>
-            <td><input type="text" name="item{{ $i }}" class="form-control"></td>
+            <td><input type="text" name="item{{ $i }}" class="form-control" placeholder="@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach"></td>
             <td>
               <div class="input-group mb-2">
                 <input type="number" class="form-control" name="qty{{ $i }}" placeholder="1" onkeyup="calculate(this)" id="qty{{ $i }}">
                 <div class="input-group-prepend">
-                  <div class="input-group-text">pcs</div>
+                  <input type="text" name="unit{{$i}}" class="input-group-text" placeholder="@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" id="unit{{$i}}">
                 </div>
               </div>
             </td>
