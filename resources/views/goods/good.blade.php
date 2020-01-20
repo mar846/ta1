@@ -20,8 +20,7 @@
         <td>{{ $data->id }}</td>
         <td>{{ $data->name }}</td>
         <td>@foreach($data->companies as $key => $datas) @if($key>0) , @endif {{ $datas->name }} @endforeach</td>
-        <td>{{ $data->qty }}</td>
-        <td></td>
+        <td>{{ $data->qty }} {{ $data->units->name }}</td>
         <th>
           <a href="{{ route('goods.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>
           <a href="{{ route('goods.edit',[$data->id]) }}"><button type="button" class="btn btn-warning" name="button">Edit</button></a>

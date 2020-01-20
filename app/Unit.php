@@ -11,8 +11,17 @@ class Unit extends Model
   protected $guarded = [];
   public $timestamps = false;
 
-  public function scopeSearchUnit($query, $request)
+  public function bills()
   {
-    return $query->select('id')->where('name',$request);
+    return $this->hasMany('App\BillOfMaterial');
+  }
+  public function goods()
+  {
+    return $this->hasMany('App\Good');
+  }
+
+  public function scopeSearchOrInsert($query, $request)
+  {
+    return (Unit::where('name',$request)->first() == null) ? Unit::create(['name'=>strtolower($request)]) : Unit::where('name',$request)->first();
   }
 }

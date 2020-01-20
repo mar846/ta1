@@ -20,7 +20,7 @@
       <tr>
         <td>{{ $data->id }}</td>
         <td>{{ date('D, d F Y', strtotime($data->created_at)) }}</td>
-        <td>{{ $data->companies->name }}</td>
+        <td>{{ $data->addresses->companies->name }}</td>
         <td>{{ $data->po }}</td>
         <td>
           @can('view',$data)

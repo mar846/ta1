@@ -53,7 +53,7 @@ class SaleController extends Controller
         'company'=>'required',
         'billTo'=>'required',
         'shipTo'=>'required',
-        'phone'=>'numeric',
+        'phone'=>'nullable|numeric',
         'reference'=>'',
         'referenceDate'=>'',
         'totalItem' => 'required|numeric'

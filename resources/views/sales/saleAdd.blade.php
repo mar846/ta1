@@ -112,7 +112,7 @@
                 <div class="input-group-prepend">
                   <div class="input-group-text">Rp.</div>
                 </div>
-                <input type="number" class="form-control" name="price{{ $i }}" placeholder="1000" id="subtotal{{ $i }}">
+                <input type="number" class="form-control" name="subtotal{{ $i }}" placeholder="1000" id="subtotal{{ $i }}">
               </div>
             </td>
             <td><button type="button" class="btn btn-danger btn-sm" name="button">X</button></td>

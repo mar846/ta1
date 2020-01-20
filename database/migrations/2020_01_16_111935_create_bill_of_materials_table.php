@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGoodsTable extends Migration
+class CreateBillOfMaterialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateGoodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('goods', function (Blueprint $table) {
+        Schema::create('bill_of_materials', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->nullable();
-            $table->string('description')->nullable();
-            $table->integer('qty')->nullable();
+            $table->string('name');
+            $table->integer('qty');
             $table->unsignedBigInteger('unit_id');
             $table->foreign('unit_id')->references('id')->on('units');
-            $table->integer('price')->nullable();
-            $table->string('type')->nullable();
+            $table->string('description')->nullable();
+            $table->string('memo')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ class CreateGoodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('goods');
+        Schema::dropIfExists('bill_of_materials');
     }
 }

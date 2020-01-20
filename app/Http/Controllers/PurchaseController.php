@@ -69,7 +69,7 @@ class PurchaseController extends Controller
       $supplier = Address::SearchOrInsert($data, 'address', 'supplier');
       $countPurchase = Purchase::CountPurchase();
       $purchase = Purchase::create([
-        'company_id' => $supplier['id'],
+        'address_id' => $supplier['id'],
         'po' => $countPurchase.date('Ymd',time()),
         'reference' => $data['reference'],
         'referenceDate' => date('Y-m-d', strtotime($data['referenceDate'])),
