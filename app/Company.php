@@ -9,7 +9,6 @@ class Company extends Model
   protected $table = "companies";
   protected $primaryKey = 'id';
   protected $guarded = [];
-  public $timestamps =false;
 
   public function goods()
   {

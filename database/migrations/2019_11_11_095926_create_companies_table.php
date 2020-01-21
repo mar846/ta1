@@ -17,6 +17,7 @@ class CreateCompaniesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->enum('type',['supplier','customer']);
+            $table->timestamps();
         });
     }
 

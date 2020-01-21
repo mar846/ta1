@@ -62,7 +62,7 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Reference Date</label>
           <div class="col-sm-10">
-            <input type="data" class="form-control @error('referenceDate') is-invalid @enderror" name="referenceDate" placeholder="dd-mm-yyyy" value="{{ old('referenceDate') }}">
+            <input type="date" class="form-control @error('referenceDate') is-invalid @enderror" name="referenceDate" placeholder="dd-mm-yyyy" value="{{ old('referenceDate') }}">
             @error('referenceDate')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

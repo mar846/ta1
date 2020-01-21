@@ -16,10 +16,13 @@ Auth::routes();
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('goodReceipt','GoodController@goodReceiptPage');
 
 Route::get('/reports','ReportController@index')->name('reports');
 Route::get('/reports/{page}','ReportController@show')->name('reportPage');
 
+Route::post('goodReceiptSearch','GoodController@goodReceiptSearch');
+Route::post('goodReceiptFinish','GoodController@goodReceiptFinish');
 Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompanyData');
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -17,11 +17,14 @@ class CreateGoodsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->nullable();
             $table->string('description')->nullable();
-            $table->integer('qty')->nullable();
+            $table->integer('qty')->default(0);
             $table->unsignedBigInteger('unit_id');
             $table->foreign('unit_id')->references('id')->on('units');
+            $table->integer('margin')->nullable();
+            $table->integer('leadTime')->nullable();
             $table->integer('price')->nullable();
             $table->string('type')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

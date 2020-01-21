@@ -8,6 +8,8 @@ use Validator;
 use App\Company;
 use App\Good;
 use App\Warehouse;
+use App\Purchase;
+use Auth;
 
 use Illuminate\Http\Request;
 
@@ -98,5 +100,50 @@ class GoodController extends Controller
     public function destroy(Good $good)
     {
         //
+    }
+
+    public function goodReceiptPage()
+    {
+      return view('goods.goodReceipt');
+    }
+    public function goodReceiptSearch(Request $request)
+    {
+      $data = $request->validate([
+        'po'=>'required',
+      ]);
+      $purchase = Purchase::where('po', $data['po'])->firstOrFail();
+      return view('goods.goodReceipt', compact('purchase'));
+    }
+    public function goodReceiptFinish(Request $request, Good $good)
+    {
+      $data = $request->validate([
+        'totalItem' => 'required|numeric|min:0',
+        'purchaseID' => 'required|numeric',
+      ]);
+      $itemRules = [];
+      for ($i=0; $i <= $data['totalItem'] ; $i++) {
+        $itemRules['item'.$i] = 'required|numeric';
+        $itemRules['qty'.$i] = 'nullable|numeric|min:1';
+        $itemRules['memo'.$i] = 'nullable';
+      }
+      $itemData = $request->validate($itemRules);
+      $purchase = Purchase::find($data['purchaseID']);
+      for ($i=0; $i <= $data['totalItem']; $i++) {
+        if ($itemData['qty'.$i] !== null) {
+          $purchase->receipts()->syncWithoutDetaching([
+            $itemData['item'.$i] => [
+              'user_id' => Auth::user()->id,
+              'qty' => $itemData['qty'.$i],
+              'memo' => $itemData['memo'.$i],
+              'created_at' => now(),
+              'updated_at' => now(),
+            ]
+          ]);
+            DB::enableQueryLog();
+          Good::where('id',$itemData['item'.$i])->increment('qty',$itemData['qty'.$i]);
+          dd(DB::getQueryLog());
+        }
+      }
+      echo "string";
     }
 }

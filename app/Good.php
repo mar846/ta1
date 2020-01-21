@@ -10,6 +10,10 @@ class Good extends Model
     protected $primaryKey = 'id';
     protected $guarded = [];
 
+    public function receipts()
+    {
+      return $this->belongsToMany('App\Purchase','good_receipt','good_id','purchase_id');
+    }
     public function companies()
     {
         return $this->belongsToMany('App\Company');
@@ -34,13 +38,16 @@ class Good extends Model
     {
       return $query->where('name',$request);
     }
+    public function scopeAddStock($query, $item, $qty)
+    {
+      return $query->find($item)->increment('qty',$qty);
+    }
     public function scopeSearchOrInsert($query, $request, $i, $type)
     {
       if(Good::SearchGood($request['item'.$i])->first() == null){
-        $unit = (Unit::SearchOrInsert($request['unit'.$i])->first() == null) ? Unit::create(['name' => strtolower($request['unit'.$i])]) : Unit::SearchOrInsert($request['unit'.$i])->first();
+        $unit = Unit::SearchOrInsert($request['unit'.$i]);
         return Good::create([
           'name' => $request['item'.$i],
-          'qty' => $request['qty'.$i],
           'unit_id' => $unit['id'],
           'price' => '5000',
           'type' => $type,
