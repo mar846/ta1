@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCatalogsTable extends Migration
+class CreateCatalogGoodTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateCatalogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('catalogs', function (Blueprint $table) {
+        Schema::create('catalog_good', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('capacity');
+            $table->unsignedBigInteger('catalog_id');
+            $table->foreign('catalog_id')->references('id')->on('catalogs');
+            $table->unsignedBigInteger('good_id');
+            $table->foreign('good_id')->references('id')->on('goods');
+            $table->integer('qty');
             $table->string('description');
             $table->timestamps();
         });
@@ -29,6 +32,6 @@ class CreateCatalogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('catalogs');
+        Schema::dropIfExists('catalog_good');
     }
 }

@@ -9,6 +9,7 @@ use App\Company;
 use App\Good;
 use App\Warehouse;
 use App\Purchase;
+use App\Sale;
 use Auth;
 
 use Illuminate\Http\Request;
@@ -114,7 +115,7 @@ class GoodController extends Controller
       $purchase = Purchase::where('po', $data['po'])->firstOrFail();
       return view('goods.goodReceipt', compact('purchase'));
     }
-    public function goodReceiptFinish(Request $request, Good $good)
+    public function goodReceiptFinish(Request $request)
     {
       $data = $request->validate([
         'totalItem' => 'required|numeric|min:0',
@@ -130,7 +131,7 @@ class GoodController extends Controller
       $purchase = Purchase::find($data['purchaseID']);
       for ($i=0; $i <= $data['totalItem']; $i++) {
         if ($itemData['qty'.$i] !== null) {
-          $purchase->receipts()->syncWithoutDetaching([
+          $purchase->receipts()->attach([
             $itemData['item'.$i] => [
               'user_id' => Auth::user()->id,
               'qty' => $itemData['qty'.$i],
@@ -139,11 +140,52 @@ class GoodController extends Controller
               'updated_at' => now(),
             ]
           ]);
-            DB::enableQueryLog();
-          Good::where('id',$itemData['item'.$i])->increment('qty',$itemData['qty'.$i]);
-          dd(DB::getQueryLog());
+          Good::AddStock($itemData['item'.$i], $itemData['qty'.$i]);
         }
       }
-      echo "string";
+      return redirect(action('GoodController@goodReceiptPage'));
+    }
+
+    public function goodDeliverPage()
+    {
+      return view('goods.goodDeliver');
+    }
+    public function goodDeliverSearch(Request $request)
+    {
+      $data = $request->validate([
+        'so' => 'required'
+      ]);
+      $sale = Sale::where('so',$data['so'])->first();
+      return view('goods.goodDeliver', compact('sale'));
+    }
+    public function goodDeliverFinish(Request $request)
+    {
+      $data = $request->validate([
+        'totalItem' => 'required|numeric',
+        'saleID' => 'required|numeric',
+      ]);
+      $itemRules = [];
+      for ($i=0; $i <= $data['totalItem']; $i++) {
+        $itemRules['item'.$i] = 'required|numeric';
+        $itemRules['qty'.$i] = 'nullable|numeric|min:1';
+        $itemRules['memo'.$i] = 'nullable';
+      }
+      $itemData = $request->validate($itemRules);
+      $sale = Sale::find($data['saleID']);
+      for ($i=0; $i <= $data['totalItem'] ; $i++) {
+        if ($itemData['qty'.$i] != null) {
+          $sale->deliveries()->attach([
+            $itemData['item'.$i] => [
+              'user_id' => Auth::user()->id,
+              'qty' => $itemData['qty'.$i],
+              'memo' => $itemData['memo'.$i],
+              'created_at' => now(),
+              'updated_at' => now(),
+            ]
+          ]);
+          Good::SubtractStock($itemData['item'.$i], $itemData['qty'.$i]);
+        }
+      }
+      return redirect(action('GoodController@goodDeliverPage'));
     }
 }

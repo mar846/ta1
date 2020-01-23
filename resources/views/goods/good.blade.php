@@ -12,7 +12,7 @@
       <th>Name</th>
       <th>Supplier</th>
       <th>QTY</th>
-      <th>Location</th>
+      <th>Type</th>
       <th></th>
     </tr>
     @foreach($good as $data)
@@ -21,10 +21,11 @@
         <td>{{ $data->name }}</td>
         <td>@foreach($data->companies as $key => $datas) @if($key>0) , @endif {{ $datas->name }} @endforeach</td>
         <td>{{ $data->qty }} {{ $data->units->name }}</td>
-        <th>
+        <td>{{ $data->type }}</td>
+        <td>
           <a href="{{ route('goods.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>
           <a href="{{ route('goods.edit',[$data->id]) }}"><button type="button" class="btn btn-warning" name="button">Edit</button></a>
-        </th>
+        </td>
       </tr>
     @endforeach
   </table>

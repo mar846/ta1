@@ -13,19 +13,19 @@ class CreateBillOfMaterialsGoodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bill_of_materials_goods', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('bill_id');
-            $table->foreign('bill_id')->references('id')->on('bill_of_materials');
-            $table->unsignedBigInteger('good_id');
-            $table->foreign('good_id')->references('id')->on('goods');
-            $table->unsignedBigInteger('qty');
-            $table->unsignedBigInteger('unit_id');
-            $table->foreign('unit_id')->references('id')->on('units');
-            $table->string('description')->nullable();
-            $table->string('memo')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('bill_of_materials_goods', function (Blueprint $table) {
+        //     $table->bigIncrements('id');
+        //     $table->unsignedBigInteger('bill_id');
+        //     $table->foreign('bill_id')->references('id')->on('bill_of_materials');
+        //     $table->unsignedBigInteger('good_id');
+        //     $table->foreign('good_id')->references('id')->on('goods');
+        //     $table->unsignedBigInteger('qty');
+        //     $table->unsignedBigInteger('unit_id');
+        //     $table->foreign('unit_id')->references('id')->on('units');
+        //     $table->string('description')->nullable();
+        //     $table->string('memo')->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**

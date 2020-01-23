@@ -13,16 +13,16 @@ class CreateBillOfMaterialsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bill_of_materials', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->integer('qty');
-            $table->unsignedBigInteger('unit_id');
-            $table->foreign('unit_id')->references('id')->on('units');
-            $table->string('description')->nullable();
-            $table->string('memo')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('bill_of_materials', function (Blueprint $table) {
+        //     $table->bigIncrements('id');
+        //     $table->string('name');
+        //     $table->integer('qty');
+        //     $table->unsignedBigInteger('unit_id');
+        //     $table->foreign('unit_id')->references('id')->on('units');
+        //     $table->string('description')->nullable();
+        //     $table->string('memo')->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**

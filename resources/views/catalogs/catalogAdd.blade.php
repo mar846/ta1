@@ -39,54 +39,6 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Panel</label>
-      <div class="col-sm-5">
-        <select class="form-control @error('panel') is-invalid @enderror" name="panel">
-          <option>Select Panel</option>
-          @foreach($panel as $data)
-            <option value="{{ $data->id }}" @if($data->id == old('panel')) selected @endif>{{ $data->companies->name }} {{ $data->name }}</option>
-          @endforeach
-        </select>
-        @error('panel')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div>
-      <div class="col-sm-5">
-        <input type="number" name="panelQTY" class="form-control @error('panelQTY') is-invalid @enderror" placeholder="QTY">
-        @error('panelQTY')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Inverter</label>
-      <div class="col-sm-5">
-        <select class="form-control @error('inverter') is-invalid @enderror" name="inverter">
-          <option>Select Inverter</option>
-          @foreach($inverter as $data)
-            <option value="{{ $data->id }}" @if($data->id == old('inverter')) selected @endif>{{ $data->companies->name }} {{ $data->name }}</option>
-          @endforeach
-        </select>
-        @error('inverter')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div>
-      <div class="col-sm-5">
-        <input type="number" name="inverterQTY" class="form-control @error('inverterQTY') is-invalid @enderror" placeholder="QTY">
-        @error('inverterQTY')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div>
-    </div>
-    <div class="form-group row">
       <div class="col-12 text-right">
         <button type="submit" class="btn btn-success" name="button">Add</button>
       </div>

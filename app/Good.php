@@ -14,6 +14,10 @@ class Good extends Model
     {
       return $this->belongsToMany('App\Purchase','good_receipt','good_id','purchase_id');
     }
+    public function deliveries()
+    {
+      return $this->belongsToMany('App\Sale','good_deliver','good_id','sale_id');
+    }
     public function companies()
     {
         return $this->belongsToMany('App\Company');
@@ -22,10 +26,16 @@ class Good extends Model
     {
       return $this->belongsTo('App\Unit','unit_id','id');
     }
-    public function bills()
+    public function catalogs()
     {
-        return $this->belongsToMany('App\BillOfMaterial', 'bill_of_materials_goods', 'good_id', 'bill_id');
+      return $this->belongsToMany('App\Catalog','catalog_good','catalog_id','good_id');
     }
+    // public function bills()
+    // {
+    //     return $this->belongsToMany('App\BillOfMaterial', 'bill_of_materials_goods', 'good_id', 'bill_id');
+    // }
+
+
     public function scopeIsProduct($query)
     {
       return $query->where('type','Product')->limit(5);
@@ -41,6 +51,10 @@ class Good extends Model
     public function scopeAddStock($query, $item, $qty)
     {
       return $query->find($item)->increment('qty',$qty);
+    }
+    public function scopeSubtractStock($query, $item, $qty)
+    {
+      return $query->find($item)->decrement('qty',$qty);
     }
     public function scopeSearchOrInsert($query, $request, $i, $type)
     {

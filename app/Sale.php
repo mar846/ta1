@@ -16,6 +16,10 @@ class Sale extends Model
   public function ships(){
      return $this->belongsTo('App\Company','shipTo');
   }
+  public function deliveries()
+  {
+    return $this->belongsToMany('App\Good','good_deliver','sale_id','good_id');
+  }
   public function goods(){
      return $this->belongsToMany('App\Good','sale_details','sale_id','good_id')->withPivot('qty','price','subtotal');
   }
