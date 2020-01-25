@@ -21,7 +21,7 @@ class CompanyController extends Controller
     public function index()
     {
       $company = Company::paginate(25);
-      return view('companies.company',compact('company'));
+      return view('companies.index',compact('company'));
     }
 
     /**
@@ -32,7 +32,7 @@ class CompanyController extends Controller
     public function create()
     {
       $this->authorize('create', Company::class);
-      return view('companies.companyAdd');
+      return view('companies.add');
     }
 
     /**
@@ -74,7 +74,7 @@ class CompanyController extends Controller
     {
       $this->authorize('view', $company);
       $company = Company::find($company->id);
-      return view('companies.companyShow',compact('company'));
+      return view('companies.show',compact('company'));
     }
 
     /**
@@ -87,7 +87,7 @@ class CompanyController extends Controller
     {
       $this->authorize('update', $company);
       $company = Company::find($company->id);
-      return view('companies.companyEdit',compact('company'));
+      return view('companies.edit',compact('company'));
     }
 
     /**

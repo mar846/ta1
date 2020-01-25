@@ -16,7 +16,11 @@ class CreateFilesTable extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('fileName');
-            $table->type('type');
+            $table->string('type');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('supervisor_id')->nullable();
+            $table->foreign('supervisor_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -31,6 +31,7 @@ Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompa
 Route::get('/home', 'HomeController@index')->name('home');
 // Route::resource('bills','BillOfMaterialController');
 Route::resource('catalogs','CatalogController');
+Route::resource('checklists','ChecklistController');
 Route::resource('companies', 'CompanyController');
 Route::resource('addresses', 'AddressController');
 Route::resource('goods','GoodController');
