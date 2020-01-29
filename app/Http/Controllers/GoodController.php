@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use DB;
 use Validator;
+use Auth;
 
 use App\Company;
 use App\Good;
 use App\Warehouse;
 use App\Purchase;
 use App\Sale;
-use Auth;
+use App\Unit;
 
 use Illuminate\Http\Request;
 
@@ -24,7 +25,7 @@ class GoodController extends Controller
     public function index()
     {
       $good = Good::all();
-      return view('goods.good', compact('good'));
+      return view('goods.index', compact('good'));
     }
 
     /**
@@ -36,7 +37,7 @@ class GoodController extends Controller
     {
       $company = Company::all();
       $warehouse = Warehouse::all();
-      return view('goods.goodAdd', compact('company', 'warehouse'));
+      return view('goods.add', compact('company', 'warehouse'));
     }
 
     /**
@@ -66,7 +67,8 @@ class GoodController extends Controller
      */
     public function show(Good $good)
     {
-        //
+      $good = Good::find($good->id);
+      return view('goods.show',compact('good'));
     }
 
     /**
@@ -77,7 +79,9 @@ class GoodController extends Controller
      */
     public function edit(Good $good)
     {
-        //
+      $good = Good::find($good->id);
+      $unit = Unit::all();
+      return view('goods.edit',compact('good', 'unit'));
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Validator;
+use Auth;
 
 use App\Address;
 use App\Sale;
@@ -24,7 +25,7 @@ class SaleController extends Controller
     public function index()
     {
       $sale = Sale::all();
-      return view('sales.sale',compact('sale'));
+      return view('sales.index',compact('sale'));
     }
 
     /**
@@ -37,7 +38,7 @@ class SaleController extends Controller
       $company = Company::IsCustomer()->get();
       $good = Good::IsProduct()->get();
       $unit = Unit::limit(4)->get();
-      return view('sales.saleAdd', compact('company', 'good', 'unit'));
+      return view('sales.add', compact('company', 'good', 'unit'));
     }
 
     /**
@@ -71,6 +72,7 @@ class SaleController extends Controller
       $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
       $countSale = Sale::CountSale();
       $sale = Sale::create([
+        'user_id' => Auth::user()->id,
         'billTo' => $billTo['id'],
         'shipTo' => $shipTo['id'],
         'so' => str_pad(date('y',time()), 3, '0').$countSale,

@@ -15,7 +15,7 @@ Auth::routes();
 
 Route::get('/', function () {
     return view('home');
-});
+})->middleware('auth');
 Route::get('goodReceipt','GoodController@goodReceiptPage');
 Route::get('goodDeliver','GoodController@goodDeliverPage');
 

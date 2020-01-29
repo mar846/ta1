@@ -1,8 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.master')
 @section('title','Sales Add')
+@section('Sale','active')
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('sales.index') }}">Sales</a></li>
+<li class="breadcrumb-item active">Sale Add</li>
+@endsection
 @section('content')
 <div class="m-3">
-  <h3 class="mb-3">Sales Add</h3>
   <form action="{{ route('sales.store') }}" method="post">
     {{ csrf_field() }}
     <div class="row">

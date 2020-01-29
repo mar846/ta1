@@ -1,9 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.master')
 @section('title','Purchases')
+@section('order','active')
+@section('purchase','active')
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+<li class="breadcrumb-item active">Purchases</li>
+@endsection
 @section('content')
 <div class="m-3">
   <div class="row justify-content-between px-3 pb-2">
-    <h3>Purchases</h3>
     @can('create',App\Sale::class)
       <a href="{{ route('purchases.create') }}"><button type="button" class="btn btn-success" name="button">Add</button></a>
     @endcan

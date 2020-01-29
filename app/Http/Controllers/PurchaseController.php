@@ -23,7 +23,7 @@ class PurchaseController extends Controller
     public function index()
     {
       $purchase = Purchase::paginate(25);
-      return view('purchases.purchase',compact('purchase'));
+      return view('purchases.index',compact('purchase'));
     }
 
     /**
@@ -37,7 +37,7 @@ class PurchaseController extends Controller
       $company = Company::IsSupplier()->get();
       $good = Good::IsRaw()->get();
       $unit = Unit::limit(3)->get();
-      return view('purchases.purchaseAdd',compact('company', 'good', 'unit'));
+      return view('purchases.add',compact('company', 'good', 'unit'));
     }
 
     /**

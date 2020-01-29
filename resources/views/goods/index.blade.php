@@ -1,9 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.master')
 @section('title','List Good')
+@section('products','active')
+@section('goods','active')
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+<li class="breadcrumb-item active">Goods</li>
+@endsection
 @section('content')
-<div class="container">
   <div class="row justify-content-between my-3">
-    <h3>Goods List</h3>
     <a href="{{ route('goods.create') }}"><button type="button" class="btn btn-success" name="button">Add Goods</button></a>
   </div>
   <table class="table">
@@ -29,5 +33,4 @@
       </tr>
     @endforeach
   </table>
-</div>
 @endsection

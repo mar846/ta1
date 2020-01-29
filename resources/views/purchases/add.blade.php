@@ -1,5 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.master')
 @section('title','Purchase Add')
+@section('order','active')
+@section('purchase','active')
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('purchases.index') }}">Purchases</a></li>
+<li class="breadcrumb-item active">Purchase Add</li>
+@endsection
 @section('content')
 @if ($errors->any())
   @foreach ($errors->all() as $error)
@@ -7,7 +14,6 @@
   @endforeach
 @endif
 <div class="m-3">
-  <h3 class="mb-3">Purchase Add</h3>
   <form action="{{ route('purchases.store') }}" method="post">
     {{ csrf_field() }}
     <div class="row">
