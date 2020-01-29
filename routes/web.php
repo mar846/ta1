@@ -30,11 +30,11 @@ Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompa
 
 Route::get('/home', 'HomeController@index')->name('home');
 // Route::resource('bills','BillOfMaterialController');
-Route::resource('catalogs','CatalogController');
-Route::resource('checklists','ChecklistController');
-Route::resource('companies', 'CompanyController');
-Route::resource('addresses', 'AddressController');
-Route::resource('goods','GoodController');
-Route::resource('sales', 'SaleController');
-Route::resource('purchases', 'PurchaseController');
-Route::resource('warehouses', 'WarehouseController');
+Route::resource('catalogs','CatalogController')->middleware('auth');
+Route::resource('checklists','ChecklistController')->middleware('auth');
+Route::resource('companies', 'CompanyController')->middleware('auth');
+Route::resource('addresses', 'AddressController')->middleware('auth');
+Route::resource('goods','GoodController')->middleware('auth');
+Route::resource('sales', 'SaleController')->middleware('auth');
+Route::resource('purchases', 'PurchaseController')->middleware('auth');
+Route::resource('warehouses', 'WarehouseController')->middleware('auth');

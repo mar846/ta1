@@ -278,7 +278,6 @@
   <!-- ./wrapper -->
 
   <!-- REQUIRED SCRIPTS -->
-
   <script src="js/app.js" charset="utf-8"></script>
   @yield('script')
   </body>
