@@ -19,6 +19,7 @@ try {
     require('datatables.net-colreorder-bs4');
     require('datatables.net-fixedheader-bs4');
     require('datatables.net-responsive-bs4');
+    require('pdfmake');
 } catch (e) {}
 
 /**
