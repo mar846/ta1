@@ -11,10 +11,10 @@ class Sale extends Model
   protected $guarded = [];
 
   public function bills(){
-     return $this->belongsTo('App\Company','billTo');
+     return $this->belongsTo('App\Address','billTo');
   }
   public function ships(){
-     return $this->belongsTo('App\Company','shipTo');
+     return $this->belongsTo('App\Address','shipTo');
   }
   public function deliveries()
   {

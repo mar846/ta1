@@ -20,7 +20,8 @@ class ChecklistController extends Controller
      */
     public function index()
     {
-      return view('checklists.index');
+      $checklist = Checklist::all();
+      return view('checklists.index', compact('checklist'));
     }
 
     /**
@@ -30,7 +31,7 @@ class ChecklistController extends Controller
      */
     public function create()
     {
-        return view('checklists.add');
+      return view('checklists.add');
     }
 
     /**
@@ -41,14 +42,14 @@ class ChecklistController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-          'question' => 'required|unique:checklists',
-        ]);
-        Checklist::create([
-          'user_id' => Auth::users()->id,
-          'question' => $data['question'],
-        ]);
-        return redirect(action('ChecklistController@index'));
+      $data = $request->validate([
+        'question' => 'bail|required|unique:checklists',
+      ]);
+      Checklist::create([
+        'user_id' => Auth::user()->id,
+        'question' => $data['question'],
+      ]);
+      return redirect(action('ChecklistController@index'));
     }
 
     /**
@@ -70,7 +71,8 @@ class ChecklistController extends Controller
      */
     public function edit(Checklist $checklist)
     {
-        //
+      $checklist = Checklist::find($checklist->id);
+      return view('Checklists.edit', compact('checklist'));
     }
 
     /**
@@ -82,7 +84,13 @@ class ChecklistController extends Controller
      */
     public function update(Request $request, Checklist $checklist)
     {
-        //
+      $data = $request->validate([
+        'question' => 'bail|required|unique:checklists',
+      ]);
+      Checklist::where('id',$checklist->id)->update([
+        'question' => $data['question'],
+      ]);
+      return redirect(action('ChecklistController@index'));
     }
 
     /**

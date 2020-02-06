@@ -22,7 +22,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-      $purchase = Purchase::paginate(25);
+      $purchase = Purchase::all();
       return view('purchases.index',compact('purchase'));
     }
 

@@ -19,7 +19,7 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-      $warehouse = Warehouse::paginate(15);
+      $warehouse = Warehouse::all();
       return view('warehouses.warehouse',compact('warehouse'));
     }
 

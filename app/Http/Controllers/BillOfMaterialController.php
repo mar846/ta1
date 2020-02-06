@@ -20,7 +20,7 @@ class BillOfMaterialController extends Controller
      */
     public function index()
     {
-        $bill = BillOfMaterial::paginate(15);
+        $bill = BillOfMaterial::all();
         return view('bills.bill', compact('bill'));
     }
 

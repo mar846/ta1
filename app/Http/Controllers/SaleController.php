@@ -54,9 +54,11 @@ class SaleController extends Controller
         'company'=>'required',
         'billTo'=>'required',
         'shipTo'=>'required',
-        'phone'=>'nullable|numeric',
+        'phone'=>'nullable',
         'reference'=>'',
         'referenceDate'=>'',
+        'paymentTerms'=>'required',
+        'deliveryTime'=>'required',
         'totalItem' => 'required|numeric'
       ]);
       $itemRules=[];
@@ -78,6 +80,9 @@ class SaleController extends Controller
         'so' => str_pad(date('y',time()), 3, '0').$countSale,
         'reference' => $request['reference'],
         'referenceDate' => date('Y-m-d',strtotime($request['referenceDate'])),
+        'paymentTerms' => $data['paymentTerms'],
+        'deliveryTime' => $data['deliveryTime'],
+        'downPayment' => '0',
         'total' => '1000',
       ]);
       for ($i=0; $i < $data['totalItem']; $i++) {
@@ -104,7 +109,8 @@ class SaleController extends Controller
      */
     public function show(Sale $sale)
     {
-      return view('sales.saleShow',compact('sale'));
+      $sale = Sale::find($sale->id);
+      return view('sales.show',compact('sale'));
     }
 
     /**
@@ -115,7 +121,8 @@ class SaleController extends Controller
      */
     public function edit(Sale $sale)
     {
-      return view('sales.saleEdit',compact('sale'));
+      $sale = Sale::find($sale->id);
+      return view('sales.edit',compact('sale'));
     }
 
     /**

@@ -20,7 +20,7 @@ class CreateSaleDetailsTable extends Migration
           $table->foreign('good_id')->references('id')->on('goods');
           $table->integer('qty');
           $table->integer('price');
-          $table->integer('subtotal');
+          $table->biginteger('subtotal');
           $table->string('memo');
         });
     }

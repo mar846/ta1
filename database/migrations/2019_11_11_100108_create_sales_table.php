@@ -22,7 +22,10 @@ class CreateSalesTable extends Migration
             $table->string('so');
             $table->string('reference');
             $table->date('referenceDate');
-            $table->integer('total');
+            $table->bigInteger('total');
+            $table->string('paymentTerms');
+            $table->string('deliveryTime');
+            $table->string('downPayment');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('supervisor_id')->nullable();;

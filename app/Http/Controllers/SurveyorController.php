@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Auth;
+use Validator;
+
 use App\Surveyor;
+
 use Illuminate\Http\Request;
 
 class SurveyorController extends Controller
@@ -14,7 +19,8 @@ class SurveyorController extends Controller
      */
     public function index()
     {
-        //
+      $surveyor = Surveyor::all();
+      return view('surveyors.index',compact('surveyor'));
     }
 
     /**

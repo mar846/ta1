@@ -19,8 +19,8 @@ class CatalogController extends Controller
      */
     public function index()
     {
-      $catalog = Catalog::paginate(15);
-      return view('catalogs.catalog',compact('catalog'));
+      $catalog = Catalog::all();
+      return view('catalogs.index',compact('catalog'));
     }
 
     /**
@@ -31,7 +31,7 @@ class CatalogController extends Controller
     public function create()
     {
       $this->authorize('create', Catalog::class);
-      return view('catalogs.catalogAdd');
+      return view('catalogs.add');
     }
 
     /**
@@ -61,7 +61,7 @@ class CatalogController extends Controller
     {
       $this->authorize('view', $catalog);
       $catalog = Catalog::find($catalog->id);
-      return view('catalogs.catalogShow',compact('catalog'));
+      return view('catalogs.show',compact('catalog'));
     }
 
     /**
@@ -74,7 +74,7 @@ class CatalogController extends Controller
     {
       $this->authorize('update', $catalog);
       $catalog = Catalog::find($catalog->id);
-      return view('catalogs.catalogEdit',compact('catalog'));
+      return view('catalogs.edit',compact('catalog'));
     }
 
     /**

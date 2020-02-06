@@ -7,6 +7,9 @@
 
     <title>@yield('title','Skripsi')</title>
     <link rel="stylesheet" href="/css/app.css">
+    <!-- REQUIRED SCRIPTS -->
+    <script src="js/app.js" charset="utf-8"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   </head>
   <body class="sidebar-mini" style="height: auto;">
   <div class="wrapper">
@@ -205,7 +208,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="{{ route('catalogs.index') }}" class="nav-link">
                     <i class="fas fa-clipboard-list nav-icon"></i>
                     <p>Catalogs</p>
                   </a>
@@ -217,6 +220,30 @@
                   </a>
                 </li>
               </ul>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('units.index') }}" class="nav-link @hasSection('units') active @endif">
+                <i class="nav-icon fas fa-ruler"></i>
+                <p>Unis</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('companies.index') }}" class="nav-link @hasSection('companies') active @endif">
+                <i class="nav-icon fas fa-building"></i>
+                <p>Companies</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('checklists.index') }}" class="nav-link @hasSection('checklist') active @endif">
+                <i class="nav-icon fas fa-clipboard-list"></i>
+                <p>Checklist</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('surveyors.index') }}" class="nav-link @hasSection('surveyors') active @endif">
+                <i class="nav-icon fas fa-hard-hat"></i>
+                <p>Surveyors</p>
+              </a>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
@@ -236,31 +263,36 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="min-height: 1215px;">
-      <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1 class="m-0 text-dark">@yield('title')</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                @yield('breadcrumb')
-              </ol>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </div>
-      <!-- /.content-header -->
-
-      <!-- Main content -->
-      <div class="content">
-        <div class="container-fluid">
-          @yield('content')
+      <div class="card m-3">
+        <!-- Content Header (Page header) -->
+        <div class="card-title">
+          <div class="content-header">
+            <div class="container-fluid">
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                  <h1 class="m-0 text-dark">@yield('title')</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                  <ol class="breadcrumb float-sm-right">
+                    @yield('breadcrumb')
+                  </ol>
+                </div><!-- /.col -->
+              </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+          </div>
+          <!-- /.content-header -->
         </div>
-        <!-- /.container-fluid -->
+        <!-- Main content -->
+        <div class="card-body">
+          <div class="content">
+            <div class="">
+              @yield('content')
+            </div>
+            <!-- /.container-fluid -->
+          </div>
+        </div>
+        <!-- /.content -->
       </div>
-      <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
@@ -277,8 +309,6 @@
   </div>
   <!-- ./wrapper -->
 
-  <!-- REQUIRED SCRIPTS -->
-  <script src="js/app.js" charset="utf-8"></script>
   @yield('script')
   </body>
 </html>

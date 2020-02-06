@@ -31,10 +31,5 @@
       </tr>
     @endforeach
   </table>
-  <div class="row">
-    <div class="col-12 d-flex justify-content-center">
-      {{ $warehouse->links() }}
-    </div>
-  </div>
 </div>
 @endsection

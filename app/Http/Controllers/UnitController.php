@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Auth;
+
 use App\Unit;
+
 use Illuminate\Http\Request;
 
 class UnitController extends Controller
@@ -14,7 +18,8 @@ class UnitController extends Controller
      */
     public function index()
     {
-        //
+      $unit = Unit::all();
+      return view('units.index', compact('unit'));
     }
 
     /**
@@ -24,7 +29,7 @@ class UnitController extends Controller
      */
     public function create()
     {
-        //
+      return view('units.add');
     }
 
     /**
@@ -35,7 +40,11 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $data = $request->validate([
+        'name' => 'bail|required|unique:units',
+      ]);
+      Unit::create($data);
+      return redirect(action('UnitController@index'));
     }
 
     /**
@@ -46,7 +55,8 @@ class UnitController extends Controller
      */
     public function show(Unit $unit)
     {
-        //
+      $unit = Unit::find($unit->id);
+      return view('units.show', compact('unit'));
     }
 
     /**
@@ -57,7 +67,8 @@ class UnitController extends Controller
      */
     public function edit(Unit $unit)
     {
-        //
+      $unit = Unit::find($unit->id);
+      return view('units.edit', compact('unit'));
     }
 
     /**
@@ -69,7 +80,11 @@ class UnitController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
-        //
+      $data = $request->validate([
+        'name' => 'bail|required|unique:units',
+      ]);
+      Unit::where('id',$unit->id)->update(['name' => $data['name']]);
+      return redirect(action('UnitController@index'));
     }
 
     /**

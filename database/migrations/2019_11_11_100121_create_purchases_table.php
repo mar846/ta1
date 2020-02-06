@@ -21,6 +21,9 @@ class CreatePurchasesTable extends Migration
             $table->string('reference');
             $table->date('referenceDate');
             $table->double('total');
+            $table->string('paymentTerms');
+            $table->string('deliveryTime');
+            $table->string('downPayment');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('supervisor_id')->nullable();

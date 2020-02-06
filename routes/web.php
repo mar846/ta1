@@ -36,5 +36,7 @@ Route::resource('companies', 'CompanyController')->middleware('auth');
 Route::resource('addresses', 'AddressController')->middleware('auth');
 Route::resource('goods','GoodController')->middleware('auth');
 Route::resource('sales', 'SaleController')->middleware('auth');
+Route::resource('surveyors', 'SurveyorController')->middleware('auth');
 Route::resource('purchases', 'PurchaseController')->middleware('auth');
+Route::resource('units', 'UnitController')->middleware('auth');
 Route::resource('warehouses', 'WarehouseController')->middleware('auth');
