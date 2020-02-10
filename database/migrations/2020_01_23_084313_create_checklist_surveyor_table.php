@@ -19,6 +19,7 @@ class CreateChecklistSurveyorTable extends Migration
             $table->foreign('checklist_id')->references('id')->on('checklists');
             $table->unsignedBigInteger('surveyor_id')->nullable();
             $table->foreign('surveyor_id')->references('id')->on('surveyors');
+            $table->string('answer')->nullable();
             $table->timestamps();
         });
     }

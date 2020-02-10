@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class CompanyTableSeeder extends Seeder
+class ProjectTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,9 +12,11 @@ class CompanyTableSeeder extends Seeder
     public function run()
     {
       $faker = Faker\Factory::create('id_ID');
-      $company = App\Company::create([
-        'name' => $faker->company,
-        'type'=> 'customer',
+      App\Project::create([
+        'name' => 'PLTS Grid 1MWp '.$faker->company,
+        'location' => $faker->state,
+        'company_id' => '1',
+        'user_id' => '1',
       ]);
     }
 }

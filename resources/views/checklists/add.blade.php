@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title','Add Checklist')
-@section('companies','active')
+@section('checklist','active')
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
 <li class="breadcrumb-item"><a href="{{ route('checklists.index') }}">Checklist</a></li>
@@ -12,7 +12,7 @@
   <div class="form-group row">
     <label  class="col-sm-1 col-form-label">Question</label>
     <div class="col-sm-11">
-      <input type="text" name="question" class="form-control @error('question') is-invalid @enderror" id="inputQuestion">
+      <input type="text" name="question" class="form-control @error('question') is-invalid @enderror" id="inputQuestion" autofocus>
       @error('question')
           <span class="invalid-feedback" role="alert">
               <strong>{{ $message }}</strong>

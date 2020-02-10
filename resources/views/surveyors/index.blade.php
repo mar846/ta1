@@ -7,22 +7,24 @@
 @endsection
 @section('content')
 <div class="row justify-content-left px-3 pb-3">
-  <a href="{{ route('units.create') }}" class="btn btn-success">Add</a>
+  <a href="{{ route('surveyors.create') }}" class="btn btn-success">Add</a>
 </div>
 <table class="table table-hover" id="table">
   <thead>
     <th>ID</th>
-    <th>Name</th>
+    <th>Project</th>
+    <th>Location</th>
     <th>Action</th>
   </thead>
   <tbody>
     @foreach($surveyor as $data)
     <tr>
       <td>{{ $data->id }}</td>
-      <td>{{ $data->name }}</td>
+      <td>{{ $data->projects->name }}</td>
+      <td>{{ $data->projects->location }}</td>
       <td>
-        <a href="{{ route('units.show',$data->id) }}" class="btn btn-info">Info</a>
-        <a href="{{ route('units.edit',$data->id) }}" class="btn btn-warning">Edit</a>
+        <a href="{{ route('surveyors.show',$data->id) }}" class="btn btn-info">Info</a>
+        <a href="{{ route('surveyors.edit',$data->id) }}" class="btn btn-warning">Edit</a>
       </td>
     </tr>
     @endforeach

@@ -6,7 +6,10 @@ use DB;
 use Auth;
 use Validator;
 
+use App\Checklist;
+use App\Project;
 use App\Surveyor;
+use App\File;
 
 use Illuminate\Http\Request;
 
@@ -30,7 +33,9 @@ class SurveyorController extends Controller
      */
     public function create()
     {
-        //
+      $project = Project::all();
+      $checklist = Checklist::all();
+      return view('surveyors.add', compact('project', 'checklist'));
     }
 
     /**
@@ -41,7 +46,37 @@ class SurveyorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $checklistTotal = Checklist::count();
+      $data = $request->validate([
+        'project' => 'required',
+        'file' => 'nullable|file|image|max:2000',
+      ]);
+      $itemRules=[];
+      for ($i=0; $i < Checklist::count(); $i++) {
+        $itemRules['answer'.$i] = '';
+      }
+      $itemData = $request->validate($itemRules);
+      $surveyor = Surveyor::create([
+        'project_id' => $data['project'],
+        'user_id' => Auth::user()->id,
+      ]);
+      if ($request->hasFile('file')) {
+        File::create([
+          'name' => $request->file('file')->store('uploads','public'),
+          'type' => 'surveyor',
+          'project_id' => $data['project'],
+          'user_id' => Auth::user()->id,
+        ]);
+      }
+      for ($i=0; $i < Checklist::count(); $i++) {
+        $surveyor->checklists()->attach([
+          $i+1 => [
+            'answer' => $itemData['answer'.$i],
+            'created_at' => now(),
+            'updated_at' => now(),
+          ]
+        ]);
+      }
     }
 
     /**
@@ -52,7 +87,8 @@ class SurveyorController extends Controller
      */
     public function show(Surveyor $surveyor)
     {
-        //
+      $surveyor = Surveyor::find($surveyor->id);
+      return view('surveyors.show', compact('surveyor'));
     }
 
     /**
@@ -63,7 +99,10 @@ class SurveyorController extends Controller
      */
     public function edit(Surveyor $surveyor)
     {
-        //
+      $project = Project::all();
+      $checklist = Checklist::all();
+      $surveyor = Surveyor::find($surveyor->id);
+      return view('surveyors.edit', compact('project', 'checklist', 'surveyor'));
     }
 
     /**
@@ -75,7 +114,25 @@ class SurveyorController extends Controller
      */
     public function update(Request $request, Surveyor $surveyor)
     {
-        //
+      $checklistTotal = Checklist::count();
+      $data = $request->validate(['project' => 'required']);
+      $itemRules=[];
+      for ($i=0; $i < Checklist::count(); $i++) {
+        $itemRules['answer'.$i] = '';
+      }
+      $itemData = $request->validate($itemRules);
+      Surveyor::find($surveyor->id)->update([
+        'project_id' => $data['project'],
+      ]);
+      for ($i=0; $i < Checklist::count(); $i++) {
+        $surveyor->checklists()->syncWithoutDetaching([
+          $i+1 => [
+            'answer' => $itemData['answer'.$i],
+            'updated_at' => now(),
+          ]
+        ]);
+      }
+      return redirect(action('SurveyorController@show',$surveyor->id));
     }
 
     /**

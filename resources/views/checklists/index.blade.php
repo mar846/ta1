@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title','Checklists')
-@section('checklists','active')
+@section('checklist','active')
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
 <li class="breadcrumb-item active">Checklists</li>

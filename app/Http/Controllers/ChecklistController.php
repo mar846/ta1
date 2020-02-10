@@ -49,7 +49,7 @@ class ChecklistController extends Controller
         'user_id' => Auth::user()->id,
         'question' => $data['question'],
       ]);
-      return redirect(action('ChecklistController@index'));
+      return redirect(action('ChecklistController@create'));
     }
 
     /**
