@@ -70,6 +70,10 @@ class SaleController extends Controller
         $itemRules['subtotal'.$i] = 'nullable|numeric|min:1';
       }
       $itemData = $request->validate($itemRules);
+      $totalSale =0;
+      for ($i=0; $i < $data['totalItem'] ; $i++) {
+        $totalSale += $itemData['subtotal'.$i];
+      }
       $billTo = Address::SearchOrInsert($data,'billTo', 'customer');
       $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
       $countSale = Sale::CountSale();
@@ -83,7 +87,7 @@ class SaleController extends Controller
         'paymentTerms' => $data['paymentTerms'],
         'deliveryTime' => $data['deliveryTime'],
         'downPayment' => '0',
-        'total' => '1000',
+        'total' => $totalSale,
       ]);
       for ($i=0; $i < $data['totalItem']; $i++) {
         if ($itemData['item'.$i] != '') {
@@ -98,7 +102,7 @@ class SaleController extends Controller
           ]);
         }
       }
-      // return redirect(actionn('SaleController@index'));
+      return redirect(actionn('SaleController@show',$sale->id));
     }
 
     /**

@@ -1,22 +1,26 @@
 @extends('layouts.master')
-@section('title','Sales')
+@section('title','Purchase Info')
 @section('order','active')
-@section('sale','active')
+@section('purchase','active')
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-<li class="breadcrumb-item"><a href="{{ route('sales.index') }}">Sales</a></li>
-<li class="breadcrumb-item active">Sales Info</li>
+<li class="breadcrumb-item"><a href="{{ route('purchases.index') }}">Purchases</a></li>
+<li class="breadcrumb-item active">Purchase Info</li>
 @endsection
 @section('content')
 <div class="row justify-content-end">
   <div class="col-2 text-right  mb-2">
-    <a href="#" class="btn btn-primary">Make Invoice</a>
-    <a href="{{ route('sales.edit',$sale->id) }}" class="btn btn-warning">Edit</a>
+    @can('view',$purchase)
+      <a href="{{ route('makeInvoice',$purchase->id) }}" class="btn btn-primary">Make Invoice</a>
+    @endcan
+    @can('update',$purchase)
+      <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-warning">Edit</a>
+    @endcan
   </div>
 </div>
 <div class="card card-default">
   <div class="card-header">
-    <h3 class="card-title">Sales SO-{{ $sale->so }}</h3>
+    <h3 class="card-title">Purchase PO-{{ $purchase->po }}</h3>
   </div>
   <div class="card-body">
     <div class="row">
@@ -24,25 +28,19 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Date</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ date('D, d F Y', strtotime($sale->created_at)) }}" disabled>
+            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ date('D, d F Y', strtotime($purchase->created_at)) }}" disabled>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Customer</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->bills->companies->name }}" disabled>
+            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $purchase->addresses->companies->name }}" disabled>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Bill To</label>
+          <label class="col-sm-2 col-form-label">Address</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->bills->address }}" disabled>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Ship To</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->ships->address }}" disabled>
+            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $purchase->addresses->address }}" disabled>
           </div>
         </div>
       </div>
@@ -50,25 +48,25 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Reference</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->reference }}" disabled>
+            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $purchase->reference }}" disabled>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Reference Date</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ date('D, d F Y'. strtotime('$sale->referenceDate')) }}" disabled>
+            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ date('D, d F Y'. strtotime('$purchase->referenceDate')) }}" disabled>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Payment Terms</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->paymentTerms }}" disabled>
+            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $purchase->paymentTerms }}" disabled>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Delivery Time</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->deliveryTime }}" disabled>
+            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $purchase->deliveryTime }}" disabled>
           </div>
         </div>
       </div>
@@ -82,7 +80,7 @@
           <th>Subtotal</th>
         </thead>
         <tbody>
-          @foreach($sale->goods as $data)
+          @foreach($purchase->goods as $data)
             <tr>
               <td>{{ $data->name }}</td>
               <td>{{ $data->pivot->qty }} {{ $data->units->name }}</td>
@@ -94,7 +92,7 @@
         <tfoot>
           <tr>
             <th colspan="3" class="text-right">Total</th>
-            <th>IDR. {{ number_format($sale->total, 2, ',', '.') }}</th>
+            <th>IDR. {{ number_format($purchase->total, 2, ',', '.') }}</th>
           </tr>
         </tfoot>
       </table>

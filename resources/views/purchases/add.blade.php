@@ -77,17 +77,25 @@
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Sales Reference</label>
+          <label class="col-sm-2 col-form-label">Payment Terms</label>
           <div class="col-sm-10">
-            <select class="form-control" name="">
-              <?php
-                for ($i=0; $i < 10; $i++) {
-                  ?>
-                  <option value=""><?php echo $i ?></option>
-                  <?php
-                }
-              ?>
-            </select>
+            <input type="text" name="paymentTerms" class="form-control @error('paymentTerms') is-invalid @enderror" value="{{ old('paymentTerms') }}">
+            @error('paymentTerms')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Delivery Time</label>
+          <div class="col-sm-10">
+            <input type="text" name="deliveryTime" class="form-control @error('deliveryTime') is-invalid @enderror" value="{{ old('deliveryTime') }}">
+            @error('deliveryTime')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
         </div>
       </div>

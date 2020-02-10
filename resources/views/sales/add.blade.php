@@ -171,7 +171,7 @@
 <script type="text/javascript">
   var i = 1;
   function addRow() {
-    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' placeholder='@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit0' class='input-group-text' placeholder='@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' id='unit" + i + "'></div></div></td><td><div class='input-group mb-2'><div class='input-group-prepend'><div class='input-group-text'>Rp.</div></div><input type='number' class='form-control' name='price" + i + "' placeholder='1000' onkeyup='calculate(this)' id='price" + i + "'></div></td><td><div class='input-group mb-2'><div class='input-group-prepend'><div class='input-group-text'>Rp.</div></div><input type='number' class='form-control' name='subtotal" + i + "' placeholder='1000' id='subtotal" + i + "'></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' placeholder='@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' placeholder='@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' id='unit" + i + "'></div></div></td><td><div class='input-group mb-2'><div class='input-group-prepend'><div class='input-group-text'>Rp.</div></div><input type='number' class='form-control' name='price" + i + "' placeholder='1000' onkeyup='calculate(this)' id='price" + i + "'></div></td><td><div class='input-group mb-2'><div class='input-group-prepend'><div class='input-group-text'>Rp.</div></div><input type='number' class='form-control' name='subtotal" + i + "' placeholder='1000' id='subtotal" + i + "'></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
     i+=1;
     $('#totalItem').val(i);
   }
@@ -187,12 +187,12 @@
   function calculateTotal() {
     console.clear()
     var total = 0;
-    console.log(totalItem);
+    // console.log(total);
     for (var i = 0; i < $('#totalItem').val()+1; i++) {
       total += $('#subtotal'+i).val()*1;
       // console.log($('#subtotal'+i).val()*1);
     }
-    // console.log(total);
+    console.log(total);
     $('#totalColumn').html(total);
   }
   function calculate(id) {

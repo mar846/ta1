@@ -12,7 +12,9 @@
 */
 
 Auth::routes();
-
+Route::get('/invoice',function(){
+  return view('prints.invoice');
+});
 Route::get('/', function () {
     return view('home');
 })->middleware('auth');
@@ -27,6 +29,7 @@ Route::post('goodReceiptSearch','GoodController@goodReceiptSearch');
 Route::post('goodDeliverFinish','GoodController@goodDeliverFinish');
 Route::post('goodReceiptFinish','GoodController@goodReceiptFinish');
 Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompanyData');
+Route::get('makeInvoice/{id}','PurchaseController@makeInvoice')->name('makeInvoice')->middleware('auth');
 
 Route::get('/home', 'HomeController@index')->name('home');
 // Route::resource('bills','BillOfMaterialController');
@@ -37,6 +40,7 @@ Route::resource('addresses', 'AddressController')->middleware('auth');
 Route::resource('goods','GoodController')->middleware('auth');
 Route::resource('sales', 'SaleController')->middleware('auth');
 Route::resource('surveyors', 'SurveyorController')->middleware('auth');
+Route::resource('projects', 'ProjectController')->middleware('auth');
 Route::resource('purchases', 'PurchaseController')->middleware('auth');
 Route::resource('units', 'UnitController')->middleware('auth');
 Route::resource('warehouses', 'WarehouseController')->middleware('auth');

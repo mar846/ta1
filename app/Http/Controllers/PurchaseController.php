@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use DB;
 use Validator;
+use Auth;
 
 use App\Address;
 use App\Purchase;
 use App\Company;
 use App\Good;
 use App\Unit;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -55,6 +57,8 @@ class PurchaseController extends Controller
         'phone' => '',
         'reference' => '',
         'referenceDate' => '',
+        'paymentTerms' => 'required',
+        'deliveryTime' => 'required',
         'totalItem' => 'bail|required|numeric|min:1',
       ]);
       $itemRules=[];
@@ -72,6 +76,10 @@ class PurchaseController extends Controller
         'address_id' => $supplier['id'],
         'po' => $countPurchase.date('Ymd',time()),
         'reference' => $data['reference'],
+        'paymentTerms' => $data['paymentTerms'],
+        'deliveryTime' => $data['deliveryTime'],
+        'downPayment' => '0',
+        'user_id' => Auth::user()->id,
         'referenceDate' => date('Y-m-d', strtotime($data['referenceDate'])),
         'total' => '7750000',
       ]);
@@ -101,6 +109,8 @@ class PurchaseController extends Controller
     public function show(Purchase $purchase)
     {
       $this->authorize('view',$purchase);
+      $purchase = Purchase::find($purchase->id);
+      return view('purchases.show', compact('purchase'));
     }
 
     /**
@@ -112,6 +122,8 @@ class PurchaseController extends Controller
     public function edit(Purchase $purchase)
     {
       $this->authorize('update',$purchase);
+      $purchase = Purchase::find($purchase->id);
+      return view('purchases.edit',compact('purchase'));
     }
 
     /**
@@ -124,6 +136,25 @@ class PurchaseController extends Controller
     public function update(Request $request, Purchase $purchase)
     {
       $this->authorize('update',$purchase);
+      $data = $request->validate([
+        'supplier' => 'required',
+        'address' => 'required',
+        'reference' => 'required',
+        'referenceDate' => 'required',
+        'paymentTerms' => 'required',
+        'deliveryTime' => 'required',
+      ]);
+      $purchase = Purchase::Find($purchase->id);
+      Address::find($purchase->address_id)->update(['address' => $data['address']]);
+      $address = Address::find($purchase->address_id);
+      Company::find($address->company_id)->update(['name' => $data['supplier']]);
+      Purchase::find($purchase->id)->update([
+        'reference' => $data['reference'],
+        'referenceDate' => $data['referenceDate'],
+        'paymentTerms' => $data['paymentTerms'],
+        'deliveryTime' => $data['deliveryTime'],
+      ]);
+      return redirect(action('PurchaseController@show',$purchase->id));
     }
 
     /**
@@ -135,5 +166,12 @@ class PurchaseController extends Controller
     public function destroy(Purchase $purchase)
     {
         //
+    }
+
+    public function makeInvoice(Purchase $purchase)
+    {
+      $this->authorize('view',$purchase);
+      $purchase = Purchase::find(1);
+      return view('prints.invoice',compact('purchase'));
     }
 }

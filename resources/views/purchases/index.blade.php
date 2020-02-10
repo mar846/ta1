@@ -31,9 +31,7 @@
           @can('view',$data)
           <a href="{{ route('purchases.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>
           @endcan
-          @can('update',$data)
-          <a href="{{ route('purchases.edit',[$data->id]) }}"><button type="button" class="btn btn-warnning" name="button">Edit</button></a>
-          @endcan
+          <!-- <a href="{{ route('purchases.edit',[$data->id]) }}"><button type="button" class="btn btn-warnning" name="button">Edit</button></a> -->
         </td>
       </tr>
     @endforeach

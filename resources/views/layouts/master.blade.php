@@ -185,6 +185,12 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
+                  <a href="{{ route('projects.index') }}" class="nav-link @hasSection('project') active @endif">
+                    <i class="fas fa-comments-dollar nav-icon"></i>
+                    <p>Projects</p>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a href="{{ route('sales.index') }}" class="nav-link @hasSection('sale') active @endif">
                     <i class="fas fa-comments-dollar nav-icon"></i>
                     <p>Sale</p>
