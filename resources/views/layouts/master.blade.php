@@ -230,7 +230,7 @@
             <li class="nav-item">
               <a href="{{ route('units.index') }}" class="nav-link @hasSection('units') active @endif">
                 <i class="nav-icon fas fa-ruler"></i>
-                <p>Unis</p>
+                <p>Units</p>
               </a>
             </li>
             <li class="nav-item">
@@ -249,6 +249,12 @@
               <a href="{{ route('surveyors.index') }}" class="nav-link @hasSection('surveyors') active @endif">
                 <i class="nav-icon fas fa-hard-hat"></i>
                 <p>Surveyors</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('designers.index') }}" class="nav-link @hasSection('designers') active @endif">
+                <i class="nav-icon fas fa-drafting-compass"></i>
+                <p>Designer</p>
               </a>
             </li>
             <li class="nav-item">

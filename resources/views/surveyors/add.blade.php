@@ -48,7 +48,7 @@
       </table>
       <div class="form-group d-flex flex-column pt-3">
         <label for="inputFile">File</label>
-        <input type="file" name="file" value="{{ old('file') }}">
+        <input type="file" name="file" value="{{ old('file') }}" accept="image/jpeg">
         @error('file')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>

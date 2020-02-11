@@ -7,10 +7,11 @@ use Validator;
 use Auth;
 
 use App\Address;
-use App\Purchase;
 use App\Company;
 use App\Good;
 use App\Unit;
+use App\Project;
+use App\Purchase;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -39,7 +40,8 @@ class PurchaseController extends Controller
       $company = Company::IsSupplier()->get();
       $good = Good::IsRaw()->get();
       $unit = Unit::limit(3)->get();
-      return view('purchases.add',compact('company', 'good', 'unit'));
+      $project = Project::all();
+      return view('purchases.add',compact('company', 'good', 'unit', 'project'));
     }
 
     /**
@@ -52,6 +54,7 @@ class PurchaseController extends Controller
     {
       $this->authorize('create',Purchase::class);
       $data = $request->validate([
+        'project' => 'required|numeric',
         'company' => 'required',
         'address' => 'required',
         'phone' => '',
@@ -73,6 +76,7 @@ class PurchaseController extends Controller
       $supplier = Address::SearchOrInsert($data, 'address', 'supplier');
       $countPurchase = Purchase::CountPurchase();
       $purchase = Purchase::create([
+        'project_id' => $data['project'],
         'address_id' => $supplier['id'],
         'po' => $countPurchase.date('Ymd',time()),
         'reference' => $data['reference'],

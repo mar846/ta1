@@ -33,10 +33,11 @@ Route::get('makeInvoice/{id}','PurchaseController@makeInvoice')->name('makeInvoi
 
 Route::get('/home', 'HomeController@index')->name('home');
 // Route::resource('bills','BillOfMaterialController');
+Route::resource('addresses', 'AddressController')->middleware('auth');
 Route::resource('catalogs','CatalogController')->middleware('auth');
 Route::resource('checklists','ChecklistController')->middleware('auth');
 Route::resource('companies', 'CompanyController')->middleware('auth');
-Route::resource('addresses', 'AddressController')->middleware('auth');
+Route::resource('designers', 'DesignerController')->middleware('auth');
 Route::resource('goods','GoodController')->middleware('auth');
 Route::resource('sales', 'SaleController')->middleware('auth');
 Route::resource('surveyors', 'SurveyorController')->middleware('auth');

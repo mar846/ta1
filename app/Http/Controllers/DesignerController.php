@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Validator;
+use Auth;
+
 use App\Designer;
+use App\Project;
+use App\File;
+
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DesignerController extends Controller
 {
@@ -14,7 +22,8 @@ class DesignerController extends Controller
      */
     public function index()
     {
-        //
+      $designer = Designer::all();
+      return view('designers.index',compact('designer'));
     }
 
     /**
@@ -24,7 +33,8 @@ class DesignerController extends Controller
      */
     public function create()
     {
-        //
+      $project = Project::all();
+      return view('designers.add',compact('project'));
     }
 
     /**
@@ -35,7 +45,23 @@ class DesignerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $data = $request->validate([
+        'project' => 'required|numeric',
+        'files' => 'file',
+      ]);
+      $designer = Designer::create([
+        'project_id' => $data['project'],
+        'user_id' => Auth::user()->id,
+      ]);
+      if ($request->hasFile('files')) {
+        File::create([
+          'name' => $request->file('files')->store('uploads','public'),
+          'type' => 'designer',
+          'project_id' => $data['project'],
+          'user_id' => Auth::user()->id,
+        ]);
+      }
+      return redirect(action('DesignerController@show',$designer));
     }
 
     /**
@@ -46,7 +72,8 @@ class DesignerController extends Controller
      */
     public function show(Designer $designer)
     {
-        //
+      $designer = Designer::find($designer->id);
+      return view('designers.show',compact('designer'));
     }
 
     /**

@@ -13,4 +13,7 @@ class Project extends Model
     public function companies(){
        return $this->belongsTo('App\Company','company_id');
     }
+    public function files(){
+       return $this->hasMany('App\File');
+    }
 }

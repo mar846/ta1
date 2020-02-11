@@ -11,6 +11,7 @@ use App\Sale;
 use App\Company;
 use App\Good;
 use App\Unit;
+use App\Project;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -38,7 +39,8 @@ class SaleController extends Controller
       $company = Company::IsCustomer()->get();
       $good = Good::IsProduct()->get();
       $unit = Unit::limit(4)->get();
-      return view('sales.add', compact('company', 'good', 'unit'));
+      $project = Project::all();
+      return view('sales.add', compact('company', 'good', 'unit','project'));
     }
 
     /**
@@ -51,6 +53,7 @@ class SaleController extends Controller
     {
       $this->authorize('create',Sale::class);
       $data = $request->validate([
+        'project'=>'required',
         'company'=>'required',
         'billTo'=>'required',
         'shipTo'=>'required',
@@ -78,6 +81,7 @@ class SaleController extends Controller
       $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
       $countSale = Sale::CountSale();
       $sale = Sale::create([
+        'project_id' => $data['project'],
         'user_id' => Auth::user()->id,
         'billTo' => $billTo['id'],
         'shipTo' => $shipTo['id'],
@@ -102,7 +106,7 @@ class SaleController extends Controller
           ]);
         }
       }
-      return redirect(actionn('SaleController@show',$sale->id));
+      return redirect(action('SaleController@show',$sale->id));
     }
 
     /**

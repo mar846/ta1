@@ -18,6 +18,7 @@
       <label for="inputName">Project Name</label>
       <p class="form-control">{{ $surveyor->projects->name }}</p>
     </div>
+    <label for="pt-3">Survey</label>
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
@@ -36,6 +37,18 @@
         @endforeach
       </tbody>
     </table>
+    <label class="pt-3">Files</label>
+    <div class="form-group">
+      @foreach($surveyor->projects->files as $data)
+          <div class="card float-left mr-3" style="width: 10rem;">
+            <i class="fas fa-file-image col-12 pt-3 pl-4" style="font-size: 130px;"></i>
+            <div class="card-body">
+              <h5 class="card-text">{{ $data->name }}</h5>
+               <a href="{{ url('storage/'.$data->name) }}" class="btn btn-primary">Preview</a>
+            </div>
+          </div>
+      @endforeach
+    </div>
   </div>
   <!-- /.card-body -->
 </div>

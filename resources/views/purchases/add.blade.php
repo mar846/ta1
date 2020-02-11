@@ -19,6 +19,22 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Project</label>
+          <div class="col-sm-10">
+            <select class="form-control" name="project">
+              <option>Choose Project</option>
+              @foreach($project as $data)
+                <option value="{{ $data->id }}">{{ $data->name }}</option>
+              @endforeach
+            </select>
+            @error('company')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+          </div>
+        </div>
+        <div class="form-group row">
           <label class="col-sm-2 col-form-label">Supplier</label>
           <div class="col-sm-10">
             <input type="text" class="form-control @error('company') is-invalid @enderror" name="company" list="dataSupplier" value="{{ old('company') }}" onchange="getSupplierData(this)">

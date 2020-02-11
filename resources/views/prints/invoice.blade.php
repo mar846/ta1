@@ -1,12 +1,5 @@
 @extends('layouts.master')
 @section('title','Invoice')
-@section('order','active')
-@section('purchase','active')
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-<li class="breadcrumb-item"><a href="{{ route('purchases.index') }}">Purchases</a></li>
-<li class="breadcrumb-item active">Purchase Info</li>
-@endsection
 @section('content')
 <div class="invoice p-3 mb-3">
   <!-- title row -->

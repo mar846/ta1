@@ -77,6 +77,7 @@ class SurveyorController extends Controller
           ]
         ]);
       }
+      return redirect(action('SurveyorController@show',$surveyor->id));
     }
 
     /**
