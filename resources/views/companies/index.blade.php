@@ -9,7 +9,7 @@
 <div class="px-3">
   <div class="row justify-content-between my-2">
     @can('create', App\Company::class)
-    <a href="{{ route('companies.create') }}"><button type="button" class="btn btn-success" name="button">Add Companies</button></a>
+    <a href="{{ route('companies.create') }}" class="btn btn-primary">Make Company</a>
     @endcan
   </div>
   <table class="table table-hover" id="table">

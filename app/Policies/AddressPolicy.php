@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class AddressPolicy
 {
     use HandlesAuthorization;
-    
+
     /**
      * Determine whether the user can view any address controllers.
      *
@@ -18,7 +18,9 @@ class AddressPolicy
      */
     public function viewAny(User $user)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -30,7 +32,9 @@ class AddressPolicy
      */
     public function view(User $user, AddressController $addressController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -41,7 +45,9 @@ class AddressPolicy
      */
     public function create(User $user)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -53,7 +59,9 @@ class AddressPolicy
      */
     public function update(User $user, AddressController $addressController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -65,7 +73,9 @@ class AddressPolicy
      */
     public function delete(User $user, AddressController $addressController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -77,7 +87,9 @@ class AddressPolicy
      */
     public function restore(User $user, AddressController $addressController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -89,6 +101,8 @@ class AddressPolicy
      */
     public function forceDelete(User $user, AddressController $addressController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 }

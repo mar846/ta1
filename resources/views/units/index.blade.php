@@ -7,7 +7,7 @@
 @endsection
 @section('content')
 <div class="row justify-content-left px-3 pb-3">
-  <a href="{{ route('units.create') }}" class="btn btn-success">Add</a>
+  <a href="{{ route('units.create') }}" class="btn btn-primary">Add Unit</a>
 </div>
 <table class="table table-hover" id="table">
   <thead>

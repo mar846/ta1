@@ -7,6 +7,7 @@ use Validator;
 
 use App\Address;
 use App\Company;
+use App\Project;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -126,9 +127,9 @@ class CompanyController extends Controller
     public function getCompanyData(Request $request)
     {
       if ($request->ajax()) {
-        $company = Company::where('name','like',$request->name)->first();
-        $address = Address::where('company_id', $company['id'])->get();
-        return response()->json($address);
+        $project = Project::find($request->id);
+        $company = Company::with('addresses')->where('id',$project->company_id)->get();
+        return response()->json($company);
       }
     }
 }

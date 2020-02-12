@@ -1,6 +1,5 @@
 @extends('layouts.master')
 @section('title','Projects Edit')
-@section('order','active')
 @section('project','active')
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>

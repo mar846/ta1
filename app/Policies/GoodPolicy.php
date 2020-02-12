@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class GoodPolicy
 {
     use HandlesAuthorization;
-    
+
     /**
      * Determine whether the user can view any goods controllers.
      *
@@ -18,7 +18,9 @@ class GoodPolicy
      */
     public function viewAny(User $user)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -30,7 +32,9 @@ class GoodPolicy
      */
     public function view(User $user, GoodsController $goodsController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -41,7 +45,9 @@ class GoodPolicy
      */
     public function create(User $user)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -53,7 +59,9 @@ class GoodPolicy
      */
     public function update(User $user, GoodsController $goodsController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -65,7 +73,9 @@ class GoodPolicy
      */
     public function delete(User $user, GoodsController $goodsController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -77,7 +87,9 @@ class GoodPolicy
      */
     public function restore(User $user, GoodsController $goodsController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 
     /**
@@ -89,6 +101,8 @@ class GoodPolicy
      */
     public function forceDelete(User $user, GoodsController $goodsController)
     {
-        //
+      return in_array($user->role,[
+        'Admin',
+      ]);
     }
 }

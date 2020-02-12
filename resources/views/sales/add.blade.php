@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Sales Add')
+@section('title','Sale Quotation')
 @section('order','active')
 @section('sale','active')
 @section('breadcrumb')
@@ -16,7 +16,7 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Project</label>
           <div class="col-sm-10">
-            <select class="form-control" name="project">
+            <select class="form-control" name="project" onchange="getCustomerData(this)">
               <option>Choose Project</option>
               @foreach($project as $data)
                 <option value="{{ $data->id }}">{{ $data->name }}</option>
@@ -27,7 +27,7 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Customer</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control @error('company') is-invalid @enderror" name="company" value="{{ old('company') }}" list="dataCustomer" onchange="getCustomerData(this)">
+            <input type="text" class="form-control @error('company') is-invalid @enderror" name="company" value="{{ old('company') }}" list="dataCustomer" id="company">
             @error('company')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -196,14 +196,12 @@
     $('#shipTo').val($('#billTo').val());
   }
   function calculateTotal() {
-    console.clear()
     var total = 0;
     // console.log(total);
     for (var i = 0; i < $('#totalItem').val()+1; i++) {
       total += $('#subtotal'+i).val()*1;
       // console.log($('#subtotal'+i).val()*1);
     }
-    console.log(total);
     $('#totalColumn').html(total);
   }
   function calculate(id) {
@@ -214,8 +212,18 @@
     calculateTotal();
   }
   function getCustomerData(name) {
-    $.post("{{ route('getCompanyData') }}",{name:name.value,_token:'{{ Session::token() }}'},function(data){
-      $('#addresses').html();
+    $.post("{{ route('getCompanyData') }}",{id:name.value,_token:'{{ Session::token() }}'},function(data){
+      $('#company').html();
+      $('#company').val(data[0].name);
+      $('#company').attr('readonly','true');
+      $('#billTo').html();
+      $('#billTo').val(data[0].addresses[0].address);
+      $('#billTo').attr('readonly','true');
+      $('#shipTo').html();
+      $('#shipTo').val(data[0].addresses[0].address);
+      $('#phone').html();
+      $('#phone').val(data[0].addresses[0].phone);
+      $('#phone').attr('readonly','true');
       for (var i = 0; i < data.length; i++) {
         $('#addresses').append('<option value="' + data[i].address + '">');
       }

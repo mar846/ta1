@@ -16,4 +16,10 @@ class Project extends Model
     public function files(){
        return $this->hasMany('App\File');
     }
+    public function sales(){
+       return $this->hasMany('App\Sale');
+    }
+    public function purchases(){
+       return $this->hasMany('App\Purchase');
+    }
 }

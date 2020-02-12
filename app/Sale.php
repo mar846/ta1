@@ -10,6 +10,12 @@ class Sale extends Model
   protected $primaryKey = 'id';
   protected $guarded = [];
 
+  public function projects(){
+     return $this->belongsTo('App\Project','project_id');
+  }
+  public function users(){
+   return $this->belongsTo('App\User','user_id');
+  }
   public function bills(){
      return $this->belongsTo('App\Address','billTo');
   }

@@ -6,6 +6,7 @@ use DB;
 use Validation;
 use Auth;
 
+use App\Address;
 use App\Company;
 use App\Project;
 
@@ -46,12 +47,11 @@ class ProjectController extends Controller
           'name' => 'required',
           'location' => 'required',
           'description' => 'max:191',
-          'customer' => 'required',
+          'company' => 'required',
+          'address' => 'required',
+          'phone' => '',
         ]);
-        $company = Company::create([
-          'name' => $data['customer'],
-          'type' => 'customer',
-        ]);
+        $company = Address::SearchOrInsert($data, 'address', 'customer');
         Project::create([
           'name' => $data['name'],
           'location' => $data['location'],

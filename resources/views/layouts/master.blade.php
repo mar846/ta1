@@ -170,9 +170,13 @@
              <li class="nav-item">
                <a href="{{ url('/') }}" class="nav-link @hasSection('home') @yield('home') @endif">
                  <i class="nav-icon fas fa-th"></i>
-                 <p>
-                   Home
-                 </p>
+                 <p>Home</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="{{ route('projects.index') }}" class="nav-link @hasSection('project') active @endif">
+                 <i class="fas fa-comments-dollar nav-icon"></i>
+                 <p>Projects</p>
                </a>
              </li>
             <li class="nav-item has-treeview @hasSection('order') menu-open @endif">
@@ -184,12 +188,6 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ route('projects.index') }}" class="nav-link @hasSection('project') active @endif">
-                    <i class="fas fa-comments-dollar nav-icon"></i>
-                    <p>Projects</p>
-                  </a>
-                </li>
                 <li class="nav-item">
                   <a href="{{ route('sales.index') }}" class="nav-link @hasSection('sale') active @endif">
                     <i class="fas fa-comments-dollar nav-icon"></i>
@@ -275,9 +273,9 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="min-height: 1215px;">
-      <div class="card m-3">
+      <div class="m-3">
         <!-- Content Header (Page header) -->
-        <div class="card-title">
+        <div class="">
           <div class="content-header">
             <div class="container-fluid">
               <div class="row mb-2">
@@ -295,12 +293,13 @@
           <!-- /.content-header -->
         </div>
         <!-- Main content -->
-        <div class="card-body">
-          <div class="content">
-            <div class="">
-              @yield('content')
+        <div class="card">
+          <div class="card-body">
+            <div class="content">
+              <div class="">
+                @yield('content')
+              </div>
             </div>
-            <!-- /.container-fluid -->
           </div>
         </div>
         <!-- /.content -->

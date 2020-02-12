@@ -9,6 +9,12 @@ class Purchase extends Model
   protected $table = "purchases";
   protected $primaryKey = 'id';
   protected $guarded = [];
+  public function projects(){
+     return $this->belongsTo('App\Project','project_id');
+  }
+  public function users(){
+   return $this->belongsTo('App\User','user_id');
+  }
   public function addresses(){
      return $this->belongsTo('App\Address','address_id');
   }
