@@ -10,6 +10,10 @@ class Project extends Model
     protected $primaryKey = "id";
     public $timestamps = true;
     protected $guarded = [];
+
+    // public function designers(){
+    //   return $this->belongsToMany('App\Designer','designer_project','project_id','designer_id')->withPivot('qty');
+    // }
     public function companies(){
        return $this->belongsTo('App\Company','company_id');
     }

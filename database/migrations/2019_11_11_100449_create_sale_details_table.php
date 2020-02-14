@@ -18,10 +18,10 @@ class CreateSaleDetailsTable extends Migration
           $table->foreign('sale_id')->references('id')->on('sales');
           $table->unsignedBigInteger('good_id');
           $table->foreign('good_id')->references('id')->on('goods');
-          $table->integer('qty');
-          $table->integer('price');
-          $table->biginteger('subtotal');
-          $table->string('memo');
+          $table->integer('qty')->nullable();
+          $table->integer('price')->nullable();
+          $table->biginteger('subtotal')->nullable();
+          $table->string('memo')->nullable();
         });
     }
 
