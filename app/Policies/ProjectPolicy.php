@@ -20,6 +20,7 @@ class ProjectPolicy
     {
       return in_array($user->role,[
         'Admin',
+        'ProjectManager',
       ]);
     }
 
@@ -34,6 +35,7 @@ class ProjectPolicy
     {
       return in_array($user->role,[
         'Admin',
+        'ProjectManager',
       ]);
     }
 
@@ -47,6 +49,7 @@ class ProjectPolicy
     {
       return in_array($user->role,[
         'Admin',
+        'ProjectManager',
       ]);
     }
 
@@ -61,6 +64,7 @@ class ProjectPolicy
     {
       return in_array($user->role,[
         'Admin',
+        'ProjectManager',
       ]);
     }
 
@@ -75,6 +79,7 @@ class ProjectPolicy
     {
       return in_array($user->role,[
         'Admin',
+        'ProjectManager',
       ]);
     }
 

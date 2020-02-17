@@ -44,12 +44,12 @@
           </thead>
           <tbody id="tableItem">
             <tr>
-              <td><input type="text" name="item0" class="form-control" placeholder="@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach"></td>
+              <td><input type="text" name="item0" class="form-control" placeholder="@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" list="dataGoods"></td>
               <td>
                 <div class="input-group mb-2">
                   <input type="number" class="form-control" name="qty0" placeholder="1" onkeyup="calculate(this)" id="qty0">
                   <div class="input-group-prepend">
-                    <input type="text" name="unit0" class="input-group-text" placeholder="@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" id="unit0">
+                    <input type="text" name="unit0" class="input-group-text" placeholder="@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" id="unit0" list="dataUnits">
                   </div>
                 </div>
               </td>
@@ -67,6 +67,16 @@
       </div>
   </div>
 </form>
+<datalist id="dataGoods">
+  @foreach($good as $data)
+  <option value="{{ $data->name }}">
+  @endforeach
+</datalist>
+<datalist id="dataUnits">
+  @foreach($unit as $data)
+  <option value="{{ $data->name }}">
+  @endforeach
+</datalist>
 @endsection
 @section('script')
 <script type="text/javascript">

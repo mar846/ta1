@@ -100,7 +100,7 @@ class SaleController extends Controller
             $good['id'] => [
               'qty' => $itemData['qty'.$i],
               'price' => $itemData['price'.$i],
-              'subtotal' => $itemData['subtotal'.$i],
+              'subtotal' => $itemData['qty'.$i]*$itemData['price'.$i],
               'memo' => '',
             ]
           ]);

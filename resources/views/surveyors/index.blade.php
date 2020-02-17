@@ -6,9 +6,11 @@
 <li class="breadcrumb-item active">Surveyors</li>
 @endsection
 @section('content')
+@can('create',App\Surveyor::class)
 <div class="row justify-content-left px-3 pb-3">
   <a href="{{ route('surveyors.create') }}" class="btn btn-primary">Make Survey</a>
 </div>
+@endcan
 <table class="table table-hover" id="table">
   <thead>
     <th>ID</th>
@@ -23,8 +25,9 @@
       <td>{{ $data->projects->name }}</td>
       <td>{{ $data->projects->location }}</td>
       <td>
+        @can('viewAny',App\Surveyor::class)
         <a href="{{ route('surveyors.show',$data->id) }}" class="btn btn-info">Info</a>
-        <a href="{{ route('surveyors.edit',$data->id) }}" class="btn btn-warning">Edit</a>
+        @endcan
       </td>
     </tr>
     @endforeach

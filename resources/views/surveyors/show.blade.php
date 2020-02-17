@@ -7,11 +7,13 @@
 <li class="breadcrumb-item active">Surveyors Info</li>
 @endsection
 @section('content')
+@can('edit',$surveyor)
 <div class="row justify-content-end">
   <div class="col-2 text-right  mb-2">
     <a href="{{ route('surveyors.edit',$surveyor->id) }}" class="btn btn-warning">Edit</a>
   </div>
 </div>
+@endcan
 <div class="card">
   <div class="card-body">
     <div class="form-group">

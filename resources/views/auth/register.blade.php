@@ -1,5 +1,5 @@
 @extends('layouts.beforeLogin')
-
+@section('title','Register')
 @section('content')
 <div class="card">
   <!-- <div class="card-header">{{ __('Register') }}</div> -->

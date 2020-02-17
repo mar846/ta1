@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
           <label for="inputDescription">Project Description</label>
-          <p class="form-control">{{ $project->description }}</p>
+          <textarea class="form-control-plaintext border rounded" readonly>{{ $project->description }}</textarea>
         </div>
         <div class="form-group">
           <label for="inputClientCompany">Customer</label>

@@ -7,11 +7,13 @@
 <li class="breadcrumb-item active">Goods</li>
 @endsection
 @section('content')
+@can('create', App\Good::class)
 <div class="row justify-content-between my-3">
   <div class="col-12">
     <a href="{{ route('goods.create') }}" class="btn btn-primary">Add Good</a>
   </div>
 </div>
+@endcan
 <table class="table">
   <tr>
     <th>ID</th>
@@ -29,8 +31,12 @@
       <td>{{ $data->qty }} {{ $data->units->name }}</td>
       <td>{{ $data->type }}</td>
       <td>
+        @can('view',$good)
         <a href="{{ route('goods.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>
+        @endcan
+        @can('edit',$data)
         <a href="{{ route('goods.edit',[$data->id]) }}"><button type="button" class="btn btn-warning" name="button">Edit</button></a>
+        @endcan
       </td>
     </tr>
   @endforeach

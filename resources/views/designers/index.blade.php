@@ -6,9 +6,11 @@
 <li class="breadcrumb-item active">Designers</li>
 @endsection
 @section('content')
+@can('create',App\Designer::class)
 <div class="row justify-content-left px-3 pb-3">
   <a href="{{ route('designers.create') }}" class="btn btn-primary">Make Design</a>
 </div>
+@endcan
 <table class="table table-hover" id="table">
   <thead>
     <th>ID</th>
@@ -23,7 +25,9 @@
         <td>{{ $data->projects->name }}</td>
         <td>{{ $data->projects->location }}</td>
         <td>
+          @can('viewAny', $data)
           <a href="{{ route('designers.show',1) }}" class="btn btn-info">Info</a>
+          @endcan
         </td>
       </tr>
     @endforeach

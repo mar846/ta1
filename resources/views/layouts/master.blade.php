@@ -173,12 +173,14 @@
                  <p>Home</p>
                </a>
              </li>
+             @can('viewAny',App\Project::class)
              <li class="nav-item">
                <a href="{{ route('projects.index') }}" class="nav-link @hasSection('project') active @endif">
                  <i class="fas fa-comments-dollar nav-icon"></i>
                  <p>Projects</p>
                </a>
              </li>
+             @endcan
             <li class="nav-item has-treeview @hasSection('order') menu-open @endif">
               <a href="#" class="nav-link @hasSection('order') active @endif">
                 <i class="nav-icon fas fa-file-alt"></i>
@@ -188,18 +190,22 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
+                @can('viewAny',App\Sale::class)
                 <li class="nav-item">
                   <a href="{{ route('sales.index') }}" class="nav-link @hasSection('sale') active @endif">
                     <i class="fas fa-comments-dollar nav-icon"></i>
                     <p>Sale</p>
                   </a>
                 </li>
+                @endcan
+                @can('viewAny',App\Purchase::class)
                 <li class="nav-item">
                   <a href="{{ route('purchases.index') }}" class="nav-link @hasSection('purchase') active @endif">
                     <i class="fas fa-shopping-cart nav-icon"></i>
                     <p>Purchase</p>
                   </a>
                 </li>
+                @endcan
               </ul>
             </li>
             <li class="nav-item has-treeview @hasSection('products') menu-open @endif">
@@ -211,50 +217,64 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
+                @can('viewAny',App\Catalogs::class)
                 <li class="nav-item">
                   <a href="{{ route('catalogs.index') }}" class="nav-link">
                     <i class="fas fa-clipboard-list nav-icon"></i>
                     <p>Catalogs</p>
                   </a>
                 </li>
+                @endcan
+                @can('viewAny',App\Good::class)
                 <li class="nav-item">
                   <a href="{{ route('goods.index') }}" class="nav-link @hasSection('goods') active @endif">
                     <i class="fas fa-boxes nav-icon"></i>
                     <p>Goods</p>
                   </a>
                 </li>
+                @endcan
               </ul>
             </li>
+            @can('viewAny',App\Unit::class)
             <li class="nav-item">
               <a href="{{ route('units.index') }}" class="nav-link @hasSection('units') active @endif">
                 <i class="nav-icon fas fa-ruler"></i>
                 <p>Units</p>
               </a>
             </li>
+            @endcan
+            @can('viewAny',App\Company::class)
             <li class="nav-item">
               <a href="{{ route('companies.index') }}" class="nav-link @hasSection('companies') active @endif">
                 <i class="nav-icon fas fa-building"></i>
                 <p>Companies</p>
               </a>
             </li>
+            @endcan
+            @can('viewAny',App\Checklist::class)
             <li class="nav-item">
               <a href="{{ route('checklists.index') }}" class="nav-link @hasSection('checklist') active @endif">
                 <i class="nav-icon fas fa-clipboard-list"></i>
                 <p>Checklist</p>
               </a>
             </li>
+            @endcan
+              @can('viewAny',App\Surveyor::class)
             <li class="nav-item">
               <a href="{{ route('surveyors.index') }}" class="nav-link @hasSection('surveyors') active @endif">
                 <i class="nav-icon fas fa-hard-hat"></i>
                 <p>Surveyors</p>
               </a>
             </li>
+            @endcan
+            @can('viewAny',App\Designer::class)
             <li class="nav-item">
               <a href="{{ route('designers.index') }}" class="nav-link @hasSection('designers') active @endif">
                 <i class="nav-icon fas fa-drafting-compass"></i>
                 <p>Designer</p>
               </a>
             </li>
+            @endcan
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>

@@ -20,6 +20,8 @@ class GoodPolicy
     {
       return in_array($user->role,[
         'Admin',
+        'DesignerSPV',
+        'Designer',
       ]);
     }
 

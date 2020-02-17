@@ -9,7 +9,7 @@
 @section('content')
 <div class="m-3">
   <div class="row justify-content-between px-3 pb-2">
-    @can('create',App\Sale::class)
+    @can('create',App\Purchase::class)
       <a href="{{ route('purchases.create') }}" class="btn btn-primary">Make Quotation</a>
     @endcan
   </div>
