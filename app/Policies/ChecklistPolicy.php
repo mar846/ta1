@@ -3,15 +3,15 @@
 namespace App\Policies;
 
 use App\User;
-use App\Designer;
+use App\Checklist;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DesignerPolicy
+class ChecklistPolicy
 {
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any designers.
+     * Determine whether the user can view any checklists.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -20,29 +20,27 @@ class DesignerPolicy
     {
       return in_array($user->role,[
         'Admin',
-        'DesignerSPV',
-        'Designer',
+        'SurveyorSPV',
       ]);
     }
 
     /**
-     * Determine whether the user can view the designer.
+     * Determine whether the user can view the checklist.
      *
      * @param  \App\User  $user
-     * @param  \App\Designer  $designer
+     * @param  \App\Checklist  $checklist
      * @return mixed
      */
-    public function view(User $user, Designer $designer)
+    public function view(User $user, Checklist $checklist)
     {
       return in_array($user->role,[
         'Admin',
-        'DesignerSPV',
-        'Designer',
+        'SurveyorSPV',
       ]);
     }
 
     /**
-     * Determine whether the user can create designers.
+     * Determine whether the user can create checklists.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -51,50 +49,48 @@ class DesignerPolicy
     {
       return in_array($user->role,[
         'Admin',
-        'DesignerSPV',
-        'Designer',
+        'SurveyorSPV',
       ]);
     }
 
     /**
-     * Determine whether the user can update the designer.
+     * Determine whether the user can update the checklist.
      *
      * @param  \App\User  $user
-     * @param  \App\Designer  $designer
+     * @param  \App\Checklist  $checklist
      * @return mixed
      */
-    public function update(User $user, Designer $designer)
+    public function update(User $user, Checklist $checklist)
     {
       return in_array($user->role,[
         'Admin',
-        'DesignerSPV',
-        'Designer',
+        'SurveyorSPV',
       ]);
     }
 
     /**
-     * Determine whether the user can delete the designer.
+     * Determine whether the user can delete the checklist.
      *
      * @param  \App\User  $user
-     * @param  \App\Designer  $designer
+     * @param  \App\Checklist  $checklist
      * @return mixed
      */
-    public function delete(User $user, Designer $designer)
+    public function delete(User $user, Checklist $checklist)
     {
       return in_array($user->role,[
         'Admin',
-        'DesignerSPV',
+        'SurveyorSPV',
       ]);
     }
 
     /**
-     * Determine whether the user can restore the designer.
+     * Determine whether the user can restore the checklist.
      *
      * @param  \App\User  $user
-     * @param  \App\Designer  $designer
+     * @param  \App\Checklist  $checklist
      * @return mixed
      */
-    public function restore(User $user, Designer $designer)
+    public function restore(User $user, Checklist $checklist)
     {
       return in_array($user->role,[
         'Admin',
@@ -102,13 +98,13 @@ class DesignerPolicy
     }
 
     /**
-     * Determine whether the user can permanently delete the designer.
+     * Determine whether the user can permanently delete the checklist.
      *
      * @param  \App\User  $user
-     * @param  \App\Designer  $designer
+     * @param  \App\Checklist  $checklist
      * @return mixed
      */
-    public function forceDelete(User $user, Designer $designer)
+    public function forceDelete(User $user, Checklist $checklist)
     {
       return in_array($user->role,[
         'Admin',

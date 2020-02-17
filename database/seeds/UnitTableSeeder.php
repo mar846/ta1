@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Unit;
 
 class UnitTableSeeder extends Seeder
 {
@@ -11,11 +12,9 @@ class UnitTableSeeder extends Seeder
      */
     public function run()
     {
-      $unit = ['unit','pce','m'];
+      $unit = array(['name' => 'unit'],['name' => 'pce'],['name' => 'm']);
       for ($i=0; $i < 3; $i++) {
-        App\Unit::create([
-          'name' => $unit[$i],
-        ]);
+        App\Unit::create($unit[$i]);
       }
     }
 }

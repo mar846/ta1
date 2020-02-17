@@ -20,6 +20,7 @@ class ChecklistController extends Controller
      */
     public function index()
     {
+      $this->authorize('viewAny',Checklist::class);
       $checklist = Checklist::all();
       return view('checklists.index', compact('checklist'));
     }
@@ -31,6 +32,7 @@ class ChecklistController extends Controller
      */
     public function create()
     {
+      $this->authorize('view',Checklist::class);
       return view('checklists.add');
     }
 
@@ -42,6 +44,7 @@ class ChecklistController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create',Checklist::class);
       $data = $request->validate([
         'question' => 'bail|required|unique:checklists',
       ]);
@@ -60,6 +63,7 @@ class ChecklistController extends Controller
      */
     public function show(Checklist $checklist)
     {
+      $this->authorize('viewAny',$checklist);
         //
     }
 
@@ -71,6 +75,7 @@ class ChecklistController extends Controller
      */
     public function edit(Checklist $checklist)
     {
+      $this->authorize('viewAny',$checklist);
       $checklist = Checklist::find($checklist->id);
       return view('Checklists.edit', compact('checklist'));
     }
@@ -84,6 +89,7 @@ class ChecklistController extends Controller
      */
     public function update(Request $request, Checklist $checklist)
     {
+      $this->authorize('update',$checklist);
       $data = $request->validate([
         'question' => 'bail|required|unique:checklists',
       ]);
@@ -101,6 +107,7 @@ class ChecklistController extends Controller
      */
     public function destroy(Checklist $checklist)
     {
+      $this->authorize('delete',$checklist);
         //
     }
 }

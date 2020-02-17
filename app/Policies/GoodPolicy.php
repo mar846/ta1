@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\User;
-use App\GoodsController;
+use App\Good;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class GoodPolicy
@@ -11,7 +11,7 @@ class GoodPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any goods controllers.
+     * Determine whether the user can view any goods.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -26,21 +26,23 @@ class GoodPolicy
     }
 
     /**
-     * Determine whether the user can view the goods controller.
+     * Determine whether the user can view the good.
      *
      * @param  \App\User  $user
-     * @param  \App\GoodsController  $goodsController
+     * @param  \App\Good  $good
      * @return mixed
      */
-    public function view(User $user, GoodsController $goodsController)
+    public function view(User $user, Good $good)
     {
       return in_array($user->role,[
         'Admin',
+        'DesignerSPV',
+        'Designer',
       ]);
     }
 
     /**
-     * Determine whether the user can create goods controllers.
+     * Determine whether the user can create goods.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -53,13 +55,13 @@ class GoodPolicy
     }
 
     /**
-     * Determine whether the user can update the goods controller.
+     * Determine whether the user can update the good.
      *
      * @param  \App\User  $user
-     * @param  \App\GoodsController  $goodsController
+     * @param  \App\Good  $good
      * @return mixed
      */
-    public function update(User $user, GoodsController $goodsController)
+    public function update(User $user, Good $good)
     {
       return in_array($user->role,[
         'Admin',
@@ -67,13 +69,13 @@ class GoodPolicy
     }
 
     /**
-     * Determine whether the user can delete the goods controller.
+     * Determine whether the user can delete the good.
      *
      * @param  \App\User  $user
-     * @param  \App\GoodsController  $goodsController
+     * @param  \App\Good  $good
      * @return mixed
      */
-    public function delete(User $user, GoodsController $goodsController)
+    public function delete(User $user, Good $good)
     {
       return in_array($user->role,[
         'Admin',
@@ -81,13 +83,13 @@ class GoodPolicy
     }
 
     /**
-     * Determine whether the user can restore the goods controller.
+     * Determine whether the user can restore the good.
      *
      * @param  \App\User  $user
-     * @param  \App\GoodsController  $goodsController
+     * @param  \App\Good  $good
      * @return mixed
      */
-    public function restore(User $user, GoodsController $goodsController)
+    public function restore(User $user, Good $good)
     {
       return in_array($user->role,[
         'Admin',
@@ -95,13 +97,13 @@ class GoodPolicy
     }
 
     /**
-     * Determine whether the user can permanently delete the goods controller.
+     * Determine whether the user can permanently delete the good.
      *
      * @param  \App\User  $user
-     * @param  \App\GoodsController  $goodsController
+     * @param  \App\Good  $good
      * @return mixed
      */
-    public function forceDelete(User $user, GoodsController $goodsController)
+    public function forceDelete(User $user, Good $good)
     {
       return in_array($user->role,[
         'Admin',

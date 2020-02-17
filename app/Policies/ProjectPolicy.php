@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\User;
-use App\ProjectController;
+use App\Project;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ProjectPolicy
@@ -11,7 +11,7 @@ class ProjectPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any project controllers.
+     * Determine whether the user can view any projects.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -25,13 +25,13 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can view the project controller.
+     * Determine whether the user can view the project.
      *
      * @param  \App\User  $user
-     * @param  \App\ProjectController  $projectController
+     * @param  \App\Project  $project
      * @return mixed
      */
-    public function view(User $user, ProjectController $projectController)
+    public function view(User $user, Project $project)
     {
       return in_array($user->role,[
         'Admin',
@@ -40,7 +40,7 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can create project controllers.
+     * Determine whether the user can create projects.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -54,13 +54,13 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can update the project controller.
+     * Determine whether the user can update the project.
      *
      * @param  \App\User  $user
-     * @param  \App\ProjectController  $projectController
+     * @param  \App\Project  $project
      * @return mixed
      */
-    public function update(User $user, ProjectController $projectController)
+    public function update(User $user, Project $project)
     {
       return in_array($user->role,[
         'Admin',
@@ -69,13 +69,13 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can delete the project controller.
+     * Determine whether the user can delete the project.
      *
      * @param  \App\User  $user
-     * @param  \App\ProjectController  $projectController
+     * @param  \App\Project  $project
      * @return mixed
      */
-    public function delete(User $user, ProjectController $projectController)
+    public function delete(User $user, Project $project)
     {
       return in_array($user->role,[
         'Admin',
@@ -84,13 +84,13 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can restore the project controller.
+     * Determine whether the user can restore the project.
      *
      * @param  \App\User  $user
-     * @param  \App\ProjectController  $projectController
+     * @param  \App\Project  $project
      * @return mixed
      */
-    public function restore(User $user, ProjectController $projectController)
+    public function restore(User $user, Project $project)
     {
       return in_array($user->role,[
         'Admin',
@@ -98,13 +98,13 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can permanently delete the project controller.
+     * Determine whether the user can permanently delete the project.
      *
      * @param  \App\User  $user
-     * @param  \App\ProjectController  $projectController
+     * @param  \App\Project  $project
      * @return mixed
      */
-    public function forceDelete(User $user, ProjectController $projectController)
+    public function forceDelete(User $user, Project $project)
     {
       return in_array($user->role,[
         'Admin',

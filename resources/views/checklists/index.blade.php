@@ -6,9 +6,11 @@
 <li class="breadcrumb-item active">Checklists</li>
 @endsection
 @section('content')
+@can('create',App\Checklist::class)
 <div class="row justify-content-between px-3 pb-2">
   <a href="{{ route('checklists.create') }}" class="btn btn-primary">Add Question</a>
 </div>
+@endcan
 <div class="row">
   <div class="col-12">
     <table class="table table-hover" id="table">

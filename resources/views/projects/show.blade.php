@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
           <label for="inputDescription">Project Description</label>
-          <textarea class="form-control-plaintext border rounded" readonly>{{ $project->description }}</textarea>
+          <p class="form-control">{{ $project->description }}</p>
         </div>
         <div class="form-group">
           <label for="inputClientCompany">Customer</label>
@@ -63,6 +63,7 @@
             <tr>
               <th>Number</th>
               <th>User</th>
+              <th>Date</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -71,6 +72,7 @@
               <tr>
                 <td>SO-{{ $data->so }}</td>
                 <td>{{ $data->users->name }}</td>
+                <td>{{ $data->created_at }}</td>
                 <td>
                   <a href="{{ route('sales.show',$data->id) }}" class="btn btn-info text-white">
                     <i class="fas fa-eye"></i>
@@ -93,6 +95,7 @@
             <tr>
               <th>Number</th>
               <th>User</th>
+              <th>Date</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -101,6 +104,7 @@
               <tr>
                 <td>PO-{{ $data->po }}</td>
                 <td>{{ $data->users->name }}</td>
+                <td>{{ $data->cr4created_at }}</td>
                 <td>
                   <a href="{{ route('purchases.show',$data->id) }}" class="btn btn-info text-white">
                     <i class="fas fa-eye"></i>
