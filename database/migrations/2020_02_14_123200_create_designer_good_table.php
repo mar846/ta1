@@ -20,6 +20,7 @@ class CreateDesignerGoodTable extends Migration
             $table->unsignedBigInteger('good_id');
             $table->foreign('good_id')->references('id')->on('goods');
             $table->integer('qty');
+            $table->string('status');
             $table->timestamps();
         });
     }

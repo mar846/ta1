@@ -11,9 +11,12 @@ class Project extends Model
     public $timestamps = true;
     protected $guarded = [];
 
-    // public function designers(){
-    //   return $this->belongsToMany('App\Designer','designer_project','project_id','designer_id')->withPivot('qty');
-    // }
+    public function designers(){
+      return $this->hasMany('App\Designer');
+    }
+    public function surveyors(){
+      return $this->hasMany('App\Surveyor');
+    }
     public function companies(){
        return $this->belongsTo('App\Company','company_id');
     }

@@ -48,7 +48,7 @@ class SurveyorController extends Controller
     {
       $checklistTotal = Checklist::count();
       $data = $request->validate([
-        'project' => 'required',
+        'project' => 'required|numeric',
         'file' => 'nullable|file|image|max:2000',
       ]);
       $itemRules=[];
@@ -126,7 +126,7 @@ class SurveyorController extends Controller
         'project_id' => $data['project'],
       ]);
       for ($i=0; $i < Checklist::count(); $i++) {
-        $surveyor->checklists()->syncWithoutDetaching([
+        $surveyor->checklists()->sync([
           $i+1 => [
             'answer' => $itemData['answer'.$i],
             'updated_at' => now(),
@@ -145,5 +145,30 @@ class SurveyorController extends Controller
     public function destroy(Surveyor $surveyor)
     {
         //
+    }
+
+    public function approve($id)
+    {
+      if (Auth::user()->role == 'SurveyorSPV') {
+        Surveyor::find($id)->update([
+          'supervisor_id' => Auth::user()->id,
+        ]);
+        return redirect(action('SurveyorController@index'));
+      }
+      else {
+        echo "string";
+      }
+    }
+    public function disapprove($id)
+    {
+      if (Auth::user()->role == 'SurveyorSPV') {
+        Surveyor::find($id)->update([
+          'supervisor_id' => null,
+        ]);
+        return redirect(action('SurveyorController@index'));
+      }
+      else {
+        echo "string";
+      }
     }
 }

@@ -56,6 +56,7 @@ class SaleController extends Controller
         'project'=>'required',
         'company'=>'required',
         'billTo'=>'required',
+        'validTill'=>'required',
         'shipTo'=>'required',
         'phone'=>'nullable',
         'reference'=>'',
@@ -75,7 +76,7 @@ class SaleController extends Controller
       $itemData = $request->validate($itemRules);
       $totalSale =0;
       for ($i=0; $i < $data['totalItem'] ; $i++) {
-        $totalSale += $itemData['subtotal'.$i];
+        $totalSale += $itemData['qty'.$i]*$itemData['price'.$i];
       }
       $billTo = Address::SearchOrInsert($data,'billTo', 'customer');
       $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
@@ -85,6 +86,7 @@ class SaleController extends Controller
         'user_id' => Auth::user()->id,
         'billTo' => $billTo['id'],
         'shipTo' => $shipTo['id'],
+        'validTill' => $data['validTill'],
         'so' => str_pad(date('y',time()), 3, '0').$countSale,
         'reference' => $request['reference'],
         'referenceDate' => date('Y-m-d',strtotime($request['referenceDate'])),
@@ -154,5 +156,30 @@ class SaleController extends Controller
     public function destroy(Sale $sale)
     {
         //
+    }
+
+    public function approve($id)
+    {
+      if (Auth::user()->role == 'SaleSPV') {
+        Sale::find($id)->update([
+          'supervisor_id' => Auth::user()->id,
+        ]);
+        return redirect(action('SaleController@index'));
+      }
+      else {
+        echo "string";
+      }
+    }
+    public function disapprove($id)
+    {
+      if (Auth::user()->role == 'SaleSPV') {
+        Sale::find($id)->update([
+          'supervisor_id' => null,
+        ]);
+        return redirect(action('SaleController@index'));
+      }
+      else {
+        echo "string";
+      }
     }
 }

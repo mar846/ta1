@@ -18,7 +18,7 @@
   <div class="form-group row my-3">
     <label class="col-sm-2 col-form-label">Name</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" placeholder="pce, pcs, unit, kg, g,....." name="name" value="{{ old('name') }}">
+      <input type="text" class="form-control" placeholder="Solar Panel, Inverter, Sun Logger" name="name" value="{{ old('name') }}">
     </div>
   </div>
   <div class="form-group row">
@@ -29,7 +29,7 @@
       <input type="text" class="form-control" name="qty" placeholder="50" value="{{ old('qty') }}">
     </div>
     <div class="col-sm-2">
-      <input type="text" class="form-control" name="unit" value="pce, pcs">
+      <input type="text" class="form-control" name="unit" placeholder="pce, pcs">
     </div>
   </div>
   <div class="form-group row">

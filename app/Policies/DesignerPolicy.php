@@ -114,4 +114,19 @@ class DesignerPolicy
         'Admin',
       ]);
     }
+
+    /**
+     * Determine whether the user can approve the designer.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Designer  $designer
+     * @return mixed
+     */
+    public function approve(User $user, Designer $designer)
+    {
+      return in_array($user->role,[
+        'Admin',
+        'DesignerSPV',
+      ]);
+    }
 }

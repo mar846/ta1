@@ -14,6 +14,7 @@ class CreateSaleDetailsTable extends Migration
     public function up()
     {
         Schema::create('sale_details', function (Blueprint $table) {
+          $table->bigIncrements('id');
           $table->unsignedBigInteger('sale_id');
           $table->foreign('sale_id')->references('id')->on('sales');
           $table->unsignedBigInteger('good_id');
@@ -22,6 +23,7 @@ class CreateSaleDetailsTable extends Migration
           $table->integer('price')->nullable();
           $table->biginteger('subtotal')->nullable();
           $table->string('memo')->nullable();
+          $table->timestamps();
         });
     }
 

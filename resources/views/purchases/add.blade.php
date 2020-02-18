@@ -24,7 +24,11 @@
             <select class="form-control" name="project">
               <option>Choose Project</option>
               @foreach($project as $data)
-                <option value="{{ $data->id }}">{{ $data->name }}</option>
+                @foreach($data->designers as $datas)
+                  @if($datas->supervisor_id != null)
+                    <option value="{{ $data->id }}">{{ $data->name }}</option>
+                  @endif
+                @endforeach
               @endforeach
             </select>
             @error('company')

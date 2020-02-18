@@ -7,13 +7,26 @@
 <li class="breadcrumb-item active">Designers Info</li>
 @endsection
 @section('content')
-@can('update',$designer)
-<div class="row justify-content-end">
-  <div class="col-2 text-right  mb-2">
-    <a href="{{ route('designers.edit',$designer->id) }}" class="btn btn-warning">Edit</a>
-  </div>
-</div>
+@if(Auth::user()->role == 'DesignerSPV')
+  @if($designer->supervisor_id == null)
+    <div class="row justify-content-left px-3 pb-3">
+      <a href="{{ route('designerApproval',$designer->id) }}" class="btn btn-primary">Approve</a>
+    </div>
+    @else
+    <div class="row justify-content-left px-3 pb-3">
+      <a href="{{ route('designerDisapproval',$designer->id) }}" class="btn btn-warning">Disapprove</a>
+    </div>
+  @endif
+@endif
+@if($designer->user_id == Auth::user()->id)
+  @can('update',$designer)
+    <div class="row justify-content-end">
+      <div class="col-2 text-right  mb-2">
+        <a href="{{ route('designers.edit',$designer->id) }}" class="btn btn-warning">Edit</a>
+      </div>
+    </div>
 @endcan
+@endif
 <form action="{{ route('designers.store') }}" method="post" enctype="multipart/form-data">
   {{ csrf_field() }}
   <div class="card">
@@ -40,6 +53,7 @@
               <tr>
                 <th>Item</th>
                 <th>QTY</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -47,6 +61,7 @@
                 <tr>
                   <td>{{ $data->name }}</td>
                   <td>{{ $data->pivot->qty }} {{ $data->units->name }}</td>
+                  <td class="@if($data->pivot->status == 'waiting') alert alert-secondary @elseif($data->pivot->status == 'Approved') alert alert-success @elseif($data->pivot->status == 'Rejected') alert alert-danger @endif text-center pt-3"><label for="status">{{ $data->pivot->status }}</label></td>
                 </tr>
               @endforeach
             </tbody>

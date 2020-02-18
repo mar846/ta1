@@ -8,12 +8,31 @@
 <li class="breadcrumb-item active">Sales Info</li>
 @endsection
 @section('content')
+@if(Auth::user()->role == 'SaleSPV')
+  @if($sale->supervisor_id == null)
+  <div class="row justify-content-start">
+    <div class="col-2 text-left mb-2">
+      <a href="{{ route('saleApproval',$sale->id) }}" class="btn btn-primary">Approve</a>
+    </div>
+  </div>
+  @else
+  <div class="row justify-content-start">
+    <div class="col-2 text-left mb-2">
+      <a href="{{ route('saleDisapproval',$sale->id) }}" class="btn btn-warning">Disapprove</a>
+    </div>
+  </div>
+  @endif
+@endif
+@if($sale->user_id == Auth::user()->id)
 <div class="row justify-content-end">
   <div class="col-2 text-right  mb-2">
+    @if($sale->supervisor_id != null)
     <a href="#" class="btn btn-primary">Make Invoice</a>
+    @endif
     <a href="{{ route('sales.edit',$sale->id) }}" class="btn btn-warning">Edit</a>
   </div>
 </div>
+@endif
 <div class="card card-default">
   <div class="card-header">
     <h3 class="card-title">Sales SO-{{ $sale->so }}</h3>

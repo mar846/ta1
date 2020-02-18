@@ -82,6 +82,7 @@ class DesignerController extends Controller
           $designer->goods()->attach([
             $good['id'] => [
               'qty' => $itemData['qty'.$i],
+              'status' => 'waiting',
               'created_at' => now(),
               'updated_at' => now(),
             ]
@@ -129,7 +130,30 @@ class DesignerController extends Controller
     public function update(Request $request, Designer $designer)
     {
       $this->authorize('update',$designer);
-        //
+      $data = $request->validate([
+        'totalItem' => 'required|numeric',
+      ]);
+      $itemRules=[];
+      for ($i=0; $i < $data['totalItem']; $i++) {
+        $itemRules['item'.$i] = 'nullable';
+        $itemRules['qty'.$i] = 'nullable|numeric|min:1';
+        $itemRules['unit'.$i] = 'nullable';
+      }
+      $itemData = $request->validate($itemRules);
+      for ($i=0; $i < $data['totalItem'] ; $i++) {
+        if (isset($itemData['item'.$i])) {
+          if ($itemData['item'.$i] != null) {
+            $good = Good::SearchOrInsert($itemData,$i,'Product');
+            $designer->goods()->syncWithoutDetaching([
+              $good['id'] => [
+                'qty' => $itemData['qty'.$i],
+                'status' => 'waiting',
+              ]
+            ]);
+          }
+        }
+      }
+      return redirect(action('DesignerController@show',$designer->id));
     }
 
     /**
@@ -142,5 +166,43 @@ class DesignerController extends Controller
     {
       $this->authorize('delete',$designer);
         //
+    }
+    public function deleteGood(Request $request)
+    {
+      if ($request->ajax()) {
+        $designer = Designer::find($request['designer']);
+        $designer->goods()->detach($request['id']);
+      }
+    }
+
+
+    public function approve($id)
+    {
+      if (Auth::user()->role == 'DesignerSPV') {
+        Designer::find($id)->update([
+          'supervisor_id' => Auth::user()->id,
+        ]);
+        return redirect(action('DesignerController@show',$id));
+      }
+      else {
+        echo "string";
+      }
+    }
+    public function disapprove($id)
+    {
+      if (Auth::user()->role == 'DesignerSPV') {
+        Designer::find($id)->update([
+          'supervisor_id' => null,
+        ]);
+        return redirect(action('DesignerController@show',$id));
+      }
+      else {
+        echo "string";
+      }
+    }
+    public function getDesignerData()
+    {
+      $designer = Designer::with(['goods.units'])->where('id','1')->get();
+      return response()->json($designer);
     }
 }

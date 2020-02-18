@@ -8,6 +8,7 @@ use Auth;
 
 use App\Address;
 use App\Company;
+use App\Designer;
 use App\Good;
 use App\Unit;
 use App\Project;
@@ -28,6 +29,11 @@ class PurchaseController extends Controller
       $purchase = Purchase::all();
       return view('purchases.index',compact('purchase'));
     }
+    public function price()
+    {
+      $designer = Designer::with(['goods'])->where('supervisor_id', '!=', null)->get();
+      return view('purchases.price',compact('designer'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -42,6 +48,34 @@ class PurchaseController extends Controller
       $unit = Unit::limit(3)->get();
       $project = Project::all();
       return view('purchases.add',compact('company', 'good', 'unit', 'project'));
+    }
+    public function request()
+    {
+      $this->authorize('create',Purchase::class);
+      $designer = Designer::with(['goods','projects'])->whereNull('supervisor_id')->get();
+      return view('purchases.request', compact('designer'));
+    }
+    public function requestApprove($id, $good)
+    {
+      $this->authorize('create',Purchase::class);
+      $designer = Designer::find($id);
+      $designer->goods()->syncWithoutDetaching([
+        $good => [
+          'status' => 'Approved',
+        ]
+      ]);
+      return redirect(action('PurchaseController@request'));
+    }
+    public function requestDispprove($id, $good)
+    {
+      $this->authorize('create',Purchase::class);
+      $designer = Designer::find($id);
+      $designer->goods()->syncWithoutDetaching([
+        $good => [
+          'status' => 'Rejected',
+        ]
+      ]);
+      return redirect(action('PurchaseController@request'));
     }
 
     /**
@@ -98,7 +132,12 @@ class PurchaseController extends Controller
               'memo' => '',
             ]
           ]);
-          $good->companies()->syncWithoutDetaching($supplier['id']);
+          $good->companies()->syncWithoutDetaching([
+            $supplier['company_id'] => [
+              'created_at' => now(),
+              'updated_at' => now(),
+            ]
+          ]);
         }
       }
       return redirect(action('PurchaseController@index'));

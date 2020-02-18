@@ -16,6 +16,7 @@
     <th>ID</th>
     <th>Project</th>
     <th>Location</th>
+    <th>Status</th>
     <th>Action</th>
   </thead>
   <tbody>
@@ -24,6 +25,7 @@
       <td>{{ $data->id }}</td>
       <td>{{ $data->projects->name }}</td>
       <td>{{ $data->projects->location }}</td>
+      <td class="{{ ($data->supervisor_id == null)?'alert alert-secondary':'alert alert-success' }} text-center pt-3"><label for="status">{{ ($data->supervisor_id == null)?'Waiting':'Approved' }}</label></td>
       <td>
         @can('viewAny',App\Surveyor::class)
         <a href="{{ route('surveyors.show',$data->id) }}" class="btn btn-info">Info</a>

@@ -7,6 +7,17 @@
 <li class="breadcrumb-item active">Surveyors Info</li>
 @endsection
 @section('content')
+@if(Auth::user()->role == 'SurveyorSPV')
+  @if($surveyor->supervisor_id === null)
+    <div class="row justify-content-left px-3 pb-3">
+      <a href="{{ route('surveyorApproval',$surveyor->id) }}" class="btn btn-primary">Approve</a>
+    </div>
+    @else
+    <div class="row justify-content-left px-3 pb-3">
+      <a href="{{ route('surveyorDisapproval',$surveyor->id) }}" class="btn btn-warning">Disapprove</a>
+    </div>
+  @endif
+@endif
 @can('edit',$surveyor)
 <div class="row justify-content-end">
   <div class="col-2 text-right  mb-2">

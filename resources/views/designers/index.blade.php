@@ -26,11 +26,11 @@
         <td>{{ $data->id }}</td>
         <td>{{ $data->projects->name }}</td>
         <td>{{ $data->projects->location }}</td>
-        <td class="alert {{ ($data->supervisor_id == null)?'alert-secondary':'alert-success' }} alert-pill text-center pt-3"><label for="status">{{ ($data->supervisor_id == null)?'Waiting':'Approved' }}</label></td>
+        <td class="alert {{ ($data->supervisor_id == null)?'alert-secondary':'alert-success' }} text-center pt-3"><label for="status">{{ ($data->supervisor_id == null)?'Waiting':'Approved' }}</label></td>
         <td>{{ ucwords($data->users->name) }}</td>
         <td>
           @can('viewAny', $data)
-          <a href="{{ route('designers.show',1) }}" class="btn btn-info">Info</a>
+          <a href="{{ route('designers.show',$data->id) }}" class="btn btn-info">Info</a>
           @endcan
         </td>
       </tr>

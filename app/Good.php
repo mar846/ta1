@@ -30,10 +30,10 @@ class Good extends Model
     {
       return $this->belongsToMany('App\Catalog','catalog_good','catalog_id','good_id');
     }
-    // public function bills()
-    // {
-    //     return $this->belongsToMany('App\BillOfMaterial', 'bill_of_materials_goods', 'good_id', 'bill_id');
-    // }
+    public function designers()
+    {
+        return $this->belongsToMany('App\Designer', 'designer_good', 'good_id', 'designer_id');
+    }
 
 
     public function scopeIsProduct($query)

@@ -1,10 +1,10 @@
 @extends('layouts.master')
-@section('title','Designer Add')
+@section('title','Add Design')
 @section('designers','active')
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
 <li class="breadcrumb-item"><a href="{{ route('designers.index') }}">Designers</a></li>
-<li class="breadcrumb-item active">Designers</li>
+<li class="breadcrumb-item active">Add Design</li>
 @endsection
 @section('content')
 <form action="{{ route('designers.store') }}" method="post" enctype="multipart/form-data">
@@ -16,7 +16,11 @@
           <select class="form-control" name="project">
             <option>Choose Project</option>
             @foreach($project as $data)
-              <option value="{{ $data->id }}">{{ $data->name }}</option>
+              @foreach($data->surveyors as $datas)
+                @if($datas->supervisor_id != null)
+                  <option value="{{ $data->id }}">{{ $data->name }}</option>
+                @endif
+              @endforeach
             @endforeach
           </select>
         </div>
@@ -60,7 +64,7 @@
         <button type="button" name="button" class="btn btn-secondary" onclick="addRow()">Add Item</button>
         <div class="form-group row">
           <div class="col-12">
-            <input type="hidden" name="totalItem" id="totalItem">
+            <input type="hidden" name="totalItem" id="totalItem" value="1">
             <button type="submit" class="btn btn-success col-12">Submit</button>
           </div>
         </div>

@@ -13,7 +13,7 @@ class Designer extends Model
 
   public function goods()
   {
-    return $this->belongsToMany('App\Good', 'designer_good', 'designer_id', 'good_id')->withPivot('qty');
+    return $this->belongsToMany('App\Good', 'designer_good', 'designer_id', 'good_id')->withPivot('qty','status');
   }
   public function projects()
   {
@@ -21,6 +21,10 @@ class Designer extends Model
   }
   public function users()
   {
-    return $this->belongsTo('App\User', 'user_id');
+      return $this->belongsTo('App\User','user_id');
+  }
+  public function supervisors()
+  {
+      return $this->belongsTo('App\User','supervisor_id');
   }
 }

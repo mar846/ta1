@@ -20,6 +20,8 @@ class PurchasePolicy
     {
       return in_array($user->role,[
         'Admin',
+        'Purchasing',
+        'PurchasingSPV',
       ]);
     }
 
@@ -34,6 +36,8 @@ class PurchasePolicy
     {
       return in_array($user->role,[
         'Admin',
+        'Purchasing',
+        'PurchasingSPV',
       ]);
     }
 
@@ -47,6 +51,8 @@ class PurchasePolicy
     {
       return in_array($user->role,[
         'Admin',
+        'Purchasing',
+        'PurchasingSPV',
       ]);
     }
 
@@ -61,6 +67,8 @@ class PurchasePolicy
     {
       return in_array($user->role,[
         'Admin',
+        'Purchasing',
+        'PurchasingSPV',
       ]);
     }
 

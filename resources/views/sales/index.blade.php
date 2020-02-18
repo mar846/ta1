@@ -24,6 +24,7 @@
             <th>Bill To</th>
             <th>Ship To</th>
             <th>SO</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -36,6 +37,7 @@
             <td>{{ $data->bills->address }}</td>
             <td>{{ $data->ships->address }}</td>
             <td>{{ $data->so }}</td>
+            <td class="alert alert-{{ ($data->supervisor_id == null)?'secondary':'success' }} pt-3 text-center"><label for="status">{{ ($data->supervisor_id == null)?"Waiting":'Approved' }}</label></td>
             <td>
               @can('view',$data)
               <a href="{{ route('sales.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>

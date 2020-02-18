@@ -16,7 +16,7 @@ class Address extends Model
   }
   public function scopeSearchAddress($query, $request)
   {
-    return $query->select('id')->where('address', $request);
+    return $query->where('address', $request);
   }
   public function scopeSearchOrInsert($query, $request, $type, $transaction)
   {

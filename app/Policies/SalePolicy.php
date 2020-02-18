@@ -20,6 +20,8 @@ class SalePolicy
     {
       return in_array($user->role,[
         'Admin',
+        'SaleSPV',
+        'Sale',
       ]);
     }
 
@@ -34,6 +36,8 @@ class SalePolicy
     {
       return in_array($user->role,[
         'Admin',
+        'SaleSPV',
+        'Sale',
       ]);
     }
 
@@ -47,6 +51,8 @@ class SalePolicy
     {
       return in_array($user->role,[
         'Admin',
+        'SaleSPV',
+        'Sale',
       ]);
     }
 
@@ -61,6 +67,8 @@ class SalePolicy
     {
       return in_array($user->role,[
         'Admin',
+        'SaleSPV',
+        'Sale',
       ]);
     }
 

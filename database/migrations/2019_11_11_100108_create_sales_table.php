@@ -23,6 +23,7 @@ class CreateSalesTable extends Migration
             $table->string('reference');
             $table->date('referenceDate');
             $table->bigInteger('total');
+            $table->date('validTill');
             $table->string('paymentTerms');
             $table->string('deliveryTime');
             $table->string('downPayment');

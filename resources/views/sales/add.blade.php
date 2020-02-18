@@ -19,7 +19,11 @@
             <select class="form-control" name="project" onchange="getCustomerData(this)">
               <option>Choose Project</option>
               @foreach($project as $data)
-                <option value="{{ $data->id }}">{{ $data->name }}</option>
+                @foreach($data->designers as $datas)
+                  @if($datas->supervisor_id != null)
+                    <option value="{{ $data->id }}">{{ $data->name }}</option>
+                  @endif
+                @endforeach
               @endforeach
             </select>
           </div>
@@ -82,6 +86,12 @@
       </div>
       <div class="col-md-6">
         <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Valid Till</label>
+          <div class="col-sm-10">
+            <input type="date" class="form-control" name="validTill" value="{{ old('validTill') }}">
+          </div>
+        </div>
+        <div class="form-group row">
           <label class="col-sm-2 col-form-label">Reference</label>
           <div class="col-sm-10">
             <input type="text" class="form-control" name="reference" value="{{ old('reference') }}">
@@ -124,50 +134,18 @@
           <th>Qty</th>
           <th>Price</th>
           <th>Subtotal</th>
-          <th></th>
         </tr>
       </thead>
       <tbody id="tableItem">
-        <tr>
-          <td><input type="text" name="item0" class="form-control" placeholder="@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach"></td>
-          <td>
-            <div class="input-group mb-2">
-              <input type="number" class="form-control" name="qty0" placeholder="1" onkeyup="calculate(this)" id="qty0">
-              <div class="input-group-prepend">
-                <input type="text" name="unit0" class="input-group-text" placeholder="@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" id="unit0">
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text">Rp.</div>
-              </div>
-              <input type="number" class="form-control" name="price0" placeholder="1000" onkeyup="calculate(this)" id="price0">
-            </div>
-          </td>
-          <td>
-            <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text">Rp.</div>
-              </div>
-              <input type="number" class="form-control" name="subtotal0" placeholder="1000" id="subtotal0">
-            </div>
-          </td>
-          <td><button type="button" class="btn btn-danger btn-sm" id="button0" name="button0" onclick="deleteRow(this)">X</button></td>
-        </tr>
       </tbody>
       <tfoot>
         <tr>
           <th colspan="3" class="text-right">Total</th>
           <th id="totalColumn"></th>
-          <th></th>
         </tr>
       </tfoot>
     </table>
-    <button type="button" class="btn btn-secondary" name="button" onclick="addRow()">Add Row</button>
     <input type="hidden" name="totalItem" id="totalItem" value="0">
-    <input type="hidden" name="total" id="total">
     <button type="submit" class="btn btn-success col-12" name="button">Create Sale</button>
   </form>
 </div>
@@ -177,21 +155,15 @@
   @endforeach
 </datalist>
 <datalist id="addresses"></datalist>
+<datalist id="dataGoods">
+  @foreach($good as $data)
+    <option value="{{ $data->name }}">
+  @endforeach
+</datalist>
 @endsection
 @section('script')
 <script type="text/javascript">
   var i = 1;
-  function addRow() {
-    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' placeholder='@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' placeholder='@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' id='unit" + i + "'></div></div></td><td><div class='input-group mb-2'><div class='input-group-prepend'><div class='input-group-text'>Rp.</div></div><input type='number' class='form-control' name='price" + i + "' placeholder='1000' onkeyup='calculate(this)' id='price" + i + "'></div></td><td><div class='input-group mb-2'><div class='input-group-prepend'><div class='input-group-text'>Rp.</div></div><input type='number' class='form-control' name='subtotal" + i + "' placeholder='1000' id='subtotal" + i + "'></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
-    i+=1;
-    $('#totalItem').val(i);
-  }
-  function deleteRow(id) {
-    var row = id.name.substring(id.name.length-1,id.name.length);
-    $('#button'+row).closest('tr').remove();
-    i-=1;
-    $('#totalItem').val(i);
-  }
   function address() {
     $('#shipTo').val($('#billTo').val());
   }
@@ -213,6 +185,7 @@
   }
   function getCustomerData(name) {
     $.post("{{ route('getCompanyData') }}",{id:name.value,_token:'{{ Session::token() }}'},function(data){
+      console.log(data);
       $('#company').html();
       $('#company').val(data[0].name);
       $('#company').attr('readonly','true');
@@ -228,6 +201,18 @@
         $('#addresses').append('<option value="' + data[i].address + '">');
       }
       $('#phone').val(data.phone);
+      getDesignerData();
+    });
+  }
+  function getDesignerData() {
+    $.post("{{ route('getDesignerData') }}",{id:name.value,_token:'{{ Session::token() }}'},function(data){
+      console.log(data[0].goods);
+      for (var i = 0; i < data[0].goods.length; i++) {
+        console.log(data[0].goods[i].name);
+        $('#tableItem').html();
+        $('#tableItem').append('<tr><td>' + data[0].goods[i].name + '<input type="hidden" name="item' + i + '" id="item0" value="' + data[0].goods[i].name + '"></td><td>' + data[0].goods[i].pivot.qty + ' ' + data[0].goods[i].units.name + '<input type="hidden" name="qty' + i + '" id="qty0" value="' + data[0].goods[i].pivot.qty + '"><input type="hidden" name="unit' + i + '" id="unit0" value="' + data[0].goods[i].units.name + '"></td><td><div class="input-group mb-2"><div class="input-group-prepend"><div class="input-group-text">Rp.</div></div><input type="number" class="form-control" name="price' + i + '" placeholder="1000" onkeyup="calculate(this)" id="price' + i + '"></div></td><td><div class="input-group mb-2"><div class="input-group-prepend"><div class="input-group-text">Rp.</div></div><input type="number" class="form-control" name="subtotal' + i + '" placeholder="1000" id="subtotal' + i + '"></div></td></tr>');
+      }
+      $('#totalItem').val(i);
     });
   }
 </script>

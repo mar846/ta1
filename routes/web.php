@@ -15,23 +15,43 @@ Auth::routes();
 Route::get('/invoice',function(){
   return view('prints.invoice');
 });
+
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', function () {
     return view('home');
 })->middleware('auth');
 Route::get('goodReceipt','GoodController@goodReceiptPage');
 Route::get('goodDeliver','GoodController@goodDeliverPage');
 
-Route::get('/reports','ReportController@index')->name('reports');
-Route::get('/reports/{page}','ReportController@show')->name('reportPage');
+Route::get('purchaseRequest','PurchaseController@request')->name('purchaseRequest');
+Route::get('requestApprove/{id}/{good}','PurchaseController@requestApprove')->name('requestApprove');
+Route::get('requestDispprove/{id}/{good}','PurchaseController@requestDispprove')->name('requestDispprove');
+
+Route::get('reports','ReportController@index')->name('reports');
+Route::get('reports/{page}','ReportController@show')->name('reportPage');
+
+Route::get('designerApproval/{id}','DesignerController@approve')->name('designerApproval');
+Route::get('designerDisapproval/{id}','DesignerController@disapprove')->name('designerDisapproval');
+Route::post('getDesignerData','DesignerController@getDesignerData')->name('getDesignerData');
+Route::post('deleteGood','DesignerController@deleteGood')->name('deleteGood');
+
+Route::get('surveyorApproval/{id}','SurveyorController@approve')->name('surveyorApproval');
+Route::get('surveyorDisapproval/{id}','SurveyorController@disapprove')->name('surveyorDisapproval');
+
+Route::get('saleApproval/{id}','SaleController@approve')->name('saleApproval');
+Route::get('saleDisapproval/{id}','SaleController@disapprove')->name('saleDisapproval');
+
+Route::get('makeInvoice/{id}','PurchaseController@makeInvoice')->name('makeInvoice')->middleware('auth');
+Route::get('price','PurchaseController@price')->name('price');
+
 
 Route::post('goodDeliverSearch','GoodController@goodDeliverSearch');
 Route::post('goodReceiptSearch','GoodController@goodReceiptSearch');
 Route::post('goodDeliverFinish','GoodController@goodDeliverFinish');
 Route::post('goodReceiptFinish','GoodController@goodReceiptFinish');
-Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompanyData');
-Route::get('makeInvoice/{id}','PurchaseController@makeInvoice')->name('makeInvoice')->middleware('auth');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompanyData');
+
 // Route::resource('bills','BillOfMaterialController');
 Route::resource('addresses', 'AddressController')->middleware('auth');
 Route::resource('catalogs','CatalogController')->middleware('auth');
