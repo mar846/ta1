@@ -31,11 +31,8 @@
       <td>{{ $data->qty }} {{ $data->units->name }}</td>
       <td>{{ $data->type }}</td>
       <td>
-        @can('view',$good)
-        <a href="{{ route('goods.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>
-        @endcan
-        @can('edit',$data)
-        <a href="{{ route('goods.edit',[$data->id]) }}"><button type="button" class="btn btn-warning" name="button">Edit</button></a>
+        @can('viewAny',$data)
+        <a href="{{ route('goods.show',[$data->id]) }}" class="btn btn-primary">Info</a>
         @endcan
       </td>
     </tr>

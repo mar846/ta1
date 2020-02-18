@@ -19,7 +19,12 @@
   <div class="form-group row">
     <label class="col-sm-2 col-form-label">Name</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" placeholder="pce, pcs, unit, kg, g,....." name="name" value="{{ $good->name }}">
+      <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="pce, pcs, unit, kg, g,....." name="name" value="{{ old('name',$good->name) }}">
+      @error('name')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
     </div>
   </div>
   <div class="form-group row">
@@ -27,7 +32,12 @@
       <label class="col-form-label">QTY</label>
     </div>
     <div class="col-sm-2">
-      <input type="number" class="form-control" name="qty" placeholder="50" value="{{ $good->qty }}">
+      <input type="number" class="form-control @error('qty') is-invalid @enderror" name="qty" placeholder="50" value="{{ old('qty', $good->qty) }}">
+      @error('qty')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
     </div>
     <div class="col-sm-2">
       <select class="form-control" name="unit">

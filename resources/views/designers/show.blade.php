@@ -7,6 +7,13 @@
 <li class="breadcrumb-item active">Designers Info</li>
 @endsection
 @section('content')
+@can('update',$designer)
+<div class="row justify-content-end">
+  <div class="col-2 text-right  mb-2">
+    <a href="{{ route('designers.edit',$designer->id) }}" class="btn btn-warning">Edit</a>
+  </div>
+</div>
+@endcan
 <form action="{{ route('designers.store') }}" method="post" enctype="multipart/form-data">
   {{ csrf_field() }}
   <div class="card">

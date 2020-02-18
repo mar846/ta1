@@ -56,6 +56,11 @@ class UserTableSeeder extends Seeder
         'email' => 'purchasingSPV@purchasingSPV.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
         'role' => 'PurchasingSPV'
+      ],[
+        'name' => 'projectManager',
+        'email' => 'projectManager@projectManager.com',
+        'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
+        'role' => 'ProjectManager'
       ]);
       for ($i=0; $i < 9 ; $i++) {
         App\User::create($user[$i]);

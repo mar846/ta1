@@ -1,92 +1,100 @@
-@extends('layouts.app')
+@extends('layouts.master')
 @section('title','Edit Catalog')
+@section('products','active')
+@section('catalogs','active')
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('catalogs.index') }}">Catalogs</a></li>
+<li class="breadcrumb-item active">Edit Catalog</li>
+@endsection
 @section('content')
-<div class="container m-3">
-  <h3>Edit Catalog</h3>
-  <form action="{{ route('catalogs.update',[$catalog->id]) }}" method="post">
-    {{ method_field('PUT') }}
-    {{ csrf_field() }}
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Name</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Household" name="name" value="{{ old('name',$catalog->name) }}">
-        @error('name')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
+<form action="{{ route('catalogs.update',[$catalog->id]) }}" method="post">
+  {{ method_field('PUT') }}
+  {{ csrf_field() }}
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Household" name="name" value="{{ old('name',$catalog->name) }}">
+      @error('name')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
 
-      </div>
     </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Capacity</label>
-      <div class="col-sm-10">
-        <input type="text" name="capacity" class="form-control @error('capacity') is-invalid @enderror" placeholder="500 mW, 200 kW, 100 W" value="{{ old('capacity',$catalog->capacity) }}">
-        @error('capacity')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Capacity</label>
+    <div class="col-sm-10">
+      <input type="text" name="capacity" class="form-control @error('capacity') is-invalid @enderror" placeholder="500 mW, 200 kW, 100 W" value="{{ old('capacity',$catalog->capacity) }}">
+      @error('capacity')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
     </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Description</label>
-      <div class="col-sm-10">
-        <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="8" cols="80">{{ old('description',$catalog->description) }}</textarea>
-        @error('description')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Description</label>
+    <div class="col-sm-10">
+      <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="8" cols="80">{{ old('description',$catalog->description) }}</textarea>
+      @error('description')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
     </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Panel</label>
-      @foreach($catalog->panels as $datas)
-      <div class="col-sm-5">
-        <select class="form-control @error('panel') is-invalid @enderror" name="panel">
-          <option>Select Panel</option>
-          @foreach($panel as $data)
-            <option value="{{ $data->id }}" @if($data->id == $datas->id) selected @endif>{{ $data->companies->name }} {{ $data->name }}</option>
-          @endforeach
-        </select>
-        @error('panel')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div>
-      <div class="col-sm-5">
-        <input type="number" name="panelQTY" class="form-control @error('panelQTY') is-invalid @enderror" placeholder="QTY" value="{{ old('panelQTY', $datas->pivot->qty) }}">
-      </div>
-      @endforeach
+  </div>
+  <label>Items</label>
+  <div class="form-group row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>QTY</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tableItem">
+        @foreach($catalog->goods as $key => $data)
+          <tr>
+            <td><input type="text" name="item{{ $key }}" class="form-control" value="{{ old('item.$key',$data->name)  }}"></td>
+            <td>
+              <div class="input-group mb-2">
+                <input type="number" class="form-control" name="qty{{ $key }}" placeholder="1" id="qty{{ $key }}" value="{{ old('qty.$key',$data->pivot->qty) }}">
+                <div class="input-group-prepend">
+                  <input type="text" name="unit0" class="input-group-text" id="unit0" list="dataUnits" value="{{ old('unit.$key',$data->units->name) }}">
+                </div>
+              </div>
+            </td>
+            <td><button type="button" class="btn btn-danger btn-sm" name="button">X</button></td>
+          </tr>
+        @endforeach
+      </tbody>
+    </table>
+    <button type="button" name="button" class="btn btn-secondary" onclick="addRow()">Add Row</button>
+  </div>
+  <div class="form-group row">
+    <div class="col-12 text-right">
+      <input type="hidden" name="totalItem" value="{{ $key+1 }}" id="totalItem">
+      <button type="submit" class="btn btn-warning col-sm-10 offset-sm-2" name="button">Update</button>
     </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Inverter</label>
-      @foreach($catalog->inverters as $datas)
-      <div class="col-sm-5">
-        <select class="form-control @error('inverter') is-invalid @enderror" name="inverter">
-          <option>Select Inverter</option>
-          @foreach($inverter as $data)
-            <option value="{{ $data->id }}" @if($data->id == $datas->id) selected @endif>{{ $data->companies->name }} {{ $data->name }}</option>
-          @endforeach
-        </select>
-        @error('inverter')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div>
-      <div class="col-sm-5">
-        <input type="number" name="inverterQTY" class="form-control @error('inverterQTY') is-invalid @enderror" placeholder="QTY" value="{{ old('inverterQTY', $datas->pivot->qty) }}">
-      </div>
-      @endforeach
-    </div>
-    <div class="form-group row">
-      <div class="col-12 text-right">
-        <button type="submit" class="btn btn-success" name="button">Add</button>
-      </div>
-    </div>
-  </form>
-</div>
+  </div>
+</form>
+@endsection
+@section('script')
+<script type="text/javascript">
+var i = {{ $key+1 }};
+function addRow() {
+  $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' list='dataGoods'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' id='unit" + i + "' list='dataUnits'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+  i+=1;
+  $('#totalItem').val(i);
+}
+function deleteRow(id) {
+  var row = id.name.substring(id.name.length-1,id.name.length);
+  $('#button'+row).closest('tr').remove();
+  i-=1;
+  $('#totalItem').val(i);
+}
+</script>
 @endsection

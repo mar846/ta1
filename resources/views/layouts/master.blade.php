@@ -209,7 +209,7 @@
               </ul>
             </li>
             <li class="nav-item has-treeview @hasSection('products') menu-open @endif">
-              <a href="#" class="nav-link">
+              <a href="#" class="nav-link @hasSection('products') active @endif">
                 <i class="nav-icon fas fa-warehouse @hasSection('products') active @endif"></i>
                 <p>
                   Products
@@ -217,9 +217,9 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                @can('viewAny',App\Catalogs::class)
+                @can('viewAny',App\Catalog::class)
                 <li class="nav-item">
-                  <a href="{{ route('catalogs.index') }}" class="nav-link">
+                  <a href="{{ route('catalogs.index') }}" class="nav-link @hasSection('catalogs') active @endif">
                     <i class="fas fa-clipboard-list nav-icon"></i>
                     <p>Catalogs</p>
                   </a>

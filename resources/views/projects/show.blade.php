@@ -12,7 +12,6 @@
     <a href="{{ route('projects.edit',$project->id) }}" class="btn btn-warning">Edit</a>
   </div>
 </div>
-</div>
 <div class="row">
   <div class="col-md-6">
     <div class="card">

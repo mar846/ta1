@@ -12,11 +12,13 @@ class ProjectTableSeeder extends Seeder
     public function run()
     {
       $faker = Faker\Factory::create('id_ID');
-      App\Project::create([
-        'name' => 'PLTS Grid 1MWp '.$faker->company,
-        'location' => $faker->state,
-        'company_id' => '1',
-        'user_id' => '1',
-      ]);
+      for ($i=0; $i < 4; $i++) {
+        App\Project::create([
+          'name' => 'PLTS Grid '.rand(1,5).'MWp '.$faker->company,
+          'location' => $faker->state,
+          'company_id' => $i+1,
+          'user_id' => '1',
+        ]);
+      }
     }
 }

@@ -12,9 +12,11 @@ class CompanyTableSeeder extends Seeder
     public function run()
     {
       $faker = Faker\Factory::create('id_ID');
-      $company = App\Company::create([
-        'name' => $faker->company,
-        'type'=> 'customer',
-      ]);
+      for ($i=0; $i < 4; $i++) {
+        $company = App\Company::create([
+          'name' => $faker->company,
+          'type'=> 'customer',
+        ]);
+      }
     }
 }

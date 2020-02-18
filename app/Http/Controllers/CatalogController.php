@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use DB;
 use Validator;
+use Auth;
 
 use App\Catalog;
+use App\Good;
+use App\Unit;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -31,7 +34,9 @@ class CatalogController extends Controller
     public function create()
     {
       $this->authorize('create', Catalog::class);
-      return view('catalogs.add');
+      $good = Good::with('units')->get();
+      $unit = Unit::all();
+      return view('catalogs.add', compact('good','unit'));
     }
 
     /**
@@ -44,10 +49,37 @@ class CatalogController extends Controller
     {
       $this->authorize('create', Catalog::class);
       $data = $request->validate([
-        'name'=>'required|unique:catalogs|max:191',
+        'name'=>'required|max:191',
         'capacity'=>'required',
-        'description'=>'required|max:191',
+        'description'=>'max:191',
+        'totalItem' => 'required|numeric',
       ]);
+      $itemRules=[];
+      for ($i=0; $i < $data['totalItem']; $i++) {
+        $itemRules['item'.$i] = 'nullable';
+        $itemRules['qty'.$i] = 'nullable|numeric|min:1';
+        $itemRules['unit'.$i] = 'nullable';
+      }
+      $itemData = $request->validate($itemRules);
+      $catalog = Catalog::create([
+        'name' => $data['name'],
+        'capacity' => $data['capacity'],
+        'description' => $data['description'],
+        'user_id' => Auth::user()->id,
+      ]);
+      for ($i=0; $i < $data['totalItem'] ; $i++) {
+        if ($itemData['item'.$i] != '') {
+          $good = Good::SearchOrInsert($itemData, $i, 'Product');
+          $catalog->goods()->attach([
+            $good['id'] => [
+              'qty' => $itemData['qty'.$i],
+              'description' => '',
+              'created_at' => now(),
+              'updated_at' => now(),
+            ]
+          ]);
+        }
+      }
       return redirect(action('CatalogController@index'));
     }
 
@@ -91,12 +123,30 @@ class CatalogController extends Controller
         'name'=>'required|max:191',
         'capacity'=>'required',
         'description'=>'max:191',
+        'totalItem' => 'required|numeric',
       ]);
+      $itemRules=[];
+      for ($i=0; $i < $data['totalItem']; $i++) {
+        $itemRules['item'.$i] = 'nullable';
+        $itemRules['qty'.$i] = 'nullable|numeric|min:1';
+        $itemRules['unit'.$i] = 'nullable';
+      }
+      $itemData = $request->validate($itemRules);
       Catalog::find($catalog->id)->update([
         'name' => $data['name'],
         'capacity' => $data['capacity'],
         'description' => $data['description'],
       ]);
+      for ($i=0; $i < $data['totalItem']; $i++) {
+        $good = Good::SearchOrInsert($itemData,$i,'Product');
+        $catalog->goods()->syncWithoutDetaching([
+          $good['id'] => [
+            'qty' => $itemData['qty'.$i],
+            'description' => '',
+            'updated_at' => now(),
+          ]
+        ]);
+      }
       return redirect(action('CatalogController@index'));
     }
 

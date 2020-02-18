@@ -21,6 +21,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
+      $this->authorize('viewAny',Project::class);
       $project = Project::all();
       return view('projects.index', compact('project'));
     }
@@ -32,6 +33,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
+      $this->authorize('create',App\Project::class);
       return view('projects.add');
     }
 
@@ -43,6 +45,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create',App\Project::class);
         $data = $request->validate([
           'name' => 'required',
           'location' => 'required',
@@ -70,6 +73,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+      $this->authorize('view',$project);
       $project = Project::find($project->id);
       return view('projects.show',compact('project'));
     }
@@ -82,6 +86,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+      $this->authorize('update',$project);
       $project = Project::find($project->id);
       return view('projects.edit',compact('project'));
     }
@@ -95,6 +100,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+      $this->authorize('view',$project);
       $data = $request->validate([
         'name' => 'required',
         'location' => 'required',
@@ -121,6 +127,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+      $this->authorize('view',$project);
         //
     }
 }

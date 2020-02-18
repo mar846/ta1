@@ -12,6 +12,10 @@ class Catalog extends Model
 
   public function goods()
   {
-    return $this->belongsToMany('App\Good','catalog_good','good_id','catalog_id');
+    return $this->belongsToMany('App\Good','catalog_good','catalog_id','good_id')->withPivot('qty','description');
+  }
+  public function users()
+  {
+    return $this->belongsTo('App\User','user_id');
   }
 }

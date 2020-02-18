@@ -8,6 +8,13 @@
 <li class="breadcrumb-item active">Goods Info</li>
 @endsection
 @section('content')
+@can('update',$good)
+<div class="row justify-content-end">
+  <div class="col-2 text-right  mb-2">
+    <a href="{{ route('goods.edit',$good->id) }}" class="btn btn-warning">Edit</a>
+  </div>
+</div>
+@endcan
 <div class="form-group row my-3">
   <label class="col-sm-2 col-form-label">Name</label>
   <div class="col-sm-10">

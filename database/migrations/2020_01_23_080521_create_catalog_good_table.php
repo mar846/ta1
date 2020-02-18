@@ -20,7 +20,7 @@ class CreateCatalogGoodTable extends Migration
             $table->unsignedBigInteger('good_id');
             $table->foreign('good_id')->references('id')->on('goods');
             $table->integer('qty');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

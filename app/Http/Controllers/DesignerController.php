@@ -24,6 +24,7 @@ class DesignerController extends Controller
      */
     public function index()
     {
+      $this->authorize('viewAny',Designer::class);
       $designer = Designer::all();
       return view('designers.index',compact('designer'));
     }
@@ -35,6 +36,7 @@ class DesignerController extends Controller
      */
     public function create()
     {
+      $this->authorize('create',Designer::class);
       $project = Project::all();
       $good = Good::all();
       $unit = Unit::all();
@@ -49,6 +51,7 @@ class DesignerController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create',Designer::class);
       $data = $request->validate([
         'project' => 'required|numeric',
         'files' => 'file',
@@ -96,6 +99,7 @@ class DesignerController extends Controller
      */
     public function show(Designer $designer)
     {
+      $this->authorize('view',$designer);
       $designer = Designer::find($designer->id);
       return view('designers.show',compact('designer'));
     }
@@ -108,7 +112,11 @@ class DesignerController extends Controller
      */
     public function edit(Designer $designer)
     {
-        //
+      $this->authorize('update',$designer);
+      $designer = Designer::find($designer->id);
+      $good = Good::all();
+      $unit = Unit::all();
+      return view('designers.edit',compact('designer','good','unit'));
     }
 
     /**
@@ -120,6 +128,7 @@ class DesignerController extends Controller
      */
     public function update(Request $request, Designer $designer)
     {
+      $this->authorize('update',$designer);
         //
     }
 
@@ -131,6 +140,7 @@ class DesignerController extends Controller
      */
     public function destroy(Designer $designer)
     {
+      $this->authorize('delete',$designer);
         //
     }
 }

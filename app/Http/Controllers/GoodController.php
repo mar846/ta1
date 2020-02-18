@@ -24,6 +24,7 @@ class GoodController extends Controller
      */
     public function index()
     {
+      $this->authorize('viewAny',Good::class);
       $good = Good::all();
       return view('goods.index', compact('good'));
     }
@@ -35,6 +36,7 @@ class GoodController extends Controller
      */
     public function create()
     {
+      $this->authorize('create',Good::class);
       $company = Company::all();
       $warehouse = Warehouse::all();
       return view('goods.add', compact('company', 'warehouse'));
@@ -48,6 +50,7 @@ class GoodController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create',Good::class);
       $validator = $request->validate([
         'name'=>'required|unique:goods',
         'description'=>'string',
@@ -67,6 +70,7 @@ class GoodController extends Controller
      */
     public function show(Good $good)
     {
+      $this->authorize('view',$good);
       $good = Good::find($good->id);
       return view('goods.show',compact('good'));
     }
@@ -79,6 +83,7 @@ class GoodController extends Controller
      */
     public function edit(Good $good)
     {
+      $this->authorize('update',$good);
       $good = Good::find($good->id);
       $unit = Unit::all();
       return view('goods.edit',compact('good', 'unit'));
@@ -93,7 +98,19 @@ class GoodController extends Controller
      */
     public function update(Request $request, Good $good)
     {
-        //
+      $this->authorize('update',$good);
+      $data = $request->validate([
+        'name' => 'required|max:191',
+        'qty' => 'required|numeric|min:0',
+        'unit' => 'required|numeric'
+      ]);
+      Good::find($good->id)->update([
+          'name' => $data['name'],
+          'qty' => $data['qty'],
+          'unit_id' => $data['unit'],
+          'updated_at' => now(),
+      ]);
+      return redirect(action('GoodController@show',$good->id));
     }
 
     /**
@@ -104,6 +121,7 @@ class GoodController extends Controller
      */
     public function destroy(Good $good)
     {
+      $this->authorize('delete',$good);
         //
     }
 
