@@ -15,52 +15,52 @@ class UserTableSeeder extends Seeder
         'name' => 'admin',
         'email' => 'admin@admin.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'Admin'
+        'role_id' => '1'
       ],[
         'name' => 'surveyor',
         'email' => 'surveyor@surveyor.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'Surveyor'
+        'role_id' => '2'
       ],[
         'name' => 'surveyorSPV',
         'email' => 'surveyorSPV@surveyorSPV.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'SurveyorSPV'
+        'role_id' => '3'
       ],[
         'name' => 'designer',
         'email' => 'designer@designer.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'Designer'
+        'role_id' => '4'
       ],[
         'name' => 'designerSPV',
         'email' => 'designerSPV@designerSPV.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'DesignerSPV'
+        'role_id' => '5'
       ],[
         'name' => 'sales',
         'email' => 'sales@sales.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'Sale'
+        'role_id' => '6'
       ],[
         'name' => 'salesSPV',
         'email' => 'salesSPV@salesSPV.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'SaleSPV'
+        'role_id' => '7'
       ],[
         'name' => 'purchasing',
         'email' => 'purchasing@purchasing.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'Purchasing'
+        'role_id' => '8'
       ],[
         'name' => 'purchasingSPV',
         'email' => 'purchasingSPV@purchasingSPV.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'PurchasingSPV'
+        'role_id' => '9'
       ],[
         'name' => 'projectManager',
         'email' => 'projectManager@projectManager.com',
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
-        'role' => 'ProjectManager'
+        'role_id' => '10'
       ]);
       for ($i=0; $i < 9 ; $i++) {
         App\User::create($user[$i]);

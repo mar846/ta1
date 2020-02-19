@@ -18,9 +18,9 @@ class ChecklistPolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'SurveyorSPV',
+      return in_array($user->role_id,[
+        '1',
+        '3',
       ]);
     }
 
@@ -33,9 +33,9 @@ class ChecklistPolicy
      */
     public function view(User $user, Checklist $checklist)
     {
-      return in_array($user->role,[
-        'Admin',
-        'SurveyorSPV',
+      return in_array($user->role_id,[
+        '1',
+        '3',
       ]);
     }
 
@@ -47,9 +47,9 @@ class ChecklistPolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'SurveyorSPV',
+      return in_array($user->role_id,[
+        '1',
+        '3',
       ]);
     }
 
@@ -62,9 +62,9 @@ class ChecklistPolicy
      */
     public function update(User $user, Checklist $checklist)
     {
-      return in_array($user->role,[
-        'Admin',
-        'SurveyorSPV',
+      return in_array($user->role_id,[
+        '1',
+        '3',
       ]);
     }
 
@@ -77,9 +77,9 @@ class ChecklistPolicy
      */
     public function delete(User $user, Checklist $checklist)
     {
-      return in_array($user->role,[
-        'Admin',
-        'SurveyorSPV',
+      return in_array($user->role_id,[
+        '1',
+        '3',
       ]);
     }
 
@@ -92,8 +92,8 @@ class ChecklistPolicy
      */
     public function restore(User $user, Checklist $checklist)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -106,8 +106,8 @@ class ChecklistPolicy
      */
     public function forceDelete(User $user, Checklist $checklist)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 }

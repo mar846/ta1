@@ -18,8 +18,8 @@ class AddressPolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -32,8 +32,8 @@ class AddressPolicy
      */
     public function view(User $user, Address $address)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -45,8 +45,8 @@ class AddressPolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -59,8 +59,8 @@ class AddressPolicy
      */
     public function update(User $user, Address $address)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -73,8 +73,8 @@ class AddressPolicy
      */
     public function delete(User $user, Address $address)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -87,8 +87,8 @@ class AddressPolicy
      */
     public function restore(User $user, Address $address)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -101,8 +101,8 @@ class AddressPolicy
      */
     public function forceDelete(User $user, Address $address)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 }

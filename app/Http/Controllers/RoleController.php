@@ -14,7 +14,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+      $this->authorize('viewAny',Role::class);
+      $role = Role::all();
+      return view('roles.index',compact('role'));
     }
 
     /**
@@ -24,7 +26,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+      $this->authorize('create',Role::class);
+      return view('roles.add');
     }
 
     /**
@@ -35,7 +38,12 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $this->authorize('create',Role::class);
+      $data = $request->validate([
+        'name' => 'required|unique:roles|max:191',
+      ]);
+      Role::create($data);
+      return redirect(action('RoleController@index'));
     }
 
     /**
@@ -46,7 +54,9 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+      $this->authorize('view',$role);
+      $role = Role::find($role->id);
+      return view('roles.show',compact('role'));
     }
 
     /**
@@ -57,7 +67,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+      $this->authorize('update',$role);
+      $role = Role::find($role->id);
+      return view('roles.edit',compact('role'));
     }
 
     /**
@@ -69,7 +81,12 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+      $this->authorize('update',$role);
+      $data = $request->validate([
+        'name' => 'required|unique:roles|max:191',
+      ]);
+      Role::find($role->id)->update($data);
+      return redirect(action('RoleController@index'));
     }
 
     /**
@@ -80,6 +97,6 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+
     }
 }

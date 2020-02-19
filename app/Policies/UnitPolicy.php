@@ -18,8 +18,8 @@ class UnitPolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -32,8 +32,8 @@ class UnitPolicy
      */
     public function view(User $user, Unit $unit)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -45,8 +45,8 @@ class UnitPolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -59,8 +59,8 @@ class UnitPolicy
      */
     public function update(User $user, Unit $unit)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -73,8 +73,8 @@ class UnitPolicy
      */
     public function delete(User $user, Unit $unit)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -87,8 +87,8 @@ class UnitPolicy
      */
     public function restore(User $user, Unit $unit)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -101,8 +101,8 @@ class UnitPolicy
      */
     public function forceDelete(User $user, Unit $unit)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 }

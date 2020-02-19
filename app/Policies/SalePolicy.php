@@ -18,10 +18,10 @@ class SalePolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'SaleSPV',
-        'Sale',
+      return in_array($user->role_id,[
+        '1',
+        '7',
+        '6',
       ]);
     }
 
@@ -34,10 +34,10 @@ class SalePolicy
      */
     public function view(User $user, Sale $sale)
     {
-      return in_array($user->role,[
-        'Admin',
-        'SaleSPV',
-        'Sale',
+      return in_array($user->role_id,[
+        '1',
+        '7',
+        '6',
       ]);
     }
 
@@ -49,10 +49,10 @@ class SalePolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'SaleSPV',
-        'Sale',
+      return in_array($user->role_id,[
+        '1',
+        '7',
+        '6',
       ]);
     }
 
@@ -65,10 +65,10 @@ class SalePolicy
      */
     public function update(User $user, Sale $sale)
     {
-      return in_array($user->role,[
-        'Admin',
-        'SaleSPV',
-        'Sale',
+      return in_array($user->role_id,[
+        '1',
+        '7',
+        '6',
       ]);
     }
 

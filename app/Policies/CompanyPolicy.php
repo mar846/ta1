@@ -18,8 +18,8 @@ class CompanyPolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -32,8 +32,8 @@ class CompanyPolicy
      */
     public function view(User $user, Company $company)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -45,8 +45,8 @@ class CompanyPolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -59,8 +59,8 @@ class CompanyPolicy
      */
     public function update(User $user, Company $company)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -73,8 +73,8 @@ class CompanyPolicy
      */
     public function delete(User $user, Company $company)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 

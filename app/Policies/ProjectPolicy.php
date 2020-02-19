@@ -18,9 +18,9 @@ class ProjectPolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'ProjectManager',
+      return in_array($user->role_id,[
+        '1',
+        '10',
       ]);
     }
 
@@ -33,9 +33,9 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project)
     {
-      return in_array($user->role,[
-        'Admin',
-        'ProjectManager',
+      return in_array($user->role_id,[
+        '1',
+        '10',
       ]);
     }
 
@@ -47,9 +47,9 @@ class ProjectPolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'ProjectManager',
+      return in_array($user->role_id,[
+        '1',
+        '10',
       ]);
     }
 
@@ -62,9 +62,9 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-      return in_array($user->role,[
-        'Admin',
-        'ProjectManager',
+      return in_array($user->role_id,[
+        '1',
+        '10',
       ]);
     }
 
@@ -77,9 +77,9 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-      return in_array($user->role,[
-        'Admin',
-        'ProjectManager',
+      return in_array($user->role_id,[
+        '1',
+        '10',
       ]);
     }
 
@@ -92,8 +92,8 @@ class ProjectPolicy
      */
     public function restore(User $user, Project $project)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -106,8 +106,8 @@ class ProjectPolicy
      */
     public function forceDelete(User $user, Project $project)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 }

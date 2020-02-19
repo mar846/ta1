@@ -18,8 +18,8 @@ class WarehousePolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
 
     }
@@ -33,8 +33,8 @@ class WarehousePolicy
      */
     public function view(User $user, Warehouse $warehouse)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -46,8 +46,8 @@ class WarehousePolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -60,8 +60,8 @@ class WarehousePolicy
      */
     public function update(User $user, Warehouse $warehouse)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 

@@ -18,10 +18,10 @@ class PurchasePolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'Purchasing',
-        'PurchasingSPV',
+      return in_array($user->role_id,[
+        '1',
+        '8',
+        '9',
       ]);
     }
 
@@ -34,10 +34,10 @@ class PurchasePolicy
      */
     public function view(User $user, Purchase $purchase)
     {
-      return in_array($user->role,[
-        'Admin',
-        'Purchasing',
-        'PurchasingSPV',
+      return in_array($user->role_id,[
+        '1',
+        '8',
+        '9',
       ]);
     }
 
@@ -49,10 +49,10 @@ class PurchasePolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'Purchasing',
-        'PurchasingSPV',
+      return in_array($user->role_id,[
+        '1',
+        '8',
+        '9',
       ]);
     }
 
@@ -65,10 +65,10 @@ class PurchasePolicy
      */
     public function update(User $user, Purchase $purchase)
     {
-      return in_array($user->role,[
-        'Admin',
-        'Purchasing',
-        'PurchasingSPV',
+      return in_array($user->role_id,[
+        '1',
+        '8',
+        '9',
       ]);
     }
 

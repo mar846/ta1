@@ -251,11 +251,11 @@
               </a>
             </li>
             @endcan
-              @can('viewAny',App\Surveyor::class)
+            @can('viewAny',App\Surveyor::class)
             <li class="nav-item">
               <a href="{{ route('surveyors.index') }}" class="nav-link @hasSection('surveyors') active @endif">
                 <i class="nav-icon fas fa-hard-hat"></i>
-                <p>Surveyors</p>
+                <p>Surveyor</p>
               </a>
             </li>
             @endcan
@@ -264,6 +264,14 @@
               <a href="{{ route('designers.index') }}" class="nav-link @hasSection('designers') active @endif">
                 <i class="nav-icon fas fa-drafting-compass"></i>
                 <p>Designer</p>
+              </a>
+            </li>
+            @endcan
+            @can('viewAny',App\Role::class)
+            <li class="nav-item">
+              <a href="{{ route('roles.index') }}" class="nav-link @hasSection('roles') active @endif">
+                <i class="nav-icon fas fa-drafting-compass"></i>
+                <p>Roles</p>
               </a>
             </li>
             @endcan

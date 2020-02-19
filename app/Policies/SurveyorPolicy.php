@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\User;
-use App\SurveyorController;
+use App\Surveyor;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SurveyorPolicy
@@ -19,12 +19,12 @@ class SurveyorPolicy
     public function viewAny(User $user)
     {
 
-        return in_array($user->role,[
-          'Admin',
-          'SurveyorSPV',
-          'Surveyor',
-          'DesignerSPV',
-          'Designer',
+        return in_array($user->role_id,[
+          '1',
+          '3',
+          '2',
+          '5',
+          '4',
         ]);
     }
 
@@ -32,18 +32,18 @@ class SurveyorPolicy
      * Determine whether the user can view the surveyor controller.
      *
      * @param  \App\User  $user
-     * @param  \App\SurveyorController  $surveyorController
+     * @param  \App\Surveyor  $surveyor
      * @return mixed
      */
-    public function view(User $user, SurveyorController $surveyorController)
+    public function view(User $user, Surveyor $surveyor)
     {
 
-        return in_array($user->role,[
-          'Admin',
-          'SurveyorSPV',
-          'Surveyor',
-          'DesignerSPV',
-          'Designer',
+        return in_array($user->role_id,[
+          '1',
+          '3',
+          '2',
+          '5',
+          '4',
         ]);
     }
 
@@ -56,10 +56,10 @@ class SurveyorPolicy
     public function create(User $user)
     {
 
-        return in_array($user->role,[
-          'Admin',
-          'SurveyorSPV',
-          'Surveyor',
+        return in_array($user->role_id,[
+          '1',
+          '3',
+          '2',
         ]);
     }
 
@@ -67,16 +67,16 @@ class SurveyorPolicy
      * Determine whether the user can update the surveyor controller.
      *
      * @param  \App\User  $user
-     * @param  \App\SurveyorController  $surveyorController
+     * @param  \App\Surveyor  $surveyor
      * @return mixed
      */
-    public function update(User $user, SurveyorController $surveyorController)
+    public function update(User $user, Surveyor $surveyor)
     {
 
-        return in_array($user->role,[
-          'Admin',
-          'SurveyorSPV',
-          'Surveyor',
+        return in_array($user->role_id,[
+          '1',
+          '3',
+          '2',
         ]);
     }
 
@@ -84,16 +84,16 @@ class SurveyorPolicy
      * Determine whether the user can delete the surveyor controller.
      *
      * @param  \App\User  $user
-     * @param  \App\SurveyorController  $surveyorController
+     * @param  \App\Surveyor  $surveyor
      * @return mixed
      */
-    public function delete(User $user, SurveyorController $surveyorController)
+    public function delete(User $user, Surveyor $surveyor)
     {
 
-        return in_array($user->role,[
-          'Admin',
-          'SurveyorSPV',
-          'Surveyor',
+        return in_array($user->role_id,[
+          '1',
+          '3',
+          '2',
         ]);
     }
 
@@ -101,14 +101,14 @@ class SurveyorPolicy
      * Determine whether the user can restore the surveyor controller.
      *
      * @param  \App\User  $user
-     * @param  \App\SurveyorController  $surveyorController
+     * @param  \App\Surveyor  $surveyor
      * @return mixed
      */
-    public function restore(User $user, SurveyorController $surveyorController)
+    public function restore(User $user, Surveyor $surveyor)
     {
 
-        return in_array($user->role,[
-          'Admin',
+        return in_array($user->role_id,[
+          '1',
         ]);
     }
 
@@ -116,14 +116,14 @@ class SurveyorPolicy
      * Determine whether the user can permanently delete the surveyor controller.
      *
      * @param  \App\User  $user
-     * @param  \App\SurveyorController  $surveyorController
+     * @param  \App\Surveyor  $surveyor
      * @return mixed
      */
-    public function forceDelete(User $user, SurveyorController $surveyorController)
+    public function forceDelete(User $user, Surveyor $surveyor)
     {
 
-        return in_array($user->role,[
-          'Admin',
+        return in_array($user->role_id,[
+          '1',
         ]);
     }
 }

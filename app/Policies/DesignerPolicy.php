@@ -18,10 +18,10 @@ class DesignerPolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'DesignerSPV',
-        'Designer',
+      return in_array($user->role_id,[
+        '1',
+        '5',
+        '4',
       ]);
     }
 
@@ -34,10 +34,10 @@ class DesignerPolicy
      */
     public function view(User $user, Designer $designer)
     {
-      return in_array($user->role,[
-        'Admin',
-        'DesignerSPV',
-        'Designer',
+      return in_array($user->role_id,[
+        '1',
+        '5',
+        '4',
       ]);
     }
 
@@ -49,10 +49,10 @@ class DesignerPolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'DesignerSPV',
-        'Designer',
+      return in_array($user->role_id,[
+        '1',
+        '5',
+        '4',
       ]);
     }
 
@@ -65,10 +65,10 @@ class DesignerPolicy
      */
     public function update(User $user, Designer $designer)
     {
-      return in_array($user->role,[
-        'Admin',
-        'DesignerSPV',
-        'Designer',
+      return in_array($user->role_id,[
+        '1',
+        '5',
+        '4',
       ]);
     }
 
@@ -81,9 +81,9 @@ class DesignerPolicy
      */
     public function delete(User $user, Designer $designer)
     {
-      return in_array($user->role,[
-        'Admin',
-        'DesignerSPV',
+      return in_array($user->role_id,[
+        '1',
+        '5',
       ]);
     }
 
@@ -96,8 +96,8 @@ class DesignerPolicy
      */
     public function restore(User $user, Designer $designer)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -110,8 +110,8 @@ class DesignerPolicy
      */
     public function forceDelete(User $user, Designer $designer)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -124,9 +124,9 @@ class DesignerPolicy
      */
     public function approve(User $user, Designer $designer)
     {
-      return in_array($user->role,[
-        'Admin',
-        'DesignerSPV',
+      return in_array($user->role_id,[
+        '1',
+        '5',
       ]);
     }
 }

@@ -18,10 +18,10 @@ class GoodPolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
-        'DesignerSPV',
-        'Designer',
+      return in_array($user->role_id,[
+        '1',
+        '5',
+        '4',
       ]);
     }
 
@@ -34,10 +34,10 @@ class GoodPolicy
      */
     public function view(User $user, Good $good)
     {
-      return in_array($user->role,[
-        'Admin',
-        'DesignerSPV',
-        'Designer',
+      return in_array($user->role_id,[
+        '1',
+        '5',
+        '4',
       ]);
     }
 
@@ -49,8 +49,8 @@ class GoodPolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -63,8 +63,8 @@ class GoodPolicy
      */
     public function update(User $user, Good $good)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -77,8 +77,8 @@ class GoodPolicy
      */
     public function delete(User $user, Good $good)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -91,8 +91,8 @@ class GoodPolicy
      */
     public function restore(User $user, Good $good)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -105,8 +105,8 @@ class GoodPolicy
      */
     public function forceDelete(User $user, Good $good)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 }

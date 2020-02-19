@@ -18,8 +18,8 @@ class CatalogPolicy
      */
     public function viewAny(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -32,8 +32,8 @@ class CatalogPolicy
      */
     public function view(User $user, Catalog $catalog)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -45,8 +45,8 @@ class CatalogPolicy
      */
     public function create(User $user)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
@@ -59,8 +59,8 @@ class CatalogPolicy
      */
     public function update(User $user, Catalog $catalog)
     {
-      return in_array($user->role,[
-        'Admin',
+      return in_array($user->role_id,[
+        '1',
       ]);
     }
 
