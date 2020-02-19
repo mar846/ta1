@@ -7,7 +7,7 @@
 <li class="breadcrumb-item active">Designers Info</li>
 @endsection
 @section('content')
-@if(Auth::user()->role == 'DesignerSPV')
+@can('approve',$designer)
   @if($designer->supervisor_id == null)
     <div class="row justify-content-left px-3 pb-3">
       <a href="{{ route('designerApproval',$designer->id) }}" class="btn btn-primary">Approve</a>

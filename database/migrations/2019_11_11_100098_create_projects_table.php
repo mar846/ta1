@@ -18,6 +18,8 @@ class CreateProjectsTable extends Migration
             $table->string('name');
             $table->string('location');
             $table->string('description')->nullable();
+            $table->integer('capacity');
+            $table->string('unit');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
             $table->unsignedBigInteger('user_id');

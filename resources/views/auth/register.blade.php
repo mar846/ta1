@@ -62,7 +62,18 @@
               <label for="role" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
 
               <div class="col-md-6">
-                  <input id="role" type="text" class="form-control" name="role" required autocomplete="role">
+                <select class="form-control" name="role" required id="role">
+                  <option value="1">Admin</option>
+                  <option value="2">Surveyor</option>
+                  <option value="3">SurveyorSPV</option>
+                  <option value="4">Designer</option>
+                  <option value="5">DesignerSPV</option>
+                  <option value="6">Sale</option>
+                  <option value="7">SaleSPV</option>
+                  <option value="8">Purchasing</option>
+                  <option value="9">PurchasingSPV</option>
+                </select>
+                  <!-- <input id="role" type="text" class="form-control" name="role" required autocomplete="role"> -->
               </div>
           </div>
 

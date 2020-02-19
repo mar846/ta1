@@ -176,29 +176,21 @@ class DesignerController extends Controller
     }
 
 
-    public function approve($id)
+    public function approve(Designer $designer, $id)
     {
-      if (Auth::user()->role == 'DesignerSPV') {
-        Designer::find($id)->update([
-          'supervisor_id' => Auth::user()->id,
-        ]);
-        return redirect(action('DesignerController@show',$id));
-      }
-      else {
-        echo "string";
-      }
+      $this->authorize('approval', $designer);
+      Designer::find($id)->update([
+        'supervisor_id' => Auth::user()->id,
+      ]);
+      return redirect(action('DesignerController@index'));
     }
-    public function disapprove($id)
+    public function disapprove(Designer $designer, $id)
     {
-      if (Auth::user()->role == 'DesignerSPV') {
-        Designer::find($id)->update([
-          'supervisor_id' => null,
-        ]);
-        return redirect(action('DesignerController@show',$id));
-      }
-      else {
-        echo "string";
-      }
+      $this->authorize('approval', $designer);
+      Designer::find($id)->update([
+        'supervisor_id' => null,
+      ]);
+      return redirect(action('DesignerController@index'));
     }
     public function getDesignerData()
     {

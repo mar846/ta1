@@ -92,7 +92,7 @@ function addRow() {
   $('#totalItem').val(i);
 }
 function deleteRow(id) {
-  $.post("{{ route('deleteGood') }}",{id:id.value,designer:$('#designer').val(),_token:'{{ Session::token() }}'},function(data){});
+  $.post("{{ route('deleteDesignerGood') }}",{id:id.value,designer:$('#designer').val(),_token:'{{ Session::token() }}'},function(data){});
   console.log(id);
   var row = id.name.substring(id.name.length-1,id.name.length);
   $('#button'+row).closest('tr').remove();

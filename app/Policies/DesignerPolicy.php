@@ -122,7 +122,14 @@ class DesignerPolicy
      * @param  \App\Designer  $designer
      * @return mixed
      */
-    public function approve(User $user, Designer $designer)
+    public function approve(User $user)
+    {
+      return in_array($user->role_id,[
+        '1',
+        '5',
+      ]);
+    }
+    public function approval(User $user, Designer $designer)
     {
       return in_array($user->role_id,[
         '1',

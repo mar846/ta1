@@ -18,8 +18,7 @@ class SurveyorPolicy
      */
     public function viewAny(User $user)
     {
-
-        return in_array($user->role_id,[
+      return in_array($user->role_id,[
           '1',
           '3',
           '2',
@@ -37,8 +36,7 @@ class SurveyorPolicy
      */
     public function view(User $user, Surveyor $surveyor)
     {
-
-        return in_array($user->role_id,[
+      return in_array($user->role_id,[
           '1',
           '3',
           '2',
@@ -55,8 +53,7 @@ class SurveyorPolicy
      */
     public function create(User $user)
     {
-
-        return in_array($user->role_id,[
+      return in_array($user->role_id,[
           '1',
           '3',
           '2',
@@ -72,8 +69,7 @@ class SurveyorPolicy
      */
     public function update(User $user, Surveyor $surveyor)
     {
-
-        return in_array($user->role_id,[
+      return in_array($user->role_id,[
           '1',
           '3',
           '2',
@@ -89,8 +85,7 @@ class SurveyorPolicy
      */
     public function delete(User $user, Surveyor $surveyor)
     {
-
-        return in_array($user->role_id,[
+      return in_array($user->role_id,[
           '1',
           '3',
           '2',
@@ -106,8 +101,7 @@ class SurveyorPolicy
      */
     public function restore(User $user, Surveyor $surveyor)
     {
-
-        return in_array($user->role_id,[
+      return in_array($user->role_id,[
           '1',
         ]);
     }
@@ -121,9 +115,22 @@ class SurveyorPolicy
      */
     public function forceDelete(User $user, Surveyor $surveyor)
     {
-
-        return in_array($user->role_id,[
+      return in_array($user->role_id,[
           '1',
+        ]);
+    }
+    public function approve(User $user)
+    {
+      return in_array($user->role_id,[
+          '1',
+          '3',
+        ]);
+    }
+    public function approval(User $user, Surveyor $surveyor)
+    {
+      return in_array($user->role_id,[
+          '1',
+          '3',
         ]);
     }
 }

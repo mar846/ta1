@@ -275,6 +275,14 @@
               </a>
             </li>
             @endcan
+            @can('viewAny',App\Criteria::class)
+            <li class="nav-item">
+              <a href="{{ route('criteria.index') }}" class="nav-link @hasSection('criteria') active @endif">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Criteria</p>
+              </a>
+            </li>
+            @endcan
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>

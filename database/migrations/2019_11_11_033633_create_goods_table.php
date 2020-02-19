@@ -23,6 +23,7 @@ class CreateGoodsTable extends Migration
             $table->integer('margin')->nullable();
             $table->integer('leadTime')->nullable();
             $table->integer('price')->nullable();
+            $table->integer('capacity')->nullable();
             $table->string('type')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();

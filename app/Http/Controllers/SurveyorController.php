@@ -147,28 +147,20 @@ class SurveyorController extends Controller
         //
     }
 
-    public function approve($id)
+    public function approve(Surveyor $surveyor, $id)
     {
-      if (Auth::user()->role == 'SurveyorSPV') {
-        Surveyor::find($id)->update([
-          'supervisor_id' => Auth::user()->id,
-        ]);
-        return redirect(action('SurveyorController@index'));
-      }
-      else {
-        echo "string";
-      }
+      $this->authorize('approval', $surveyor);
+      Surveyor::find($id)->update([
+        'supervisor_id' => Auth::user()->id,
+      ]);
+      return redirect(action('SurveyorController@index'));
     }
-    public function disapprove($id)
+    public function disapprove(Surveyor $surveyor, $id)
     {
-      if (Auth::user()->role == 'SurveyorSPV') {
-        Surveyor::find($id)->update([
-          'supervisor_id' => null,
-        ]);
-        return redirect(action('SurveyorController@index'));
-      }
-      else {
-        echo "string";
-      }
+      $this->authorize('approval', $surveyor);
+      Surveyor::find($id)->update([
+        'supervisor_id' => null,
+      ]);
+      return redirect(action('SurveyorController@index'));
     }
 }

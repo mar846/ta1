@@ -21,6 +21,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
+      $this->authorize('viewAny', Company::class);
       $company = Company::all();
       return view('companies.index',compact('company'));
     }

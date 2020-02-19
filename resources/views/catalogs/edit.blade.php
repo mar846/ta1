@@ -58,16 +58,19 @@
       <tbody id="tableItem">
         @foreach($catalog->goods as $key => $data)
           <tr>
-            <td><input type="text" name="item{{ $key }}" class="form-control" value="{{ old('item.$key',$data->name)  }}"></td>
+            <td><input type="text" name="item{{ $key }}" class="form-control" value="{{ old('item.$key',$data->name)  }}" disabled></td>
             <td>
               <div class="input-group mb-2">
-                <input type="number" class="form-control" name="qty{{ $key }}" placeholder="1" id="qty{{ $key }}" value="{{ old('qty.$key',$data->pivot->qty) }}">
+                <input type="number" class="form-control" name="qty{{ $key }}" placeholder="1" id="qty{{ $key }}" value="{{ old('qty.$key',$data->pivot->qty) }}" disabled>
                 <div class="input-group-prepend">
-                  <input type="text" name="unit0" class="input-group-text" id="unit0" list="dataUnits" value="{{ old('unit.$key',$data->units->name) }}">
+                  <input type="text" name="unit0" class="input-group-text" id="unit0" list="dataUnits" value="{{ old('unit.$key',$data->units->name) }}" disabled>
                 </div>
               </div>
             </td>
-            <td><button type="button" class="btn btn-danger btn-sm" name="button">X</button></td>
+            <td>
+              <input type="hidden" name="catalog{{$key}}" id="catalog" value="{{ $catalog->id }}">
+              <button type="button" class="btn btn-danger btn-sm" id="button{{ $data->id }}" name="button{{ $data->id }}" onclick="deleteRow(this)" value="{{ $data->id }}">X</button>
+            </td>
           </tr>
         @endforeach
       </tbody>
@@ -86,15 +89,17 @@
 <script type="text/javascript">
 var i = {{ $key+1 }};
 function addRow() {
-  $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' list='dataGoods'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' id='unit" + i + "' list='dataUnits'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+  $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' placeholder='@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' placeholder='@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
   i+=1;
   $('#totalItem').val(i);
 }
 function deleteRow(id) {
+  console.clear();
+  $.post("{{ route('deleteCatalogGood') }}",{id:id.value,catalog:$('#catalog').val(),_token:'{{ Session::token() }}'},function(data){
+    console.log(data);
+  });
   var row = id.name.substring(id.name.length-1,id.name.length);
   $('#button'+row).closest('tr').remove();
-  i-=1;
-  $('#totalItem').val(i);
 }
 </script>
 @endsection

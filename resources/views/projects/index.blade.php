@@ -19,6 +19,7 @@
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Capacity</th>
             <th>Client</th>
             <th>Location</th>
             <th>Description</th>
@@ -30,6 +31,7 @@
             <tr>
               <td>{{ $data->id }}</td>
               <td>{{ $data->name }}</td>
+              <td>{{ $data->capacity }} {{ $data->unit }}</td>
               <td>{{ $data->companies->name }}</td>
               <td>{{ $data->location }}</td>
               <td>{{ $data->description }}</td>

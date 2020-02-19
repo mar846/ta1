@@ -106,7 +106,9 @@ class CatalogController extends Controller
     {
       $this->authorize('update', $catalog);
       $catalog = Catalog::find($catalog->id);
-      return view('catalogs.edit',compact('catalog'));
+      $good = Good::with('units')->get();
+      $unit = Unit::all();
+      return view('catalogs.edit',compact('catalog','good','unit'));
     }
 
     /**
@@ -138,14 +140,17 @@ class CatalogController extends Controller
         'description' => $data['description'],
       ]);
       for ($i=0; $i < $data['totalItem']; $i++) {
-        $good = Good::SearchOrInsert($itemData,$i,'Product');
-        $catalog->goods()->syncWithoutDetaching([
-          $good['id'] => [
-            'qty' => $itemData['qty'.$i],
-            'description' => '',
-            'updated_at' => now(),
-          ]
-        ]);
+        if (isset($itemData['item'.$i])) {
+          $good = Good::SearchOrInsert($itemData,$i,'Product');
+          $catalog->goods()->syncWithoutDetaching([
+            $good['id'] => [
+              'qty' => $itemData['qty'.$i],
+              'description' => '',
+              'created_at' => now(),
+              'updated_at' => now(),
+            ]
+          ]);
+        }
       }
       return redirect(action('CatalogController@index'));
     }
@@ -159,5 +164,12 @@ class CatalogController extends Controller
     public function destroy(Catalog $catalog)
     {
         //
+    }
+    public function deleteGood(Request $request)
+    {
+      if ($request->ajax()) {
+        $catalog = Catalog::find($request['catalog']);
+        $catalog->goods()->detach($request['id']);
+      }
     }
 }
