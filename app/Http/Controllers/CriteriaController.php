@@ -89,6 +89,8 @@ class CriteriaController extends Controller
           echo ($index+1).' - '.$data.'<br>';
         }
       }
+
+      // step 1
       // scoring
       $score = [];
       foreach ($good as $key => $value) {
@@ -147,17 +149,172 @@ class CriteriaController extends Controller
           $times[$key][$index] = $data*$weight[$key];
         }
       }
-      print_r($times);
-      echo "<table>";
-      foreach ($times as $key => $value) {
-        echo "<tr><td>".$key."</td></tr><tr>";
-        foreach ($value as $index => $data) {
-          echo '<td>'.$data.'</td>';
-        }
-        echo "</tr>";
-      }
-      echo "</table>";
 
+      // dd($times);
+      // end of step 1
+
+      // concordance discordance
+      echo "<br>";
+      $item = [];
+      $j=0;
+      foreach ($good as $key => $value) {
+        foreach ($times as $index => $data) {
+          foreach ($data as $i => $content) {
+            if ($i == $value['name']) {
+              $item[$j][$index] = $content;
+              echo $content.' | ';
+            }
+          }
+        }
+        echo "<br>";
+        $j++;
+      }
+      echo "<br>";
+      $goodCount = Good::where('type','Panel')->count();
+      $c = [];
+      $d = [];
+      echo "CXX --> Capacity, Price, QTY<br>";
+      for ($i=0; $i < $goodCount; $i++) {
+        for ($j=0; $j < $goodCount; $j++) {
+          $bool = true;
+          foreach ($item as $key => $value) {
+            foreach ($value as $index => $data) {
+              if ($i != $j) {
+                if ($bool == true) {
+                  echo 'C'.($i+1).($j+1).' -->';
+                  if ($item[$i]['capacity']>=$item[$j]['capacity']) {
+                    echo "| yes ";
+                    $c[($i+1).($j+1)][]='capacity';
+                  }
+                  else {
+                    echo "| no ";
+                    $d[($i+1).'|'.($j+1)][] = 'capacity';
+                  }
+                  if ($item[$i]['price']>=$item[$j]['price']) {
+                    echo "| yes ";
+                    $c[($i+1).($j+1)][]='price';
+                  }
+                  else {
+                    echo "| no ";
+                    $d[($i+1).'|'.($j+1)][] = 'price';
+                  }
+                  if ($item[$i]['qty']>=$item[$j]['qty']) {
+                    echo "| yes ";
+                    $c[($i+1).($j+1)][]='qty';
+                  }
+                  else {
+                    echo "| no ";
+                    $d[($i+1).'|'.($j+1)][] = 'qty';
+                  }
+                  echo "<br>";
+                  $bool = false;
+                }
+              }
+            }
+          }
+        }
+      }
+      //concordance threshold
+      $concordance=[];
+      foreach ($c as $key => $value) {
+        $totalWeight = 0;
+        foreach ($value as $index => $data) {
+          $totalWeight += $weight[$data];
+        }
+        $concordance[$key] = $totalWeight;
+      }
+      $concordanceThreshold = round(array_sum($concordance)/($goodCount*($goodCount-1)),4);
+      foreach ($concordance as $key => $value) {
+        $concordance[$key] = ($concordance[$key] > $concordanceThreshold)?1:0;
+      }
+      for ($i=0; $i < $goodCount; $i++) {
+        for ($j=0; $j < $goodCount; $j++) {
+          if ($i!=$j) {
+            if (!isset($concordance[($i+1).($j+1)])) {
+              $concordance[($i+1).($j+1)] = 0;
+            }
+          }
+        }
+      }
+      // reorder concordance array
+      ksort($concordance);
+      //discordance threshold
+      $discordance = [];
+      $dividen = [];
+      $divisor = [];
+      $test = [];
+      // get dividen and divisor value
+      foreach ($d as $key => $value) {
+        $bool = true;
+        foreach ($value as $index => $data) {
+          $up =  (substr($key ,0,strpos($key,'|'))*1);
+          $down =  (substr($key ,strpos($key,'|')+1)*1);
+          $dividen[$up.$down][] = abs($item[($up-1)][$data]-$item[($down-1)][$data]);
+          foreach ($criteria as $i => $content) {
+            $value = abs($item[($up-1)][strtolower($content['name'])]-$item[($down-1)][strtolower($content['name'])]);
+            if ($bool == true) {
+              $divisor[$up.$down][] = $value;
+              // echo abs($item[($up-1)][strtolower($content['name'])]-$item[($down-1)][strtolower($content['name'])]).'<br>';
+            }
+          }
+          $bool = false;
+        }
+      }
+      // get dividen max value each row
+      foreach ($dividen as $key => $value) {
+        $dividen[$key] = max($dividen[$key]);
+      }
+      // get divisor max value each row
+      foreach ($divisor as $key => $value) {
+        $divisor[$key] = max($divisor[$key]);
+      }
+      $divide = [];
+      // get dividen and divisor divide
+      foreach ($divisor as $key => $value) {
+        $divide[$key] = round($dividen[$key]/$divisor[$key],4);
+      }
+      // insert to threshold
+      $discordanceThreshold = round(array_sum($divide)/($goodCount*($goodCount-1)),4);
+      foreach ($divide as $key => $value) {
+        $discordance[$key] = ($divide[$key] > $discordanceThreshold)?1:0;
+      }
+      echo "<br>";
+      for ($i=0; $i < $goodCount; $i++) {
+        for ($j=0; $j < $goodCount; $j++) {
+          if ($i!=$j) {
+            if (!isset($discordance[($i+1).($j+1)])) {
+              $discordance[($i+1).($j+1)] = 0;
+            }
+          }
+        }
+      }
+      // reorder discordance array
+      ksort($discordance);
+      echo "concordance<br>";
+      print_r($concordance);
+      echo "<br>discordance<br>";
+      print_r($discordance);
+      echo "<br>";
+      //determined dominance matrix
+      $dominance = [];
+      for ($i=0; $i < $goodCount; $i++) {
+        for ($j=0; $j < $goodCount; $j++) {
+          if ($i!=$j) {
+            if ($concordance[($i+1).($j+1)] == $discordance[($i+1).($j+1)]) {
+              $dominance = ($i+1);
+            }
+          }
+        }
+      }
+      echo "<br><br>";
+      foreach ($good as $key => $value) {
+        if ($value['id'] == $dominance) {
+          $winner = $value['name'];
+        }
+      }
+      echo "Winner is ".$winner;
+      // print_r($concordance);
+      // print_r($item);
       // echo "<table><br>";
       // echo "<table><tr><td></td>";
       // foreach ($criteria as $key => $value) {
