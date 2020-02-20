@@ -1,5 +1,12 @@
-@extends('layouts.app')
-@section('title','Good Receipt')
+@extends('layouts.master')
+@section('title','Good Deliver')
+@section('products','active')
+@section('goods','active')
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('goods.index') }}">Goods</a></li>
+<li class="breadcrumb-item active">Good Receipt</li>
+@endsection
 @section('content')
 <h3>Good Receipt</h3>
 <form action="{{ url('goodReceiptSearch') }}" method="post">
