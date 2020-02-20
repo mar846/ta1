@@ -9,7 +9,10 @@ class Good extends Model
     protected $table = 'goods';
     protected $primaryKey = 'id';
     protected $guarded = [];
-
+    public function types()
+    {
+      return $this->belongsTo('App\Type','type_id');
+    }
     public function receipts()
     {
       return $this->belongsToMany('App\Purchase','good_receipt','good_id','purchase_id');

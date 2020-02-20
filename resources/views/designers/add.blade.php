@@ -13,7 +13,7 @@
       <div class="card-body">
         <div class="form-group">
           <label>Project</label>
-          <select class="form-control" name="project">
+          <select class="form-control" name="project" onchange="getProjectDetail(this)">
             <option>Choose Project</option>
             @foreach($project as $data)
               @foreach($data->surveyors as $datas)
@@ -47,7 +47,7 @@
             </tr>
           </thead>
           <tbody id="tableItem">
-            <tr>
+            <!-- <tr>
               <td><input type="text" name="item0" class="form-control" placeholder="@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" list="dataGoods"></td>
               <td>
                 <div class="input-group mb-2">
@@ -58,7 +58,7 @@
                 </div>
               </td>
               <td><button type="button" class="btn btn-danger btn-sm" id="button0" name="button0" onclick="deleteRow(this)">X</button></td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
         <button type="button" name="button" class="btn btn-secondary" onclick="addRow()">Add Item</button>
@@ -95,6 +95,13 @@ function deleteRow(id) {
   $('#button'+row).closest('tr').remove();
   i-=1;
   $('#totalItem').val(i);
+}
+function getProjectDetail(id) {
+  $.post("{{ route('getProjectDetail') }}",{id:id.value, _token:'{{ Session::token() }}'},function(data){
+    console.log(data);
+    $('#tableItem').html('');
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.name + "'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.qty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.unit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+  });
 }
 </script>
 @endsection

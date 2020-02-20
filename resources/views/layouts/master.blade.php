@@ -270,16 +270,24 @@
             @can('viewAny',App\Role::class)
             <li class="nav-item">
               <a href="{{ route('roles.index') }}" class="nav-link @hasSection('roles') active @endif">
-                <i class="nav-icon fas fa-drafting-compass"></i>
+                <i class="nav-icon fas fa-sitemap"></i>
                 <p>Roles</p>
               </a>
             </li>
             @endcan
             @can('viewAny',App\Criteria::class)
             <li class="nav-item">
-              <a href="{{ route('criteria.index') }}" class="nav-link @hasSection('criteria') active @endif">
+              <a href="{{ route('criterias.index') }}" class="nav-link @hasSection('criteria') active @endif">
                 <i class="nav-icon fas fa-th"></i>
                 <p>Criteria</p>
+              </a>
+            </li>
+            @endcan
+            @can('viewAny',App\Type::class)
+            <li class="nav-item">
+              <a href="{{ route('types.index') }}" class="nav-link @hasSection('types') active @endif">
+                <i class="nav-icon fas fa-list"></i>
+                <p>Types</p>
               </a>
             </li>
             @endcan

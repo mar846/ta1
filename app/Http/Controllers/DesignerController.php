@@ -197,4 +197,8 @@ class DesignerController extends Controller
       $designer = Designer::with(['goods.units'])->where('id','1')->get();
       return response()->json($designer);
     }
+    public function getProjectDetail(Request $request)
+    {
+      echo "string";
+    }
 }

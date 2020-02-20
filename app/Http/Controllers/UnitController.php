@@ -18,6 +18,7 @@ class UnitController extends Controller
      */
     public function index()
     {
+      $this->authorize('viewAny', Unit::class);
       $unit = Unit::all();
       return view('units.index', compact('unit'));
     }
@@ -29,6 +30,7 @@ class UnitController extends Controller
      */
     public function create()
     {
+      $this->authorize('create', Unit::class);
       return view('units.add');
     }
 
@@ -40,6 +42,7 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create', Unit::class);
       $data = $request->validate([
         'name' => 'bail|required|unique:units',
       ]);
@@ -55,6 +58,7 @@ class UnitController extends Controller
      */
     public function show(Unit $unit)
     {
+      $this->authorize('view', $unit);
       $unit = Unit::find($unit->id);
       return view('units.show', compact('unit'));
     }
@@ -67,6 +71,8 @@ class UnitController extends Controller
      */
     public function edit(Unit $unit)
     {
+      $this->authorize('update', $unit);
+      dd($unit);
       $unit = Unit::find($unit->id);
       return view('units.edit', compact('unit'));
     }
@@ -80,6 +86,7 @@ class UnitController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
+      $this->authorize('update', $unit);
       $data = $request->validate([
         'name' => 'bail|required|unique:units',
       ]);
@@ -95,6 +102,7 @@ class UnitController extends Controller
      */
     public function destroy(Unit $unit)
     {
+      $this->authorize('delete', $unit);
         //
     }
 }

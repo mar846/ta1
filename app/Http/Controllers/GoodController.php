@@ -102,12 +102,16 @@ class GoodController extends Controller
       $data = $request->validate([
         'name' => 'required|max:191',
         'qty' => 'required|numeric|min:0',
-        'unit' => 'required|numeric'
+        'unit' => 'required|numeric',
+        'type' => 'required',
+        'price' => '',
       ]);
       Good::find($good->id)->update([
           'name' => $data['name'],
           'qty' => $data['qty'],
           'unit_id' => $data['unit'],
+          'type' => $data['type'],
+          'price' => $data['price'],
           'updated_at' => now(),
       ]);
       return redirect(action('GoodController@show',$good->id));

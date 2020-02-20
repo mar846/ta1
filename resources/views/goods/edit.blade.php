@@ -13,6 +13,7 @@
       <div class="alert alert-danger">{{ $error }}</div>
   @endforeach
 @endif
+{{ $good }}
 <form action="{{ route('goods.update',[$good->id]) }}" method="post">
   {{ method_field('PUT') }}
   {{ csrf_field() }}
@@ -48,15 +49,21 @@
       </select>
     </div>
   </div>
-  <!-- <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Supplier</label>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Type</label>
     <div class="col-sm-10">
-      <select class="form-control" name="company">
-        <option value="">Select Supplier</option>
-
+      <select class="form-control" name="type">
+        <option value="panel" selected>{{ $good->type }}</option>
       </select>
     </div>
   </div>
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label">Price</label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" name="price" value="{{ old('price',$good->price) }}">
+    </div>
+  </div>
+  <!--
   <div class="form-group row">
     <label class="col-sm-2 col-form-label">Storage Location</label>
     <div class="col-sm-10">

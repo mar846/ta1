@@ -28,7 +28,8 @@ Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompa
 Route::get('designerApproval/{id}','DesignerController@approve')->name('designerApproval');
 Route::get('designerDisapproval/{id}','DesignerController@disapprove')->name('designerDisapproval');
 Route::post('getDesignerData','DesignerController@getDesignerData')->name('getDesignerData');
-Route::post('deleteDesignerGood','DesignerController@deleteGood')->name('deleteDesignerGood ');
+Route::post('deleteDesignerGood','DesignerController@deleteGood')->name('deleteDesignerGood');
+Route::post('getProjectDetail','CriteriaController@electre')->name('getProjectDetail');
 
 Route::get('goodReceipt','GoodController@goodReceiptPage');
 Route::get('goodDeliver','GoodController@goodDeliverPage');
@@ -57,7 +58,7 @@ Route::resource('addresses', 'AddressController')->middleware('auth');
 Route::resource('catalogs','CatalogController')->middleware('auth');
 Route::resource('checklists','ChecklistController')->middleware('auth');
 Route::resource('companies', 'CompanyController')->middleware('auth');
-Route::resource('criteria', 'CriteriaController')->middleware('auth');
+Route::resource('criterias', 'CriteriaController')->middleware('auth');
 Route::resource('designers', 'DesignerController')->middleware('auth');
 Route::resource('goods','GoodController')->middleware('auth');
 Route::resource('projects', 'ProjectController')->middleware('auth');
@@ -65,6 +66,7 @@ Route::resource('purchases', 'PurchaseController')->middleware('auth');
 Route::resource('roles', 'RoleController')->middleware('auth');
 Route::resource('sales', 'SaleController')->middleware('auth');
 Route::resource('surveyors', 'SurveyorController')->middleware('auth');
+Route::resource('types', 'TypeController')->middleware('auth');
 Route::resource('units', 'UnitController')->middleware('auth');
 Route::resource('users', 'UserController')->middleware('auth');
 Route::resource('warehouses', 'WarehouseController')->middleware('auth');

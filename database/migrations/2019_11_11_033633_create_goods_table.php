@@ -24,7 +24,8 @@ class CreateGoodsTable extends Migration
             $table->integer('leadTime')->nullable();
             $table->integer('price')->nullable();
             $table->integer('capacity')->nullable();
-            $table->string('type')->nullable();
+            $table->unsignedBigInteger('type_id')->nullable();
+            $table->foreign('type_id')->references('id')->on('types');
             $table->string('status')->nullable();
             $table->timestamps();
         });

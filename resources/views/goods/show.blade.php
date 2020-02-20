@@ -34,6 +34,12 @@
   </div>
 </div>
 <div class="form-group row">
+  <label class="col-sm-2 col-label-form">Price</label>
+  <div class="col-sm-10">
+    <label class="form-control">Rp. {{ number_format($good->price,0,',','.') }}</label>
+  </div>
+</div>
+<div class="form-group row">
   <label class="col-sm-2 col-label-form">Description</label>
   <div class="col-sm-10">
     <textarea name="description" rows="8" cols="80" class="form-control">

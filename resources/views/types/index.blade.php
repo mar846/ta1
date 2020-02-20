@@ -1,30 +1,27 @@
 @extends('layouts.master')
-@section('title','Criterias')
-@section('criteria','active')
+@section('title',"Good's Type")
+@section('types','active')
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-<li class="breadcrumb-item active">Criteria</li>
+<li class="breadcrumb-item active">Good's Type</li>
 @endsection
 @section('content')
-<!-- <div class="row justify-content-left px-3 pb-3"> -->
-  <a href="{{ route('criterias.create') }}" class="btn btn-primary">Add Criteria</a>
-<!-- </div> -->
+<div class="row justify-content-left px-3 pb-3">
+  <a href="{{ route('types.create') }}" class="btn btn-primary">Add Type</a>
+</div>
 <table class="table table-hover" id="table">
   <thead>
     <th>ID</th>
     <th>Name</th>
-    <th>Weight</th>
     <th>Action</th>
   </thead>
   <tbody>
-    @foreach($criteria as $data)
+    @foreach($type as $data)
     <tr>
       <td>{{ $data->id }}</td>
       <td>{{ $data->name }}</td>
-      <td>{{ $data->weight }}</td>
       <td>
-        {{ $data->id }}
-        <a href="{{ route('criterias.edit',$data->id) }}" class="btn btn-warning">Edit</a>
+        <a href="{{ route('types.show',$data->id) }}" class="btn btn-info">Info</a>
       </td>
     </tr>
     @endforeach
