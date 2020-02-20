@@ -29,7 +29,7 @@
       <td>{{ $data->name }}</td>
       <td>@foreach($data->companies as $key => $datas) @if($key>0) , @endif {{ $datas->name }} @endforeach</td>
       <td>{{ $data->qty }} {{ $data->units->name }}</td>
-      <td>{{ $data->type }}</td>
+      <td>{{ ($data->type_id != null)?$data->types->name:'' }}</td>
       <td>
         @can('viewAny',$data)
         <a href="{{ route('goods.show',[$data->id]) }}" class="btn btn-primary">Info</a>

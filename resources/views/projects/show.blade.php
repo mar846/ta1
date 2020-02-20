@@ -28,12 +28,16 @@
           <p class="form-control">{{ $project->location }}</p>
         </div>
         <div class="form-group">
+          <label for="inputName">Project Capacity</label>
+          <p class="form-control">{{ $project->capacity }} {{ $project->unit }}</p>
+        </div>
+        <div class="form-group">
           <label for="inputDescription">Project Description</label>
-          <p class="form-control">{{ $project->description }}</p>
+          <textarea class="form-control-plaintext border rounded" disabled>{{ $project->description }}</textarea>
         </div>
         <div class="form-group">
           <label for="inputClientCompany">Customer</label>
-          <p class="form-control">{{ $project->companies->name }}</p>
+          <a href="{{ route('companies.show',$project->companies->id) }}" class="form-control">{{ $project->companies->name }}</a>
         </div>
         <label>Files</label>
         <div class="form-group">

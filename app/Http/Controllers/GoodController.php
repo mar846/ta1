@@ -11,6 +11,7 @@ use App\Good;
 use App\Warehouse;
 use App\Purchase;
 use App\Sale;
+use App\Type;
 use App\Unit;
 
 use Illuminate\Http\Request;
@@ -39,7 +40,8 @@ class GoodController extends Controller
       $this->authorize('create',Good::class);
       $company = Company::all();
       $warehouse = Warehouse::all();
-      return view('goods.add', compact('company', 'warehouse'));
+      $type = Type::all();
+      return view('goods.add', compact('company', 'warehouse','type'));
     }
 
     /**
@@ -71,7 +73,7 @@ class GoodController extends Controller
     public function show(Good $good)
     {
       $this->authorize('view',$good);
-      $good = Good::find($good->id);
+      $good = Good::with(['units','types'])->find($good->id);
       return view('goods.show',compact('good'));
     }
 
@@ -86,7 +88,8 @@ class GoodController extends Controller
       $this->authorize('update',$good);
       $good = Good::find($good->id);
       $unit = Unit::all();
-      return view('goods.edit',compact('good', 'unit'));
+      $type = Type::all();
+      return view('goods.edit',compact('good', 'unit','type'));
     }
 
     /**
@@ -110,7 +113,7 @@ class GoodController extends Controller
           'name' => $data['name'],
           'qty' => $data['qty'],
           'unit_id' => $data['unit'],
-          'type' => $data['type'],
+          'type_id' => $data['type'],
           'price' => $data['price'],
           'updated_at' => now(),
       ]);

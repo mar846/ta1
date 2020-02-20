@@ -28,9 +28,9 @@
   </div>
 </div>
 <div class="form-group row">
-  <label class="col-sm-2 col-label-form">Category</label>
+  <label class="col-sm-2 col-label-form">Type</label>
   <div class="col-sm-10">
-    <label class="form-control">{{ $good->type }}</label>
+    <label class="form-control">{{ ($good->type_id != null)?$good->types->name:'' }}</label>
   </div>
 </div>
 <div class="form-group row">

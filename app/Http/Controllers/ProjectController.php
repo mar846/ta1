@@ -33,7 +33,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-      $this->authorize('create',App\Project::class);
+      $this->authorize('create',Project::class);
       return view('projects.add');
     }
 
@@ -45,7 +45,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-      $this->authorize('create',App\Project::class);
+      $this->authorize('create',Project::class);
         $data = $request->validate([
           'name' => 'required',
           'location' => 'required',
@@ -53,13 +53,17 @@ class ProjectController extends Controller
           'company' => 'required',
           'address' => 'required',
           'phone' => '',
+          'capacity' => 'required|numeric|min:1',
+          'unit' => 'required',
         ]);
         $company = Address::SearchOrInsert($data, 'address', 'customer');
         Project::create([
           'name' => $data['name'],
           'location' => $data['location'],
           'description' => $data['description'],
-          'company_id' => $company->id,
+          'capacity' => $data['capacity'],
+          'unit' => $data['unit'],
+          'company_id' => $company['id'],
           'user_id' => Auth::user()->id,
         ]);
         return redirect(action('ProjectController@index'));
@@ -105,6 +109,8 @@ class ProjectController extends Controller
         'name' => 'required',
         'location' => 'required',
         'description' => 'max:191',
+        'capacity' => 'required|numeric|min:1',
+        'unit' => 'required',
         'customer' => 'required',
       ]);
       $project = Project::find($project->id);
@@ -115,6 +121,8 @@ class ProjectController extends Controller
         'name' => $data['name'],
         'location' => $data['location'],
         'description' => $data['description'],
+        'capacity' => $data['capacity'],
+        'unit' => $data['unit'],
       ]);
       return redirect(action('ProjectController@show',$project->id));
     }

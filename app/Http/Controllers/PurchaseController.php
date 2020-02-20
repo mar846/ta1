@@ -123,7 +123,7 @@ class PurchaseController extends Controller
       ]);
       for ($i=0; $i < $data['totalItem'] ; $i++) {
         if ($itemData['item'.$i] != '') {
-          $good = Good::SearchOrInsert($itemData, $i, 'Raw');
+          $good = Good::SearchOrInsert($itemData, $i, '');
           $purchase->goods()->syncWithoutDetaching([
             $good['id'] => [
               'qty' => $itemData['qty'.$i],

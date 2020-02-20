@@ -23,21 +23,23 @@ class Address extends Model
     if(Address::SearchAddress($request[$type])->first() == null){
       if (Company::SearchID($request['company'])->first() == null){
           $customer = Company::create(['name' => ucwords($request['company']),'type' => $transaction]);
-          return Address::create([
+          Address::create([
             'company_id' => $customer['id'],
             'name' => 'primary',
             'address' => ucwords($request[$type]),
             'phone' => $request['phone'],
           ]);
+          return $customer;
         }
         else {
           $customer = Company::SearchID(ucwords($request['company']))->first();
-          return Address::create([
+          Address::create([
             'company_id' => $customer['id'],
             'name' => 'primary',
             'address' => ucwords(strtolower($request[$type])),
             'phone' => $request['phone'],
           ]);
+          return $customer;
         }
     }
     else {

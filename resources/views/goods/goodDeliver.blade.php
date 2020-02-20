@@ -1,11 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.master')
 @section('title','Good Deliver')
+@section('products','active')
+@section('goods','active')
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('goods.index') }}">Goods</a></li>
+<li class="breadcrumb-item active">Good Deliver</li>
+@endsection
 @section('content')
-<h3>Good Deliver</h3>
 <form action="{{ url('goodDeliverSearch') }}" method="post">
   {{ csrf_field() }}
   <div class="form-group row">
-   <label class="col-sm-2 col-form-label">Sales Order</label>
+   <label class="col-sm-2">Sales Order</label>
    <div class="col-sm-10">
      <input type="text" name="so" class="form-control @error('so') is-invalid @enderror" id="so" placeholder="Sales Order" value="{{ old('so') }}">
      @error('so')

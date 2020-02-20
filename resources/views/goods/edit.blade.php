@@ -53,7 +53,10 @@
     <label class="col-sm-2 col-form-label">Type</label>
     <div class="col-sm-10">
       <select class="form-control" name="type">
-        <option value="panel" selected>{{ $good->type }}</option>
+          <option>Choose Type</option>
+        @foreach($type as $data)
+          <option value="{{ $data->id }}" {{ ($data->id == $good->type_id)?'selected':'' }}>{{ $data->name }}</option>
+        @endforeach
       </select>
     </div>
   </div>

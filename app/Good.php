@@ -67,7 +67,6 @@ class Good extends Model
           'name' => $request['item'.$i],
           'unit_id' => $unit['id'],
           'price' => '5000',
-          'type' => $type,
         ]);
       }
       else {

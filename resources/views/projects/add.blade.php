@@ -28,6 +28,27 @@
     @enderror
   </div>
   <div class="form-group">
+    <label for="inputName">Project Capacity</label>
+    <div class="form-inline">
+      <input type="number" name="capacity" class="form-control @error('capacity') is-invalid @enderror" value="{{ old('capacity') }}">
+      @error('capacity')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
+      <select class="form-control @error('unit') is-invalid @enderror" name="unit">
+        <option value="W">W</option>
+        <option value="KW">KW</option>
+        <option value="MW">MW</option>
+      </select>
+      @error('unit')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
+    </div>
+  </div>
+  <div class="form-group">
     <label for="inputDescription">Project Description</label>
     <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="4">{{ old('description') }}</textarea>
     @error('description')
