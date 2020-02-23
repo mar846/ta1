@@ -3,15 +3,15 @@
 namespace App\Policies;
 
 use App\User;
-use App\Good;
+use App\File;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class GoodPolicy
+class FilePolicy
 {
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any goods.
+     * Determine whether the user can view any files.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -20,33 +20,33 @@ class GoodPolicy
     {
       return in_array($user->role_id,[
         '1',
-        '5',
+        '2',
+        '3',
         '4',
-        '8',
-        '9',
+        '5',
       ]);
     }
 
     /**
-     * Determine whether the user can view the good.
+     * Determine whether the user can view the file.
      *
      * @param  \App\User  $user
-     * @param  \App\Good  $good
+     * @param  \App\File  $file
      * @return mixed
      */
-    public function view(User $user, Good $good)
+    public function view(User $user, File $file)
     {
       return in_array($user->role_id,[
         '1',
-        '5',
+        '2',
+        '3',
         '4',
-        '8',
-        '9',
+        '5',
       ]);
     }
 
     /**
-     * Determine whether the user can create goods.
+     * Determine whether the user can create files.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -55,66 +55,82 @@ class GoodPolicy
     {
       return in_array($user->role_id,[
         '1',
-        '8',
-        '9',
+        '2',
+        '3',
+        '4',
+        '5',
       ]);
     }
 
     /**
-     * Determine whether the user can update the good.
+     * Determine whether the user can update the file.
      *
      * @param  \App\User  $user
-     * @param  \App\Good  $good
+     * @param  \App\File  $file
      * @return mixed
      */
-    public function update(User $user, Good $good)
+    public function update(User $user, File $file)
     {
       return in_array($user->role_id,[
         '1',
-        '8',
-        '9',
+        '2',
+        '3',
+        '4',
+        '5',
       ]);
     }
 
     /**
-     * Determine whether the user can delete the good.
+     * Determine whether the user can delete the file.
      *
      * @param  \App\User  $user
-     * @param  \App\Good  $good
+     * @param  \App\File  $file
      * @return mixed
      */
-    public function delete(User $user, Good $good)
+    public function delete(User $user, File $file)
     {
       return in_array($user->role_id,[
         '1',
+        '2',
+        '3',
+        '4',
+        '5',
       ]);
     }
 
     /**
-     * Determine whether the user can restore the good.
+     * Determine whether the user can restore the file.
      *
      * @param  \App\User  $user
-     * @param  \App\Good  $good
+     * @param  \App\File  $file
      * @return mixed
      */
-    public function restore(User $user, Good $good)
+    public function restore(User $user, File $file)
     {
       return in_array($user->role_id,[
         '1',
+        '2',
+        '3',
+        '4',
+        '5',
       ]);
     }
 
     /**
-     * Determine whether the user can permanently delete the good.
+     * Determine whether the user can permanently delete the file.
      *
      * @param  \App\User  $user
-     * @param  \App\Good  $good
+     * @param  \App\File  $file
      * @return mixed
      */
-    public function forceDelete(User $user, Good $good)
+    public function forceDelete(User $user, File $file)
     {
       return in_array($user->role_id,[
         '1',
+        '2',
+        '3',
+        '4',
+        '5',
       ]);
     }
 }

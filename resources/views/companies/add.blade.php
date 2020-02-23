@@ -12,47 +12,51 @@
     <div class="alert alert-danger">{{ $error }}</div>
   @endforeach
 @endif
-<div class="">
-  <form action="{{ route('companies.store') }}" method="post">
-    {{ csrf_field() }}
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Name</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="name">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Type</label>
-      <div class="col-sm-10">
-        <select class="form-control" name="type">
-          <option value="supplier">Supplier</option>
-          <option value="costumer">Costumer</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Branch</label>
-      <div class="col-sm-10">
-        <input name="branch" class="form-control">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Address</label>
-      <div class="col-sm-10">
-        <textarea name="address" class="form-control" rows="8" cols="80"></textarea>
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Phone</label>
-      <div class="col-sm-10">
-        <input type="text" name="phone" class="form-control">
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="col-12 text-right">
-        <button type="submit" class="btn btn-success" name="button">Add</button>
-      </div>
-    </div>
-  </form>
-</div>
+<form action="{{ route('companies.store') }}" method="post">
+  {{ csrf_field() }}
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+  </div>
+  <div class="form-group">
+    <label for="name">Type</label>
+    <?php $type = ['customer','supplier']; ?>
+    <select class="form-control" name="type">
+      @foreach($type as $tipe)
+        <option value="{{ $tipe }}">{{ ucwords($tipe) }}</option>
+      @endforeach
+    </select>
+  </div>
+  <label for="member">Address</label>
+  <table class="table table-hover" id="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php $type = ['billTo','shipTo']; ?>
+      <?php for ($i=0; $i < 2; $i++) {
+        ?>
+        <tr>
+          <td>
+            <select class="form-control" name="addressName{{ $i }}">
+              @foreach($type as $tipe)
+                <option value="{{ $tipe }}">{{ $tipe }}</option>
+              @endforeach
+            </select>
+          </td>
+          <td><input type="text" name="address{{ $i }}" class="form-control" value="{{ old('address.$key') }}"></td>
+          <td><input type="text" name="phone{{ $i }}" class="form-control" value="{{ old('phone.$key') }}"></td>
+        </tr>
+        <?php
+        } ?>
+    </tbody>
+  </table>
+  <div class="form-group row">
+    <button type="submit" class="btn btn-success col-12" name="button">Add Company</button>
+  </div>
+</form>
 @endsection

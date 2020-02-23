@@ -25,7 +25,7 @@ class Address extends Model
           $customer = Company::create(['name' => ucwords($request['company']),'type' => $transaction]);
           Address::create([
             'company_id' => $customer['id'],
-            'name' => 'primary',
+            'name' => $type,
             'address' => ucwords($request[$type]),
             'phone' => $request['phone'],
           ]);
@@ -35,7 +35,7 @@ class Address extends Model
           $customer = Company::SearchID(ucwords($request['company']))->first();
           Address::create([
             'company_id' => $customer['id'],
-            'name' => 'primary',
+            'name' => $type,
             'address' => ucwords(strtolower($request[$type])),
             'phone' => $request['phone'],
           ]);

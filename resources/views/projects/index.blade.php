@@ -22,7 +22,8 @@
             <th>Capacity</th>
             <th>Client</th>
             <th>Location</th>
-            <th>Description</th>
+            <th>Progress</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -34,7 +35,26 @@
               <td>{{ $data->capacity }} {{ $data->unit }}</td>
               <td>{{ $data->companies->name }}</td>
               <td>{{ $data->location }}</td>
-              <td>{{ $data->description }}</td>
+              <td>
+                @if($data->surveyor != null)
+                <span class="btn btn-warning">
+                {{ ($data->surveyor != null)?'Surveyors':'' }}
+                </span>
+                @endif
+                @if($data->designer != null)
+                <span class="btn btn-success">
+                  {{ ($data->designer != null)?'Designers':'' }}
+                </span>
+                @endif
+              </td>
+              @if($data->status == 'On Progress')
+                @php $status = 'alert alert-secondary'; @endphp
+              @elseif($data->status == 'Finish')
+                @php $status = 'alert alert-success'; @endphp
+              @else
+                @php $status = 'alert alert-danger'; @endphp
+              @endif
+              <td class="{{ $status }} text-center pt-3"><b>{{ $data->status }}<b></td>
               <td>
                 <a href="{{ route('projects.show',$data->id) }}" class="btn btn-secondary">Info</a>
               </td>

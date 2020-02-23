@@ -7,6 +7,16 @@
 <li class="breadcrumb-item active">Projects Edit</li>
 @endsection
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <form action="{{ route('projects.update',$project->id) }}" method="post">
   {{ csrf_field() }}
   {{ method_field('PUT') }}
@@ -39,15 +49,28 @@
             </span>
         @enderror
       </div>
-      <!-- <div class="form-group">
-        <label for="inputStatus">Status</label>
-        <select class="form-control custom-select">
-          <option selected="" disabled="">Select one</option>
-          <option>On Hold</option>
-          <option>Canceled</option>
-          <option>Success</option>
-        </select>
-      </div> -->
+      <div class="form-group">
+        <label for="inputName">Project Capacity</label>
+        <div class="form-inline">
+          <input type="number" name="capacity" class="form-control @error('capacity') is-invalid @enderror" value="{{ old('capacity',$project->capacity) }}">
+          @error('capacity')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
+          @php $unit = ['W','KW','MW']; @endphp
+          <select class="form-control @error('unit') is-invalid @enderror" name="unit">
+            @foreach($unit as $key => $data)
+            <option value="{{ $data }}" @if($data == $project->unit) selected @endif>{{ $data }}</option>
+            @endforeach
+          </select>
+          @error('unit')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
+        </div>
+      </div>
       <div class="form-group">
         <label for="inputClientCompany">Customer</label>
         <input type="text" name="customer" class="form-control @error('customer') is-invalid @enderror" value="{{ old('customer',$project->companies->name) }}">
@@ -57,10 +80,45 @@
             </span>
         @enderror
       </div>
-      <!-- <div class="form-group">
-        <label for="inputProjectLeader">Project Leader</label>
-        <input type="text" id="inputProjectLeader" class="form-control">
-      </div> -->
+      @foreach($project->companies->addresses as $data)
+        @if($data->name == 'billTo')
+          @php
+            $billTo = $data->address;
+            $phone = $data->phone;
+          @endphp
+        @elseif($data->name == 'shipTo')
+          @php
+            $shipTo = $data->address;
+          @endphp
+        @endif
+      @endforeach
+      <div class="form-group">
+        <label for="inputClientCompany">Bill To</label>
+        <input type="text" name="billTo" class="form-control @error('billTo') is-invalid @enderror" value="{{ old('billTo',$billTo) }}">
+        @error('billTo')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+      </div>
+      <div class="form-group">
+        <label for="inputClientCompany">Ship To</label>
+        <input type="text" name="shipTo" class="form-control @error('shipTo') is-invalid @enderror" value="{{ old('shipTo',$shipTo) }}">
+        @error('shipTo')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+      </div>
+      <div class="form-group">
+        <label for="inputClientCompany">Phone</label>
+        <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone',$phone) }}">
+        @error('phone')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+      </div>
       <div class="form-group">
         <button type="submit" class="btn btn-warning col-12" name="button">Update Project</button>
       </div>
@@ -68,4 +126,13 @@
     <!-- /.card-body -->
   </div>
 </form>
+<div class="card">
+  <div class="card-body">
+    <form action="{{ route('projects.destroy', $project->id)}}" method="post">
+      {{ csrf_field() }}
+      {{ method_field('DELETE') }}
+      <button class="btn btn-outline-danger col-12" type="submit">Delete</button>
+    </form>
+  </div>
+</div>
 @endsection

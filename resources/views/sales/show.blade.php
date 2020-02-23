@@ -8,7 +8,7 @@
 <li class="breadcrumb-item active">Sales Info</li>
 @endsection
 @section('content')
-@if(Auth::user()->role == 'SaleSPV')
+@can('approve',App\Sale::class)
   @if($sale->supervisor_id == null)
   <div class="row justify-content-start">
     <div class="col-2 text-left mb-2">
@@ -22,20 +22,22 @@
     </div>
   </div>
   @endif
-@endif
+@endcan
 @if($sale->user_id == Auth::user()->id)
 <div class="row justify-content-end">
   <div class="col-2 text-right  mb-2">
     @if($sale->supervisor_id != null)
     <a href="#" class="btn btn-primary">Make Invoice</a>
     @endif
+    @if($sale->supervisor_id == null)
     <a href="{{ route('sales.edit',$sale->id) }}" class="btn btn-warning">Edit</a>
+    @endif
   </div>
 </div>
 @endif
 <div class="card card-default">
   <div class="card-header">
-    <h3 class="card-title">Sales SO-{{ $sale->so }}</h3>
+    <h3 class="card-title">Sales SO-{{ $sale->so }}/R{{ $sale->version }}</h3>
   </div>
   <div class="card-body">
     <div class="row">

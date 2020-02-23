@@ -51,19 +51,21 @@ class ProjectController extends Controller
           'location' => 'required',
           'description' => 'max:191',
           'company' => 'required',
-          'address' => 'required',
+          'billTo' => 'required',
+          'shipTo' => 'required',
           'phone' => '',
           'capacity' => 'required|numeric|min:1',
           'unit' => 'required',
         ]);
-        $company = Address::SearchOrInsert($data, 'address', 'customer');
+        $billTo = Address::SearchOrInsert($data,'billTo', 'customer');
+        $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
         Project::create([
           'name' => $data['name'],
           'location' => $data['location'],
           'description' => $data['description'],
           'capacity' => $data['capacity'],
           'unit' => $data['unit'],
-          'company_id' => $company['id'],
+          'company_id' => $billTo['id'],
           'user_id' => Auth::user()->id,
         ]);
         return redirect(action('ProjectController@index'));
@@ -135,7 +137,10 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-      $this->authorize('view',$project);
-        //
+      $this->authorize('delete',$project);
+      Project::find($project->id)->update([
+        'status' => 'Canceled'
+      ]);
+      return redirect(action('ProjectController@index'));
     }
 }

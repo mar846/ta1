@@ -8,8 +8,16 @@
 <li class="breadcrumb-item active">Sales Edit</li>
 @endsection
 @section('content')
-{{ $sale }}
-<form action="{{ route('sales.update',$sale->id) }}" method="post">
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+<form action="{{ route('sales.update',$sale->projects->id) }}" method="post">
   {{ method_field('PUT') }}
   {{ csrf_field() }}
   <div class="card card-default">
@@ -20,35 +28,41 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Date</label>
+            <label class="col-sm-2 col-form-label">Project</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control-plaintext border rounded pl-3" name="created_at" value="{{ old('created_at',date('Y-m-d', strtotime($sale->created_at))) }}">
+              <p class="form-control">{{ $sale->projects->name }}</p>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Customer</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control-plaintext border rounded pl-3" name="customer" value="{{ old('customer',$sale->bills->companies->name) }}">
+              <p class="form-control">{{ $sale->bills->companies->name }}</p>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Bill To</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control-plaintext border rounded pl-3" name="billTo" value="{{ old('billTo',$sale->bills->address) }}">
+              <p class="form-control">{{ $sale->bills->address }}</p>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-sm-2 col-form-label">Ship To</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control-plaintext border rounded pl-3" name="shipTo" value="{{ old('shipTo',$sale->ships->address) }}">
+              <p class="form-control">{{ $sale->ships->address }}</p>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Valid Till</label>
+            <div class="col-sm-10">
+              <input type="date" name="validTill" class="form-control" max="{{ date('Y-m-d',time()+(86400*30)) }}">
+            </div>
+          </div>
+          <div class="form-group row">
             <label class="col-sm-2 col-form-label">Reference</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control-plaintext border rounded pl-3" name="reference" value="{{ old('reference',$sale->reference) }}">
+              <p class="form-control">{{ $sale->reference }}</p>
             </div>
           </div>
           <div class="form-group row">
@@ -80,21 +94,23 @@
             <th>Subtotal</th>
           </thead>
           <tbody>
-            @foreach($sale->goods as $data)
+            @foreach($sale->goods as $key => $data)
               <tr>
                 <td>{{ $data->name }}</td>
-                <td>{{ $data->pivot->qty }} {{ $data->units->name }}</td>
-                <td>IDR. {{ number_format($data->pivot->price, 2, ',', '.') }}</td>
-                <td>IDR. {{ number_format($data->pivot->subtotal, 2, ',', '.') }}</td>
+                <td>
+                  {{ $data->pivot->qty }} {{ $data->units->name }}
+                  <input type="hidden" name="qty{{ $key }}" class="form-control" value="{{ old('qty.$key',$data->pivot->qty) }}" id="qty{{ $key }}">
+                </td>
+                <td>
+                  <input type="number" name="price{{ $key }}" class="form-control" value="{{ old('price.$key',$data->pivot->price) }}" onkeyup="calculate(this)" id="price{{ $key }}">
+                </td>
+                <td>
+                  <p class="form-control" id="subTotalShow{{ $key }}">{{ $data->pivot->subtotal }}</p>
+                  <input type="hidden" name="price{{ $key }}" class="form-control" value="{{ old('subtotal.$key',$data->pivot->subtotal) }}" id="subtotal{{ $key }}">
+                </td>
               </tr>
             @endforeach
           </tbody>
-          <tfoot>
-            <tr>
-              <th colspan="3" class="text-right">Total</th>
-              <th>IDR. {{ number_format($sale->total, 2, ',', '.') }}</th>
-            </tr>
-          </tfoot>
         </table>
       </div>
       <button type="submit" class="btn btn-warning col-12" name="button">Update</button>
@@ -107,5 +123,13 @@
   $(document).ready(function() {
        $('#table').DataTable();
   });
+  function calculate(id) {
+    var row = id.name.substring(id.name.length-1,id.name.length);
+    // console.log($('#qty'+row).val());
+    var subtotal = $('#qty'+row).val()*1 * $('#price'+row).val()*1;
+    $('#subtotal'+row).val(subtotal);
+    $('#subTotalShow'+row).html('');
+    $('#subTotalShow'+row).html(subtotal);
+  }
 </script>
 @endsection

@@ -7,7 +7,16 @@
 <li class="breadcrumb-item active">Edit Designers</li>
 @endsection
 @section('content')
-@section('content')
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <form action="{{ route('designers.update',$designer->id) }}" method="post" enctype="multipart/form-data">
   {{ method_field('PUT') }}
   {{ csrf_field() }}
@@ -19,21 +28,24 @@
         </div>
         <div class="form-group d-flex flex-column">
           <label for="exampleInputFile">File input</label>
-          <input type="file" name="files" multiple>
-          <!-- <div class="input-group">
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="exampleInputFile">
-              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-            </div>
-            <div class="input-group-append">
-              <span class="input-group-text" id="">Upload</span>
-            </div>
-          </div> -->
+          <input type="file" name="files[]" multiple>
+          <label for="exampleInputFile">Files</label>
+          <div class="form-group">
+            @foreach($designer->projects->files as $data)
+              @if($data->type == 'designer')
+              <div class="card float-left mr-3" style="width: 10rem;">
+                <i class="fas fa-file-image col-12 pt-3 pl-4" style="font-size: 130px;"></i>
+                <div class="card-body">
+                  <h5 class="card-text">{{ $data->name }}</h5>
+                   <a href="{{ url('storage/'.$data->name) }}" class="btn btn-primary">Preview</a>
+                   <button type="button" name="button{{ $data->id }}" id="{{ $data->id }}" onclick="deleteFile(this)" class="btn btn-outline-danger">Delete</button>
+                </div>
+              </div>
+              @endif
+            @endforeach
+          </div>
         </div>
         <label>Items</label>
-        @foreach($designer->goods as $key => $data)
-        {{ $data->name }}<br><br>
-        @endforeach
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -45,12 +57,17 @@
           <tbody id="tableItem">
             @foreach($designer->goods as $key => $data)
               <tr>
-                <td><input type="text" name="item{{ $key }}" class="form-control" list="dataGoods" value="{{ old('item.$key',$data->name) }}" disabled></td>
+                <td>
+                  <label class="form-control">{{ $data->name }}</label>
+                  <input type="hidden" name="item{{ $key }}" class="form-control" list="dataGoods" value="{{ old('item.$key',$data->name) }}">
+
+                </td>
                 <td>
                   <div class="input-group mb-2">
-                    <input type="number" class="form-control" name="qty{{ $key }}" onkeyup="calculate(this)" id="qty{{ $key }}" value="{{ old('qty.$key',$data->pivot->qty) }}" disabled>
+                    <input type="number" class="form-control" name="qty{{ $key }}" onkeyup="calculate(this)" id="qty{{ $key }}" value="{{ old('qty.$key',$data->pivot->qty) }}">
                     <div class="input-group-prepend">
-                      <input type="text" name="unit{{ $key }}" class="input-group-text" id="unit{{ $key }}" list="dataUnits" value="{{ old('unit.$key',$data->units->name) }}" disabled>
+                      <label class="input-group-text">{{ $data->units->name }}</label>
+                      <input type="hidden" name="unit{{ $key }}" class="input-group-text" id="unit{{ $key }}" list="dataUnits" value="{{ old('unit.$key',$data->units->name) }}">
                     </div>
                   </div>
                 </td>
@@ -96,6 +113,13 @@ function deleteRow(id) {
   console.log(id);
   var row = id.name.substring(id.name.length-1,id.name.length);
   $('#button'+row).closest('tr').remove();
+}
+function deleteFile(id) {
+  $.post("{{ route('deleteFile') }}",{id:id.id, _token:'{{ Session::token() }}'},function(data){
+    if (data == 1){
+      window.location.reload(); // This is not jQuery but simple plain ol' JS
+    }
+  });
 }
 </script>
 @endsection

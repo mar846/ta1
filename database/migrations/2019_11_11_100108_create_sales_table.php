@@ -27,6 +27,7 @@ class CreateSalesTable extends Migration
             $table->string('paymentTerms');
             $table->string('deliveryTime');
             $table->string('downPayment');
+            $table->integer('version');
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
             $table->unsignedBigInteger('user_id');

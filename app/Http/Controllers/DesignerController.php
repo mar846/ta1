@@ -54,7 +54,6 @@ class DesignerController extends Controller
       $this->authorize('create',Designer::class);
       $data = $request->validate([
         'project' => 'required|numeric',
-        'files' => 'file',
         'totalItem' => 'required|numeric',
       ]);
       $itemRules=[];
@@ -69,12 +68,21 @@ class DesignerController extends Controller
         'user_id' => Auth::user()->id,
       ]);
       if ($request->hasFile('files')) {
-        File::create([
-          'name' => $request->file('files')->store('designers','public'),
-          'type' => 'designer',
-          'project_id' => $data['project'],
-          'user_id' => Auth::user()->id,
-        ]);
+        $allowedfileExtension=['pdf','jpg','png','docx','png','xlsx'];
+        $files = $request->file('files');
+        foreach ($files as $key => $value) {
+          $filename = $value->getClientOriginalName();
+          $extention = $value->getClientOriginalExtension();
+          $check = in_array($extention,$allowedfileExtension);
+          if ($check) {
+            File::create([
+              'name' => $value->store('designers','public'),
+              'type' => 'designer',
+              'project_id' => $data['project'],
+              'user_id' => Auth::user()->id,
+            ]);
+          }
+        }
       }
       for ($i=0; $i < $data['totalItem'] ; $i++) {
         if ($itemData['item'.$i] != '') {
@@ -89,6 +97,7 @@ class DesignerController extends Controller
           ]);
         }
       }
+      Project::find($data['project'])->update(['designer'=>$designer->id]);
       return redirect(action('DesignerController@show',$designer));
     }
 
@@ -144,6 +153,7 @@ class DesignerController extends Controller
         if (isset($itemData['item'.$i])) {
           if ($itemData['item'.$i] != null) {
             $good = Good::SearchOrInsert($itemData,$i,'Product');
+            $designer->goods()->detach($good['id']);
             $designer->goods()->syncWithoutDetaching([
               $good['id'] => [
                 'qty' => $itemData['qty'.$i],
@@ -192,9 +202,9 @@ class DesignerController extends Controller
       ]);
       return redirect(action('DesignerController@index'));
     }
-    public function getDesignerData()
+    public function getDesignerData(Request $request)
     {
-      $designer = Designer::with(['goods.units'])->where('id','1')->get();
+      $designer = Designer::with(['goods.units'])->where('project_id',$request['id'])->get();
       return response()->json($designer);
     }
     public function getProjectDetail(Request $request)

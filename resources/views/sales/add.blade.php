@@ -9,10 +9,10 @@
 @endsection
 @section('content')
 <div class="m-3">
-  <form action="{{ route('sales.store') }}" method="post">
+  <form action="{{ route('quotation') }}" method="get">
     {{ csrf_field() }}
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-12">
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Project</label>
           <div class="col-sm-10">
@@ -20,15 +20,17 @@
               <option>Choose Project</option>
               @foreach($project as $data)
                 @foreach($data->designers as $datas)
-                  @if($datas->supervisor_id != null)
-                    <option value="{{ $data->id }}">{{ $data->name }}</option>
+                  @if(count($data->sales) == 0)
+                    @if($datas->supervisor_id != null)
+                      <option value="{{ $data->id }}">{{ $data->name }}</option>
+                    @endif
                   @endif
                 @endforeach
               @endforeach
             </select>
           </div>
         </div>
-        <div class="form-group row">
+        <!-- <div class="form-group row">
           <label class="col-sm-2 col-form-label">Customer</label>
           <div class="col-sm-10">
             <input type="text" class="form-control @error('company') is-invalid @enderror" name="company" value="{{ old('company') }}" list="dataCustomer" id="company">
@@ -61,17 +63,6 @@
             @enderror
           </div>
         </div>
-        <!-- <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Address</label>
-          <div class="col-sm-10">
-            <textarea name="address" id="address" class="form-control @error('address') is-invalid @enderror" rows="8" cols="80">{{ old('address') }}</textarea>
-            @error('capacity')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-          </div>
-        </div> -->
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Phone</label>
           <div class="col-sm-10">
@@ -82,9 +73,9 @@
                 </span>
             @enderror
           </div>
-        </div>
+        </div> -->
       </div>
-      <div class="col-md-6">
+      <!-- <div class="col-md-6">
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Valid Till</label>
           <div class="col-sm-10">
@@ -145,21 +136,11 @@
         </tr>
       </tfoot>
     </table>
-    <input type="hidden" name="totalItem" id="totalItem" value="0">
-    <button type="submit" class="btn btn-success col-12" name="button">Create Sale</button>
+    <input type="hidden" name="totalItem" id="totalItem" value="0"> -->
+    <button type="submit" class="btn btn-success col-12">Search Sale</button>
   </form>
 </div>
-<datalist id="dataCustomer">
-  @foreach($company as $data)
-    <option value="{{ $data->name }}">
-  @endforeach
-</datalist>
-<datalist id="addresses"></datalist>
-<datalist id="dataGoods">
-  @foreach($good as $data)
-    <option value="{{ $data->name }}">
-  @endforeach
-</datalist>
+</div>
 @endsection
 @section('script')
 <script type="text/javascript">
@@ -201,12 +182,12 @@
         $('#addresses').append('<option value="' + data[i].address + '">');
       }
       $('#phone').val(data.phone);
-      getDesignerData();
+      getDesignerData(name.value);
     });
   }
-  function getDesignerData() {
-    $.post("{{ route('getDesignerData') }}",{id:name.value,_token:'{{ Session::token() }}'},function(data){
-      console.log(data[0].goods);
+  function getDesignerData(id) {
+    $.post("{{ route('getDesignerData') }}",{id:id,_token:'{{ Session::token() }}'},function(data){
+      console.log(data);
       for (var i = 0; i < data[0].goods.length; i++) {
         console.log(data[0].goods[i].name);
         $('#tableItem').html();

@@ -30,7 +30,6 @@
           <td>
             @can('view',$data)
             <a href="{{ route('companies.show',[$data->id]) }}" class="btn btn-info">Info</a>
-            <a href="{{ route('companies.edit',[$data->id]) }}" class="btn btn-warning">Edit</a>
             @endcan
           </td>
         </tr>

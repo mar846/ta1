@@ -49,7 +49,6 @@ class SurveyorController extends Controller
       $checklistTotal = Checklist::count();
       $data = $request->validate([
         'project' => 'required|numeric',
-        'file' => 'nullable|file|image|max:2000',
       ]);
       $itemRules=[];
       for ($i=0; $i < Checklist::count(); $i++) {
@@ -60,22 +59,40 @@ class SurveyorController extends Controller
         'project_id' => $data['project'],
         'user_id' => Auth::user()->id,
       ]);
-      if ($request->hasFile('file')) {
-        File::create([
-          'name' => $request->file('file')->store('uploads','public'),
-          'type' => 'surveyor',
-          'project_id' => $data['project'],
-          'user_id' => Auth::user()->id,
-        ]);
-      }
-      for ($i=0; $i < Checklist::count(); $i++) {
+      for ($i=0; $i < $checklistTotal; $i++) {
+        $photoID = '';
+        if ($request->hasFile('file'.$i)) {
+          $allowedfileExtension=['jpg','png'];
+          $photos = $request->file('file'.$i);
+          foreach ($photos as $key => $photo) {
+            $filename = $photo->getClientOriginalName();
+            $extention = $photo->getClientOriginalExtension();
+            $check = in_array($extention,$allowedfileExtension);
+            if ($check) {
+              $photos = $request->file('files');
+              $filename = $photo->store('library');
+              $file = File::create([
+                'name' => $photo->store('surveyors','public'),
+                'type' => 'surveyor',
+                'project_id' => $data['project'],
+                'user_id' => Auth::user()->id,
+              ]);
+              if ($key > 0) {
+                $photoID .= ', ';
+              }
+              $photoID .= $file->id;
+            }
+          }
+        }
         $surveyor->checklists()->attach([
           $i+1 => [
             'answer' => $itemData['answer'.$i],
+            'files' => $photoID,
             'created_at' => now(),
             'updated_at' => now(),
           ]
         ]);
+        Project::find($data['project'])->update(['surveyor'=>$surveyor->id]);
       }
       return redirect(action('SurveyorController@show',$surveyor->id));
     }
@@ -89,7 +106,8 @@ class SurveyorController extends Controller
     public function show(Surveyor $surveyor)
     {
       $surveyor = Surveyor::find($surveyor->id);
-      return view('surveyors.show', compact('surveyor'));
+      $file = File::all();
+      return view('surveyors.show', compact('surveyor','file'));
     }
 
     /**

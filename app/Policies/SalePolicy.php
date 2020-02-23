@@ -107,4 +107,18 @@ class SalePolicy
     {
         //
     }
+    public function approve(User $user)
+    {
+      return in_array($user->role_id,[
+        '1',
+        '10',
+      ]);
+    }
+    public function approval(User $user, Sale $sale)
+    {
+      return in_array($user->role_id,[
+        '1',
+        '10',
+      ]);
+    }
 }

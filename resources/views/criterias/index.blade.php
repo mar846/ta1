@@ -7,7 +7,7 @@
 @endsection
 @section('content')
 <!-- <div class="row justify-content-left px-3 pb-3"> -->
-  <a href="{{ route('criterias.create') }}" class="btn btn-primary">Add Criteria</a>
+  <!-- <a href="{{ route('criterias.create') }}" class="btn btn-primary">Add Criteria</a> -->
 <!-- </div> -->
 <table class="table table-hover" id="table">
   <thead>
@@ -23,7 +23,6 @@
       <td>{{ $data->name }}</td>
       <td>{{ $data->weight }}</td>
       <td>
-        {{ $data->id }}
         <a href="{{ route('criterias.edit',$data->id) }}" class="btn btn-warning">Edit</a>
       </td>
     </tr>

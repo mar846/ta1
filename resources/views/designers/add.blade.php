@@ -17,7 +17,7 @@
             <option>Choose Project</option>
             @foreach($project as $data)
               @foreach($data->surveyors as $datas)
-                @if($datas->supervisor_id != null)
+                @if($datas->supervisor_id != null && $data->designer == null)
                   <option value="{{ $data->id }}">{{ $data->name }}</option>
                 @endif
               @endforeach
@@ -26,16 +26,7 @@
         </div>
         <div class="form-group d-flex flex-column">
           <label for="exampleInputFile">File input</label>
-          <input type="file" name="files" multiple>
-          <!-- <div class="input-group">
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="exampleInputFile">
-              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-            </div>
-            <div class="input-group-append">
-              <span class="input-group-text" id="">Upload</span>
-            </div>
-          </div> -->
+          <input type="file" name="files[]" multiple>
         </div>
         <label>Items</label>
         <table class="table table-bordered">
@@ -48,7 +39,7 @@
           </thead>
           <tbody id="tableItem">
             <!-- <tr>
-              <td><input type="text" name="item0" class="form-control" placeholder="@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" list="dataGoods"></td>
+              <td><input type="text" name="item" + i + "" class="form-control" placeholder="@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" list="dataGoods"></td>
               <td>
                 <div class="input-group mb-2">
                   <input type="number" class="form-control" name="qty0" placeholder="1" onkeyup="calculate(this)" id="qty0">
@@ -84,7 +75,7 @@
 @endsection
 @section('script')
 <script type="text/javascript">
-var i = 1;
+var i = 0;
 function addRow() {
   $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' placeholder='@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' placeholder='@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
   i+=1;
@@ -100,7 +91,15 @@ function getProjectDetail(id) {
   $.post("{{ route('getProjectDetail') }}",{id:id.value, _token:'{{ Session::token() }}'},function(data){
     console.log(data);
     $('#tableItem').html('');
-    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.name + "'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.qty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.unit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.panel + "'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.panelqty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.panelunit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tQ>");
+    i++;
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.inverter+ "'></td><td><div class='input-group mb-2'><input Qype='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.inverterQty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.inverterUnit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+    i++;
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.pvCombiner+ "'></td><td><div class='input-group mb-2'><input Qype='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.pvCombinerQty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.pvCombinerUnit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+    i++;
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.sunLogger+ "'></td><td><div class='input-group mb-2'><input Qype='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.sunLoggerQty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.sunLoggerUnit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+    i++;
+    $('#totalItem').val(i);
   });
 }
 </script>

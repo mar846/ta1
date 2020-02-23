@@ -20,6 +20,8 @@ class CompanyPolicy
     {
       return in_array($user->role_id,[
         '1',
+        '8',
+        '9',
       ]);
     }
 
@@ -34,6 +36,8 @@ class CompanyPolicy
     {
       return in_array($user->role_id,[
         '1',
+        '8',
+        '9',
       ]);
     }
 
@@ -47,6 +51,8 @@ class CompanyPolicy
     {
       return in_array($user->role_id,[
         '1',
+        '8',
+        '9',
       ]);
     }
 
@@ -61,6 +67,7 @@ class CompanyPolicy
     {
       return in_array($user->role_id,[
         '1',
+        '9',
       ]);
     }
 

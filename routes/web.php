@@ -16,6 +16,7 @@ Route::get('/invoice',function(){
   return view('prints.invoice');
 });
 
+Route::get('electre', 'CriteriaController@electre');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', function () {
     return view('home');
@@ -30,6 +31,8 @@ Route::get('designerDisapproval/{id}','DesignerController@disapprove')->name('de
 Route::post('getDesignerData','DesignerController@getDesignerData')->name('getDesignerData');
 Route::post('deleteDesignerGood','DesignerController@deleteGood')->name('deleteDesignerGood');
 Route::post('getProjectDetail','CriteriaController@electre')->name('getProjectDetail');
+
+Route::post('deleteFile','FileController@deleteFile')->name('deleteFile');
 
 Route::get('goodReceipt','GoodController@goodReceiptPage');
 Route::get('goodDeliver','GoodController@goodDeliverPage');
@@ -49,6 +52,8 @@ Route::get('reports/{page}','ReportController@show')->name('reportPage');
 
 Route::get('saleApproval/{id}','SaleController@approve')->name('saleApproval');
 Route::get('saleDisapproval/{id}','SaleController@disapprove')->name('saleDisapproval');
+// Route::post('questionPage','SaleController@quotationPage')->name('quotationPage');
+Route::get('quotation/','SaleController@quotation')->name('quotation');
 
 Route::get('surveyorApproval/{id}','SurveyorController@approve')->name('surveyorApproval');
 Route::get('surveyorDisapproval/{id}','SurveyorController@disapprove')->name('surveyorDisapproval');
@@ -60,6 +65,7 @@ Route::resource('checklists','ChecklistController')->middleware('auth');
 Route::resource('companies', 'CompanyController')->middleware('auth');
 Route::resource('criterias', 'CriteriaController')->middleware('auth');
 Route::resource('designers', 'DesignerController')->middleware('auth');
+Route::resource('files', 'FileController')->middleware('auth');
 Route::resource('goods','GoodController')->middleware('auth');
 Route::resource('projects', 'ProjectController')->middleware('auth');
 Route::resource('purchases', 'PurchaseController')->middleware('auth');

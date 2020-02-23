@@ -11,6 +11,7 @@ use App\Good;
 use App\Warehouse;
 use App\Purchase;
 use App\Sale;
+use App\Specification;
 use App\Type;
 use App\Unit;
 
@@ -41,7 +42,8 @@ class GoodController extends Controller
       $company = Company::all();
       $warehouse = Warehouse::all();
       $type = Type::all();
-      return view('goods.add', compact('company', 'warehouse','type'));
+      $unit = Unit::all();
+      return view('goods.add', compact('company', 'warehouse','type','unit'));
     }
 
     /**
@@ -53,14 +55,42 @@ class GoodController extends Controller
     public function store(Request $request)
     {
       $this->authorize('create',Good::class);
-      $validator = $request->validate([
+      $data = $request->validate([
         'name'=>'required|unique:goods',
-        'description'=>'string',
-        'qty' => 'numeric|min:0',
-        'company'=>'required|numeric',
-        'warehouse'=>'required|numeric',
+        'unit'=>'required|numeric',
+        'type'=>'required|numeric',
+        'price'=>'required|numeric',
+        'description'=>'',
+        'supplier'=>'required',
+        'capacity' => 'nullable|numeric|min:1',
+        'minVolt' => 'nullable|numeric',
+        'maxVolt' => 'nullable|numeric|min:1',
+        'efficiency' => 'nullable|numeric|min:1|max:100',
+        'safetyMargin' => 'nullable|numeric|min:1|max:100',
       ]);
-      Good::create($validator);
+      $good = Good::create([
+        'name' => $data['name'],
+        'unit_id' => $data['unit'],
+        'price' => $data['price'],
+        'capacity' => $data['capacity'],
+        'description' => $data['description'],
+        'type_id' => $data['type'],
+      ]);
+      if ($data['supplier'] != null) {
+        $good->companies()->attach($data['supplier']);
+      }
+      if ($data['type'] == 'Panel' || $data['type'] == 'Inverter') {
+        if ($data['maxVolt'] != null || $data['efficiency'] != null || $data['capacity'] != null) {
+          Specification::create([
+            'capacity' => $data['capacity'],
+            'maxVolt' => $data['maxVolt'],
+            'minVolt' => $data['minVolt'],
+            'efficiency' => $data['efficiency'],
+            'safetyMargin' => $data['safetyMargin'],
+            'good_id' => $good->id
+          ]);
+        }
+      }
       return redirect(action('GoodController@index'));
     }
 
@@ -73,7 +103,7 @@ class GoodController extends Controller
     public function show(Good $good)
     {
       $this->authorize('view',$good);
-      $good = Good::with(['units','types'])->find($good->id);
+      $good = Good::with(['companies','units','types','spec'])->find($good->id);
       return view('goods.show',compact('good'));
     }
 
@@ -86,10 +116,11 @@ class GoodController extends Controller
     public function edit(Good $good)
     {
       $this->authorize('update',$good);
-      $good = Good::find($good->id);
+      $good = Good::with(['companies','units','types','spec'])->find($good->id);
       $unit = Unit::all();
+      $company = Company::all();
       $type = Type::all();
-      return view('goods.edit',compact('good', 'unit','type'));
+      return view('goods.edit',compact('good', 'unit','type','company'));
     }
 
     /**
@@ -104,20 +135,35 @@ class GoodController extends Controller
       $this->authorize('update',$good);
       $data = $request->validate([
         'name' => 'required|max:191',
-        'qty' => 'required|numeric|min:0',
         'unit' => 'required|numeric',
         'type' => 'required',
         'price' => '',
+        'description' => '',
+        'capacity' => 'nullable|numeric|min:1',
+        'minVolt' => 'nullable|numeric',
+        'maxVolt' => 'nullable|numeric|min:1',
+        'efficiency' => 'nullable|numeric|min:1|max:100',
+        'safetyMargin' => 'nullable|numeric|min:1|max:100',
       ]);
       Good::find($good->id)->update([
           'name' => $data['name'],
-          'qty' => $data['qty'],
           'unit_id' => $data['unit'],
           'type_id' => $data['type'],
           'price' => $data['price'],
+          'capacity' => $data['capacity'],
           'updated_at' => now(),
       ]);
-      return redirect(action('GoodController@show',$good->id));
+      if ($data['maxVolt'] != null || $data['efficiency'] != null || $data['capacity'] != null) {
+        Specification::where('good_id',$good['id'])->update([
+          'capacity' => $data['capacity'],
+          'maxVolt' => $data['maxVolt'],
+          'minVolt' => $data['minVolt'],
+          'efficiency' => $data['efficiency'],
+          'safetyMargin' => $data['safetyMargin'],
+          'good_id' => $good->id
+        ]);
+      }
+      return redirect(action('GoodController@index'));
     }
 
     /**

@@ -7,28 +7,38 @@
 <li class="breadcrumb-item active">Show Company</li>
 @endsection
 @section('content')
-@if ($errors->any())
-  @foreach ($errors->all() as $error)
-    <div class="alert alert-danger">{{ $error }}</div>
-  @endforeach
-@endif
-<div class="">
-  <div class="row justify-content-between mx-1 my-2">
-    <a href="{{ route('companies.edit',[$company->id]) }}"><button type="button" class="btn btn-warning" name="button">Edit</button></a>
+@can('update', $company)
+  <div class="row justify-content-end px-3 pb-3">
+    <a href="{{ route('companies.edit',$company->id) }}" class="btn btn-warning">Edit Company</a>
   </div>
-  <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Name</label>
-    <label>{{ $company->name }}</label>
-  </div>
-  @foreach($company->addresses as $data)
-  <div class="card my-3">
-    <h5 class="card-header">{{ $data->name }}</h5>
-    <div class="card-body">
-      <h6 class="card-subtitle mb-2 text-muted">{{ $data->phone }}</h6>
-      <p class="card-text">{{ $data->address }}</p>
-      <!-- <a href="{{ route('addresses.edit',$data->id) }}" class="btn btn-warning">Edit</a> -->
-    </div>
-  </div>
-  @endforeach
+@endcan
+<div class="form-group">
+  <label for="name">Name</label>
+  <p class="form-control">{{ $company->name }}</p>
 </div>
+<div class="form-group">
+  <label for="name">Type</label>
+  <p class="form-control">{{ ucwords($company->type) }}</p>
+</div>
+<label for="member">Address</label>
+<table class="table table-hover" id="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach($company->addresses as $data)
+      <tr>
+        <td>{{ $data->name }}</td>
+        <td>{{ $data->address }}</td>
+        <td>{{ $data->phone }}</td>
+        <td>{{ $data->phone }}</td>
+      </tr>
+    @endforeach
+  </tbody>
+</table>
 @endsection

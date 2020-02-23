@@ -14,10 +14,10 @@ class AddressTableSeeder extends Seeder
       $faker = Faker\Factory::create('id_ID');
       for ($i=0; $i < 7; $i++) {
         App\Address::create([
-          'company_id' => rand(1,4),
-          'name' => 'primary',
-          'address' => $faker->address,
-          'phone' => $faker->phoneNumber,
+          'company_id' => 1,
+          'name' => 'billTo',
+          'address' => 'Raya Genteng Lt. 2 Blok W No. 8, Surabaya',
+          'phone' => '0812 2231 2328',
         ]);
       }
     }

@@ -11,7 +11,7 @@ class Surveyor extends Model
   protected $guarded = [];
   public function checklists()
   {
-      return $this->belongsToMany('App\Checklist','checklist_surveyor','surveyor_id','checklist_id')->withPivot('answer');
+      return $this->belongsToMany('App\Checklist','checklist_surveyor','surveyor_id','checklist_id')->withPivot('answer','files');
   }
   public function projects()
   {

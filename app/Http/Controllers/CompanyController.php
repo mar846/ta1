@@ -45,24 +45,35 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-      $this->authorize('create', Company::class);
+
       $data = $request->validate([
-        'name' => 'required|unique:companies|max:191',
-        'address' => 'required|max:191',
-        'branch' => '',
-        'phone' => 'nullable|numeric',
-        'type'=>'required'
+        'name'=>'required|max:191',
+        'type'=>'required',
+        'addressName0'=>'required',
+        'address0'=>'required',
+        'phone0'=>'nullable',
       ]);
-      $insertCompany = Company::create([
+      if($data['type'] == 'customer'){
+        $dataRules = [
+          'addressName1'=>'required',
+          'address1'=>'required',
+          'phone1'=>'nullable',
+        ];
+        $data = $request->validate($dataRules);
+      }
+      $company = Company::create([
         'name' => $data['name'],
         'type' => $data['type'],
       ]);
-      $insertAddress = Address::create([
-        'company_id' => $insertCompany['id'],
-        'name' => $data['branch'],
-        'address' => $data['address'],
-        'phone' => $data['phone'],
-      ]);
+      $max = ($data['type'] == 'supplier')?1:2;
+      for ($i=0; $i < $max; $i++) {
+        Address::create([
+          'company_id' => $company->id,
+          'name' => $data['addressName'.$i],
+          'address' => $data['address'.$i],
+          'phone' => $data['phone'.$i],
+        ]);
+      }
       return redirect(action('CompanyController@index'));
     }
 
@@ -103,11 +114,28 @@ class CompanyController extends Controller
     {
       $this->authorize('update', $company);
       $data = $request->validate([
-        'name'=>'bail|required|max:191',
-        'address'=>'bail|required|max:191',
-        'phone'=>'bail|nullable',
+        'name'=>'required|max:191',
+        'type'=>'required',
+        'id0'=>'required|numeric',
+        'addressName0'=>'required',
+        'address0'=>'required',
+        'phone0'=>'nullable',
+        'id1'=>'required|numeric',
+        'addressName1'=>'required',
+        'address1'=>'required',
+        'phone1'=>'nullable',
       ]);
-      Company::find($company->id)->update($data);
+      Company::find($company->id)->update([
+        'name' => $data['name'],
+        'type' => $data['type'],
+      ]);
+      for ($i=0; $i < 2; $i++) {
+        Address::find($data['id'.$i])->update([
+          'name' => $data['addressName'.$i],
+          'address' => $data['address'.$i],
+          'phone' => $data['phone'.$i],
+        ]);
+      }
       return redirect(action('CompanyController@index'));
     }
 

@@ -15,51 +15,135 @@
 @endif
 <form action="{{ route('goods.store') }}" method="post">
   {{ csrf_field() }}
-  <div class="form-group row my-3">
-    <label class="col-sm-2 col-form-label">Name</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" placeholder="Solar Panel, Inverter, Sun Logger" name="name" value="{{ old('name') }}">
+  <div class="form-group row">
+    <label class="col-sm-1 col-form-label">Name</label>
+    <div class="col-sm-11">
+      <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Solar Panel, Inverter, Sun Logger" name="name" value="{{ old('name') }}">
+      @error('name')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
     </div>
   </div>
   <div class="form-group row">
-    <div class="col-sm-2">
-      <label class="col-form-label">QTY</label>
+    <div class="col-sm-1">
+      <label class="col-form-label">Unit</label>
     </div>
-    <div class="col-sm-2">
-      <input type="text" class="form-control" name="qty" placeholder="50" value="{{ old('qty') }}">
-    </div>
-    <div class="col-sm-2">
-      <input type="text" class="form-control" name="unit" placeholder="pce, pcs">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-sm-2 col-label-form">Description</label>
-    <div class="col-sm-10">
-      <textarea name="description" rows="8" cols="80" class="form-control">{{ old('description') }}</textarea>
+    <div class="col-sm-11">
+      <select class="form-control @error('qty') is-invalid @enderror" name="unit">
+        @foreach($unit as $data)
+          <option value="{{ $data->id }}">{{ $data->name }}</option>
+        @endforeach
+      </select>
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Supplier</label>
-    <div class="col-sm-10">
-      <input type="text" name="company" class="form-control" list="dataCompany">
-      <!-- <select class="form-control" name="company">
-        <option value="">Select Supplier</option>
+    <div class="col-sm-1">
+      <label class="col-form-label">Price</label>
+    </div>
+    <div class="col-sm-11">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Rp.</div>
+        </div>
+        <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}">
+        @error('price')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-1">
+      <label class="col-form-label">Type</label>
+    </div>
+    <div class="col-sm-11">
+      <select class="form-control @error('type') is-invalid @enderror" name="type">
+        @foreach($type as $data)
+          <option value="{{ $data->id }}">{{ $data->name }}</option>
+        @endforeach
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-1 col-label-form">Description</label>
+    <div class="col-sm-11">
+      <textarea name="description" rows="8" cols="80" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+      @error('description')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-1 col-form-label">Supplier</label>
+    <div class="col-sm-11">
+      <div class="form-check">
         @foreach($company as $data)
-          <option value="{{ $data->id }}">{{ $data->name }}</option>
+          @if($data->type == 'supplier')
+            <input type="checkbox" class="form-check-input" name="supplier[]" value="{{ $data->id }}">
+            <label class="form-check-label">{{  $data->name }}</label><br>
+          @endif
         @endforeach
-      </select> -->
+      </div>
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Storage Location</label>
-    <div class="col-sm-10">
-      <input type="text" name="warehouse" class="form-control" list="dataWarehouse">
-      <!-- <select class="form-control" name="warehouse">
-        <option value="">Select Warehouse</option>
-        @foreach($warehouse as $data)
-          <option value="{{ $data->id }}">{{ $data->name }}</option>
-        @endforeach
-      </select> -->
+    <label class="col-sm-1 col-label-form">Capacity</label>
+    <div class="col-sm-11">
+      <input type="number" class="form-control @error('capacity') is-invalid @enderror" name="capacity" placeholder="Capacity Wp" value="{{ old('capacity') }}">
+      @error('capacity')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-1 col-label-form">Minimum and Maximum Voltage</label>
+    <div class="form-row pl-3">
+      <div class="col">
+        <input type="number" class="form-control @error('minVolt') is-invalid @enderror" name="minVolt" placeholder="Minimum Volt" value="{{ old('minVolt') }}">
+        @error('minVolt')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+      </div>
+      <div class="col">
+        <input type="number" class="form-control @error('maxVolt') is-invalid @enderror" name="maxVolt" placeholder="Maximum Volt" value="{{ old('maxVolt') }}">
+        @error('maxVolt')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-1 col-label-form">Efficiency</label>
+    <div class="col-sm-11">
+      <input type="number" class="form-control @error('efficiency') is-invalid @enderror" name="efficiency" placeholder="Efficiency" value="{{ old('efficiency') }}">
+      @error('efficiency')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-1 col-label-form">Safety Margin</label>
+    <div class="col-sm-11">
+      <input type="number" class="form-control @error('safetyMargin') is-invalid @enderror" name="safetyMargin" placeholder="Safety Martgin in percentage" value="{{ old('safetyMargin') }}">
+      @error('safetyMargin')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
     </div>
   </div>
   <div class="form-group row">

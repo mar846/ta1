@@ -13,6 +13,10 @@ class Good extends Model
     {
       return $this->belongsTo('App\Type','type_id');
     }
+    public function spec()
+    {
+      return $this->hasOne('App\Specification');
+    }
     public function receipts()
     {
       return $this->belongsToMany('App\Purchase','good_receipt','good_id','purchase_id');
@@ -41,11 +45,11 @@ class Good extends Model
 
     public function scopeIsProduct($query)
     {
-      return $query->where('type','Product')->limit(5);
+      return $query->where('type_id','1')->limit(5);
     }
     public function scopeIsRaw($query)
     {
-      return $query->where('type','Raw')->limit(5);
+      return $query->where('type_id','1')->limit(5);
     }
     public function scopeSearchGood($query, $request)
     {
@@ -64,7 +68,7 @@ class Good extends Model
       if(Good::SearchGood($request['item'.$i])->first() == null){
         $unit = Unit::SearchOrInsert($request['unit'.$i]);
         return Good::create([
-          'name' => $request['item'.$i],
+          'name' => ucwords($request['item'.$i]),
           'unit_id' => $unit['id'],
           'price' => '5000',
         ]);

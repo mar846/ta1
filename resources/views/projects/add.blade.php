@@ -57,15 +57,6 @@
         </span>
     @enderror
   </div>
-  <!-- <div class="form-group">
-    <label for="inputStatus">Status</label>
-    <select class="form-control custom-select">
-      <option selected="" disabled="">Select one</option>
-      <option>On Hold</option>
-      <option>Canceled</option>
-      <option>Success</option>
-    </select>
-  </div> -->
   <div class="form-group">
     <label for="inputClientCompany">Customer</label>
     <input type="text" name="company" class="form-control @error('company') is-invalid @enderror" value="{{ old('company') }}">
@@ -76,9 +67,18 @@
     @enderror
   </div>
   <div class="form-group">
-    <label for="inputClientCompany">Address</label>
-    <textarea name="address" class="form-control @error('address') is-invalid @enderror" rows="3" cols="80">{{ old('address') }}</textarea>
-    @error('address')
+    <label for="inputClientCompany">Bill To</label>
+    <textarea name="billTo" class="form-control @error('billTo') is-invalid @enderror" rows="3" cols="80">{{ old('billTo') }}</textarea>
+    @error('billTo')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+  </div>
+  <div class="form-group">
+    <label for="inputClientCompany">Ship To</label>
+    <textarea name="shipTo" class="form-control @error('shipTo') is-invalid @enderror" rows="3" cols="80">{{ old('shipTo') }}</textarea>
+    @error('shipTo')
         <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>
         </span>

@@ -38,6 +38,7 @@
           <th>No</th>
           <th>Question</th>
           <th>Answer</th>
+          <th>Photos</th>
         </tr>
       </thead>
       <tbody>
@@ -46,6 +47,20 @@
             <td>{{ $data->id }}</td>
             <td>{{ $data->question }}</td>
             <td>{{ $data->pivot->answer }}</td>
+            <td>
+              <?php
+                $photos = explode(', ',$data->pivot->files);
+                foreach ($photos as $value) {
+                  foreach ($file as $image) {
+                    if ($value == $image->id) {
+                      ?>
+                      <a href="{{ asset('storage/'.$image->name) }}"><img src="{{ asset('storage/'.$image->name) }}" alt="" class="img-thumbnail" style="width:250px;"></a>
+                      <?php
+                    }
+                  }
+                }
+              ?>
+            </td>
           </tr>
         @endforeach
       </tbody>

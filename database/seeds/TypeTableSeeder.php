@@ -11,8 +11,15 @@ class TypeTableSeeder extends Seeder
      */
     public function run()
     {
-      $type = array(['name' => 'Panel'],['name' => 'Inverter'] );
-      for ($i=0; $i < 2; $i++) {
+      $type = array(
+        ['name' => 'Panel'],
+        ['name' => 'Inverter'],
+        ['name' => 'Kabel'],
+        ['name' => 'Panel Meter'],
+        ['name' => 'Trafo'],
+        ['name' => 'Jasa'],
+      );
+      for ($i=0; $i < 6; $i++) {
         App\Type::create($type[$i]);
       }
     }

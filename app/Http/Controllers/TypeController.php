@@ -46,7 +46,7 @@ class TypeController extends Controller
         $data = $request->validate([
           'name' => 'required|unique:types|max:191',
         ]);
-        Type::find($type->id)->update($data);
+        Type::create($data);
         return redirect(action('TypeController@index'));
     }
 

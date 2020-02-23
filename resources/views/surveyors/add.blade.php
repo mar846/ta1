@@ -19,7 +19,9 @@
         <select class="form-control @error('project') is-invalid @enderror" name="project">
           <option value="#">Choose Project</option>
           @foreach($project as $data)
-            <option value="{{ $data->id }}">{{ $data->name }}</option>
+            @if($data->surveyor == null && $data->status != 'Canceled')
+              <option value="{{ $data->id }}">{{ $data->name }}</option>
+            @endif
           @endforeach
         </select>
         @error('project')
@@ -43,7 +45,7 @@
               <td>{{ $data->id }}</td>
               <td>{{ $data->question }}</td>
               <td><input type="text" name="answer{{ $key }}" class="form-control" <?php echo (rand(0,1) == 1)? 'value="yes"':'value="no"'; ?>></td>
-              <td><input type="file" name="file{{ $key }}" class="form-control" accept="image/jpeg"></td>
+              <td><input type="file" name="file{{ $key }}[]" class="form-control" accept="image/*" multiple></td>
             </tr>
           @endforeach
         </tbody>

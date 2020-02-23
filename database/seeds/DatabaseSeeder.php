@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ChecklistTableSeeder::class);
         $this->call(CompanyTableSeeder::class);
         $this->call(AddressTableSeeder::class);
-        $this->call(ProjectTableSeeder::class);
+        // $this->call(ProjectTableSeeder::class);
         $this->call(UnitTableSeeder::class);
         $this->call(TypeTableSeeder::class);
-        $this->call(GoodTableSeeder::class);
+        // $this->call(GoodTableSeeder::class);
         $this->call(CriteriaTableSeeder::class);
     }
 }

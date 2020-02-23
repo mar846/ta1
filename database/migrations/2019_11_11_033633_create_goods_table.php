@@ -20,8 +20,7 @@ class CreateGoodsTable extends Migration
             $table->integer('qty')->default(0);
             $table->unsignedBigInteger('unit_id');
             $table->foreign('unit_id')->references('id')->on('units');
-            $table->integer('margin')->nullable();
-            $table->integer('leadTime')->nullable();
+            $table->double('profit')->default('1.2');
             $table->integer('price')->nullable();
             $table->integer('capacity')->nullable();
             $table->unsignedBigInteger('type_id')->nullable();

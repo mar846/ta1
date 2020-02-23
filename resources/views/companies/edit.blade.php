@@ -16,28 +16,48 @@
   <form action="{{ route('companies.update',[$company->id]) }}" method="post">
     {{ method_field('PUT') }}
     {{ csrf_field() }}
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Name</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="name" value="{{ $company->name }}">
-      </div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" name="name" class="form-control" value="{{ old('name',$company->name) }}">
     </div>
-    <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Address</label>
-      <div class="col-sm-10">
-        <textarea name="address" class="form-control" rows="8" cols="80">{{ $company->address }}</textarea>
-      </div>
+    <div class="form-group">
+      <label for="name">Type</label>
+      <?php $type = ['customer','supplier']; ?>
+      <select class="form-control" name="type">
+        @foreach($type as $tipe)
+          <option value="{{ $tipe }}" @if($tipe == $company->type) selected @endif>{{ ucwords($tipe) }}</option>
+        @endforeach
+      </select>
     </div>
+    <label for="member">Addresses</label>
+    <table class="table table-hover" id="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+      <?php $type = ['billTo','shipTo']; ?>
+        @foreach($company->addresses as $key => $data)
+          <tr>
+            <td>
+              <select class="form-control" name="addressName{{$key}}">
+                @foreach($type as $tipe)
+                  <option value="{{ $tipe }}" @if($tipe == $data->name) selected @endif>{{ $tipe }}</option>
+                @endforeach
+              </select>
+              <input type="hidden" name="id{{ $key }}" class="form-control" value="{{ $data->id }}">
+            </td>
+            <td><input type="text" name="address{{ $key }}" class="form-control" value="{{ old('address.$key', $data->address) }}"></td>
+            <td><input type="text" name="phone{{ $key }}" class="form-control" value="{{ old('phone.$key', $data->phone) }}"></td>
+          </tr>
+        @endforeach
+      </tbody>
+    </table>
     <div class="form-group row">
-      <label class="col-sm-2 col-form-label">Phone</label>
-      <div class="col-sm-10">
-        <input type="text" name="phone" class="form-control" value="{{ $company->phone }}">
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="col-12 text-right">
-        <button type="submit" class="btn btn-success" name="button">Update</button>
-      </div>
+      <button type="submit" class="btn btn-warning col-12" name="button">Update</button>
     </div>
   </form>
 </div>
