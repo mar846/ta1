@@ -30,120 +30,14 @@
             </select>
           </div>
         </div>
-        <!-- <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Customer</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control @error('company') is-invalid @enderror" name="company" value="{{ old('company') }}" list="dataCustomer" id="company">
-            @error('company')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Bill To</label>
-          <div class="col-sm-10">
-            <input type="text" name="billTo" class="form-control @error('billTo') is-invalid @enderror" value="{{ old('billTo') }}" list="addresses" id="billTo" onkeyup="address()">
-            @error('billTo')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Ship To</label>
-          <div class="col-sm-10">
-            <input type="text" name="shipTo" class="form-control @error('shipTo') is-invalid @enderror" value="{{ old('shipTo') }}" list="addresses" id="shipTo">
-            @error('shipTo')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Phone</label>
-          <div class="col-sm-10">
-            <input type="text" id="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}">
-            @error('phone')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-          </div>
-        </div> -->
       </div>
-      <!-- <div class="col-md-6">
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Valid Till</label>
-          <div class="col-sm-10">
-            <input type="date" class="form-control" name="validTill" value="{{ old('validTill') }}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Reference</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="reference" value="{{ old('reference') }}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Reference Date</label>
-          <div class="col-sm-10">
-            <input type="date" class="form-control" name="referenceDate" placeholder="dd-mm-yyyy" value="{{ old('referenceDate') }}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Payment Terms</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control @error('paymentTerms') is-invalid @enderror" name="paymentTerms" value="{{ old('paymentTerms') }}">
-            @error('paymentTerms')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Delivery Time</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control @error('deliveryTime') is-invalid @enderror" name="deliveryTime" value="{{ old('deliveryTime') }}">
-            @error('deliveryTime')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-          </div>
-        </div>
-      </div>
-    </div>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Qty</th>
-          <th>Price</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody id="tableItem">
-      </tbody>
-      <tfoot>
-        <tr>
-          <th colspan="3" class="text-right">Total</th>
-          <th id="totalColumn"></th>
-        </tr>
-      </tfoot>
-    </table>
-    <input type="hidden" name="totalItem" id="totalItem" value="0"> -->
     <button type="submit" class="btn btn-success col-12">Search Sale</button>
   </form>
 </div>
 </div>
 @endsection
 @section('script')
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   var i = 1;
   function address() {
     $('#shipTo').val($('#billTo').val());
@@ -196,5 +90,5 @@
       $('#totalItem').val(i);
     });
   }
-</script>
+</script> -->
 @endsection

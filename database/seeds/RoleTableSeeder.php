@@ -31,6 +31,8 @@ class RoleTableSeeder extends Seeder
         'name' => 'PurchasingSPV'
       ],[
         'name' => 'ProjectManager'
+      ],[
+        'name' => 'Security'
       ]);
       for ($i=0; $i < 10; $i++) {
         App\Role::create($role[$i]);

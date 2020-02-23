@@ -104,6 +104,17 @@
     </div>
   </div>
   <div class="form-group row">
+    <label class="col-sm-1 col-label-form">Max Current</label>
+    <div class="col-sm-11">
+      <input type="number" class="form-control @error('current') is-invalid @enderror" name="current" placeholder="Capacity Wp" value="{{ old('current') }}">
+      @error('current')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
+    </div>
+  </div>
+  <div class="form-group row">
     <label class="col-sm-1 col-label-form">Minimum and Maximum Voltage</label>
     <div class="form-row pl-3">
       <div class="col">
@@ -127,7 +138,7 @@
   <div class="form-group row">
     <label class="col-sm-1 col-label-form">Efficiency</label>
     <div class="col-sm-11">
-      <input type="number" class="form-control @error('efficiency') is-invalid @enderror" name="efficiency" placeholder="Efficiency" value="{{ old('efficiency') }}">
+      <input type="number" class="form-control @error('efficiency') is-invalid @enderror" name="efficiency" placeholder="Efficiency" value="{{ old('efficiency','97') }}">
       @error('efficiency')
           <span class="invalid-feedback" role="alert">
               <strong>{{ $message }}</strong>
@@ -138,7 +149,7 @@
   <div class="form-group row">
     <label class="col-sm-1 col-label-form">Safety Margin</label>
     <div class="col-sm-11">
-      <input type="number" class="form-control @error('safetyMargin') is-invalid @enderror" name="safetyMargin" placeholder="Safety Martgin in percentage" value="{{ old('safetyMargin') }}">
+      <input type="number" class="form-control @error('safetyMargin') is-invalid @enderror" name="safetyMargin" placeholder="Safety Martgin in percentage" value="{{ old('safetyMargin','5') }}">
       @error('safetyMargin')
           <span class="invalid-feedback" role="alert">
               <strong>{{ $message }}</strong>

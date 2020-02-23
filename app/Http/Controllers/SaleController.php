@@ -86,38 +86,43 @@ class SaleController extends Controller
       for ($i=0; $i <= $data['totalItem'] ; $i++) {
         $totalSale += $itemData['qty'.$i]*$itemData['price'.$i];
       }
-      $billTo = Address::SearchOrInsert($data,'billTo', 'customer');
-      $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
-      $countSale = Sale::CountSale();
-      $sale = Sale::create([
-        'project_id' => $data['project'],
-        'user_id' => Auth::user()->id,
-        'billTo' => $billTo['id'],
-        'shipTo' => $shipTo['id'],
-        'validTill' => $data['validTill'],
-        'so' => str_pad(date('y',time()), 3, '0').$countSale,
-        'reference' => $request['reference'],
-        'version' => Sale::where('project_id',$sale->project_id)->count()+1,
-        'referenceDate' => date('Y-m-d',strtotime($request['referenceDate'])),
-        'paymentTerms' => $data['paymentTerms'],
-        'deliveryTime' => $data['deliveryTime'],
-        'downPayment' => '0',
-        'total' => $totalSale,
-      ]);
-      for ($i=0; $i <= $data['totalItem']; $i++) {
-        if ($itemData['item'.$i] != '') {
-          $good = Good::SearchOrInsert($itemData, $i, 'Product');
-          $sale->goods()->syncWithoutDetaching([
-            $good['id'] => [
-              'qty' => $itemData['qty'.$i],
-              'price' => $itemData['price'.$i],
-              'subtotal' => $itemData['qty'.$i]*$itemData['price'.$i],
-              'memo' => '',
-            ]
-          ]);
+      if (Sale::where('project_id',$data['project'])->count() == 0) {
+        $billTo = Address::SearchOrInsert($data,'billTo', 'customer');
+        $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
+        $countSale = Sale::CountSale();
+        $sale = Sale::create([
+          'project_id' => $data['project'],
+          'user_id' => Auth::user()->id,
+          'billTo' => $billTo['id'],
+          'shipTo' => $shipTo['id'],
+          'validTill' => $data['validTill'],
+          'so' => str_pad(date('y',time()), 3, '0').$countSale,
+          'reference' => $request['reference'],
+          'version' => 1,
+          'referenceDate' => date('Y-m-d',strtotime($request['referenceDate'])),
+          'paymentTerms' => $data['paymentTerms'],
+          'deliveryTime' => $data['deliveryTime'],
+          'downPayment' => '0',
+          'total' => $totalSale,
+        ]);
+        for ($i=0; $i <= $data['totalItem']; $i++) {
+          if ($itemData['item'.$i] != '') {
+            $good = Good::SearchOrInsert($itemData, $i, 'Product');
+            $sale->goods()->syncWithoutDetaching([
+              $good['id'] => [
+                'qty' => $itemData['qty'.$i],
+                'price' => $itemData['price'.$i],
+                'subtotal' => $itemData['qty'.$i]*$itemData['price'.$i],
+                'memo' => '',
+              ]
+            ]);
+          }
         }
+        return redirect(action('SaleController@show',$sale->id));
       }
-      return redirect(action('SaleController@show',$sale->id));
+      else {
+        return redirect(action('SaleController@index'))->with('status', 'Already Exists!');;
+      }
     }
 
     /**
@@ -209,6 +214,7 @@ class SaleController extends Controller
           ]
         ]);
       }
+      return redirect(action('SaleController@show',$newSale->id));
     }
 
     /**
@@ -238,5 +244,11 @@ class SaleController extends Controller
         'supervisor_id' => null,
       ]);
       return redirect(action('SaleController@index'));
+    }
+    public function makeInvoice(Sale $sale)
+    {
+      $this->authorize('view',$sale);
+      $sale = Sale::find(1);
+      return view('prints.saleInvoice',compact('sale'));
     }
 }

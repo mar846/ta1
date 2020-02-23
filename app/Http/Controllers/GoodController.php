@@ -62,6 +62,7 @@ class GoodController extends Controller
         'price'=>'required|numeric',
         'description'=>'',
         'supplier'=>'required',
+        'current' => 'nullable',
         'capacity' => 'nullable|numeric|min:1',
         'minVolt' => 'nullable|numeric',
         'maxVolt' => 'nullable|numeric|min:1',
@@ -79,10 +80,11 @@ class GoodController extends Controller
       if ($data['supplier'] != null) {
         $good->companies()->attach($data['supplier']);
       }
-      if ($data['type'] == 'Panel' || $data['type'] == 'Inverter') {
+      if ($data['type'] == '1' || $data['type'] == '2') {
         if ($data['maxVolt'] != null || $data['efficiency'] != null || $data['capacity'] != null) {
           Specification::create([
             'capacity' => $data['capacity'],
+            'maxCurrent' => $data['current'],
             'maxVolt' => $data['maxVolt'],
             'minVolt' => $data['minVolt'],
             'efficiency' => $data['efficiency'],
@@ -140,6 +142,7 @@ class GoodController extends Controller
         'price' => '',
         'description' => '',
         'capacity' => 'nullable|numeric|min:1',
+        'current' => 'nullable',
         'minVolt' => 'nullable|numeric',
         'maxVolt' => 'nullable|numeric|min:1',
         'efficiency' => 'nullable|numeric|min:1|max:100',
@@ -156,6 +159,7 @@ class GoodController extends Controller
       if ($data['maxVolt'] != null || $data['efficiency'] != null || $data['capacity'] != null) {
         Specification::where('good_id',$good['id'])->update([
           'capacity' => $data['capacity'],
+          'current' => $data['current'],
           'maxVolt' => $data['maxVolt'],
           'minVolt' => $data['minVolt'],
           'efficiency' => $data['efficiency'],

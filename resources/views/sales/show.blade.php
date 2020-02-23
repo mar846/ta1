@@ -27,7 +27,10 @@
 <div class="row justify-content-end">
   <div class="col-2 text-right  mb-2">
     @if($sale->supervisor_id != null)
-    <a href="#" class="btn btn-primary">Make Invoice</a>
+    <a href="{{ route('makeSaleInvoice',$sale->id) }}" class="btn btn-primary">Make Invoice</a>
+    @endif
+    @if($sale->supervisor_id != null)
+    <a href="{{ route('delivers.show',$sale->id) }}" class="btn btn-info">Make Delivery Order</a>
     @endif
     @if($sale->supervisor_id == null)
     <a href="{{ route('sales.edit',$sale->id) }}" class="btn btn-warning">Edit</a>
@@ -37,7 +40,7 @@
 @endif
 <div class="card card-default">
   <div class="card-header">
-    <h3 class="card-title">Sales SO-{{ $sale->so }}/R{{ $sale->version }}</h3>
+    <h3 class="card-title">Sales SO-{{ $sale->so }}/V{{ $sale->version }}</h3>
   </div>
   <div class="card-body">
     <div class="row">

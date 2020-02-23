@@ -36,7 +36,7 @@
             <td>{{ $data->bills->companies->name }}</td>
             <td>{{ $data->bills->address }}</td>
             <td>{{ $data->ships->address }}</td>
-            <td>SO-{{ $data->so }}/R{{ $data->version }}</td>
+            <td>SO-{{ $data->so }}/V{{ $data->version }}</td>
             <td class="alert alert-{{ ($data->supervisor_id == null)?'secondary':'success' }} pt-3 text-center"><label for="status">{{ ($data->supervisor_id == null)?"Waiting":'Approved' }}</label></td>
             <td>
               @can('view',$data)

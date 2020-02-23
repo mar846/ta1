@@ -129,7 +129,7 @@
               <tbody>
                 @foreach($project->sales as $data)
                   <tr>
-                    <td>SO-{{ $data->so }}/R{{ $data->version }}</td>
+                    <td>SO-{{ $data->so }}/V{{ $data->version }}</td>
                     <td>{{ $data->users->name }}</td>
                     <td>{{ $data->created_at }}</td>
                     <td>

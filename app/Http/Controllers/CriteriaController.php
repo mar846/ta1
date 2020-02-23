@@ -60,6 +60,7 @@ class CriteriaController extends Controller
     {
       if ($request->ajax()) {
         $project = Project::find($request['id']);
+        // $project = Project::find(1);
         $capacity =0;
         if ($project['unit'] == 'MW') {
           $capacity = $project['capacity']*1000000*1.05;
@@ -75,9 +76,9 @@ class CriteriaController extends Controller
         // get scale raw data
         $scale = [];
         foreach ($good as $key => $value) {
-          $scale['capacity'][$value['name']]=$value['spec']['capacity'];
+          $scale['capacity'][$value['name']]=$value['capacity'];
           $scale['price'][$value['name']]=$value['price'];
-          $scale['qty'][$value['name']]=ceil($capacity/$value['spec']['capacity']);
+          $scale['qty'][$value['name']]=ceil($capacity/$value['capacity']);
         }
         // get scale max min
         $scaleMaxMin = [];
@@ -111,9 +112,9 @@ class CriteriaController extends Controller
         // data from database to array
         $goodSort = [];
         foreach ($good as $key => $value) {
-          $goodSort['capacity'][$value['name']]= $value['spec']['capacity'];
+          $goodSort['capacity'][$value['name']]= $value['capacity'];
           $goodSort['price'][$value['name']]= $value['price'];
-          $goodSort['qty'][$value['name']]= ceil($capacity/$value['spec']['capacity']);
+          $goodSort['qty'][$value['name']]= ceil($capacity/$value['capacity']);
         }
         // Sort small to large
         foreach ($goodSort as $key => $value) {
@@ -312,7 +313,7 @@ class CriteriaController extends Controller
         $highest_num = max($dominance);
         $highest_key = max(array_keys($dominance,$highest_num));
         $winner['panel'] = $good[$highest_key]['name'];
-        $winner['panelqty'] = ceil($capacity/$good[$highest_key]['spec']['capacity']);
+        $winner['panelqty'] = ceil($capacity/$good[$highest_key]['capacity']);
         $winner['panelunit'] = $good[$highest_key]['units']['name'];
 
 
@@ -328,6 +329,7 @@ class CriteriaController extends Controller
           for ($i=1; $i < 6; $i++) {
             if ($value['capacity'] * $i > $capacity) {
               if (!isset($item[$value['id']])) {
+                // echo $value['name'].' | '.$value['capacity'].' | '.$i.' | '.number_format($value['price'],0,',','.').' | '.number_format($i * $value['price'],0,',','.').' | '.($value['capacity'] * $i).'<br>';
                 $choosen[$value['name']] = $value['name'].' & '.$i.' = '.$i*$value['capacity'].' | '.number_format($i*$value['price'],0,',','.');
                 $item[$value['id']]['qty'] = $i;
                 $item[$value['id']]['capacity'] = $i*$value['capacity'];
@@ -582,15 +584,15 @@ class CriteriaController extends Controller
           $dominance[$key] = count($dominance[$key]);
         }
         $highest_num = max($dominance);
-        $highest_key = max(array_keys($dominance,$highest_num));
-        $inverterWinner = Good::find($inverterList[$highest_key]);
+        $inverter_highest_key = max(array_keys($dominance,$highest_num));
+        $inverterWinner = Good::find($inverterList[$inverter_highest_key]);
         $winner['inverter'] = $inverterWinner['name'];
         $winner['inverterQty'] = $item[$inverterWinner['id']]['qty'];
         $winner['inverterUnit'] = $inverterWinner['units']['name'];
 
-
         $maxVolt = $inverterWinner['spec']['maxVolt'];
         $panel = Good::find($highest_key)->first();
+        // dd($panel);
         $series = 0;
         for ($i=1; $i < 51; $i++) {
           if ((($panel['spec']['maxVolt'] * $i)*$panel['spec']['efficiency']/100) > $maxVolt) {
@@ -599,10 +601,11 @@ class CriteriaController extends Controller
           }
         }
         $seriesVolt = $series * $panel['spec']['maxVolt'];
-
+        // dd($seriesVolt);
         // PV Combiner
         $parallel = null;
-        for ($i=1; $i < 10; $i++) {
+        for ($i=1; $i < 20; $i++) {
+          // echo '('.$panel['spec']['maxCurrent'].' * '.$seriesVolt.' * '.$i.')'." > ".$capacity."<br>";
           if (($panel['spec']['maxCurrent'] * $seriesVolt * $i) > $capacity) {
             $parallel = $i-1;
             break;

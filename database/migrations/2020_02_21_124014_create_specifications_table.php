@@ -16,7 +16,7 @@ class CreateSpecificationsTable extends Migration
         Schema::create('specifications', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('capacity');
-            $table->double('maxCurrent');
+            $table->double('maxCurrent')->nullable();
             $table->double('maxVolt');
             $table->double('minVolt')->nullable();
             $table->double('efficiency');

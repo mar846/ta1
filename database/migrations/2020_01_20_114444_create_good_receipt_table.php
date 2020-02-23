@@ -14,16 +14,14 @@ class CreateGoodReceiptTable extends Migration
     public function up()
     {
         Schema::create('good_receipt', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('purchase_id');
-            $table->foreign('purchase_id')->references('id')->on('purchases');
-            $table->unsignedBigInteger('good_id');
-            $table->foreign('good_id')->references('id')->on('goods');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('qty');
-            $table->string('memo')->nullable();
-            $table->timestamps();
+          $table->bigIncrements('id');
+          $table->unsignedBigInteger('receipt_id')->comment('driver');
+          $table->foreign('receipt_id')->references('id')->on('receipts');
+          $table->unsignedBigInteger('good_id');
+          $table->foreign('good_id')->references('id')->on('goods');
+          $table->integer('qty');
+          $table->string('memo')->nullable();
+          $table->timestamps();
         });
     }
 

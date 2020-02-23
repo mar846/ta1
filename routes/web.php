@@ -46,6 +46,7 @@ Route::get('price','PurchaseController@price')->name('price');
 Route::get('purchaseRequest','PurchaseController@request')->name('purchaseRequest');
 Route::get('requestApprove/{id}/{good}','PurchaseController@requestApprove')->name('requestApprove');
 Route::get('requestDispprove/{id}/{good}','PurchaseController@requestDispprove')->name('requestDispprove');
+Route::get('purchaseQuotation/','PurchaseController@quotation')->name('purchaseQuotation');
 
 Route::get('reports','ReportController@index')->name('reports');
 Route::get('reports/{page}','ReportController@show')->name('reportPage');
@@ -54,6 +55,10 @@ Route::get('saleApproval/{id}','SaleController@approve')->name('saleApproval');
 Route::get('saleDisapproval/{id}','SaleController@disapprove')->name('saleDisapproval');
 // Route::post('questionPage','SaleController@quotationPage')->name('quotationPage');
 Route::get('quotation/','SaleController@quotation')->name('quotation');
+Route::get('makeInvoice/{id}','SaleController@makeInvoice')->name('makeSaleInvoice')->middleware('auth');
+// Route::get('delivery','SaleController@delivery')->name('delivery')->middleware('auth');
+// Route::get('deliveryPage','SaleController@deliveryPage')->name('deliveryPage')->middleware('auth');
+// Route::get('makeDeliveryOrder/{id}','SaleController@makeDeliveryOrder')->name('makeSaleDeliveryOrder')->middleware('auth');
 
 Route::get('surveyorApproval/{id}','SurveyorController@approve')->name('surveyorApproval');
 Route::get('surveyorDisapproval/{id}','SurveyorController@disapprove')->name('surveyorDisapproval');
@@ -64,6 +69,7 @@ Route::resource('catalogs','CatalogController')->middleware('auth');
 Route::resource('checklists','ChecklistController')->middleware('auth');
 Route::resource('companies', 'CompanyController')->middleware('auth');
 Route::resource('criterias', 'CriteriaController')->middleware('auth');
+Route::resource('delivers', 'DeliverController')->middleware('auth');
 Route::resource('designers', 'DesignerController')->middleware('auth');
 Route::resource('files', 'FileController')->middleware('auth');
 Route::resource('goods','GoodController')->middleware('auth');

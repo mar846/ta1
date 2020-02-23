@@ -43,11 +43,18 @@ class PurchaseController extends Controller
     public function create()
     {
       $this->authorize('create',Purchase::class);
-      $company = Company::IsSupplier()->get();
-      $good = Good::IsRaw()->get();
-      $unit = Unit::limit(3)->get();
       $project = Project::all();
-      return view('purchases.add',compact('company', 'good', 'unit', 'project'));
+      return view('purchases.add',compact('project'));
+    }
+    public function quotation(Request $request)
+    {
+      $this->authorize('create',Purchase::class);
+      $data = $request->validate([
+        'project' => 'required|numeric',
+      ]);
+      $project = Project::with(['companies.addresses','designers.goods.units'])->find($data['project']);
+      // dd($project);
+      return view('purchases.quotation', compact('project'));
     }
     public function request()
     {

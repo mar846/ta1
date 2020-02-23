@@ -121,4 +121,27 @@ class SalePolicy
         '10',
       ]);
     }
+    public function viewDelivery(User $user)
+    {
+      return in_array($user->role_id,[
+        '1',
+        '10',
+        '11',
+      ]);
+    }
+    public function viewAnyDelivery(User $user)
+    {
+      return in_array($user->role_id,[
+        '1',
+        '10',
+        '11',
+      ]);
+    }
+    public function createDelivery(User $user, Sale $sale)
+    {
+      return in_array($user->role_id,[
+        '1',
+        '11',
+      ]);
+    }
 }

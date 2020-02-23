@@ -13,14 +13,12 @@ class CreateGoodDeliverTable extends Migration
      */
     public function up()
     {
-        Schema::create('good_deliver', function (Blueprint $table) {
+        Schema::create('deliver_good', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('sale_id');
-            $table->foreign('sale_id')->references('id')->on('sales');
+            $table->unsignedBigInteger('deliver_id')->comment('driver');
+            $table->foreign('deliver_id')->references('id')->on('delivers');
             $table->unsignedBigInteger('good_id');
             $table->foreign('good_id')->references('id')->on('goods');
-            $table->unsignedBigInteger('user_id')->comment('driver');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('qty');
             $table->string('memo')->nullable();
             $table->timestamps();

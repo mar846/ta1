@@ -13,6 +13,10 @@ class Good extends Model
     {
       return $this->belongsTo('App\Type','type_id');
     }
+    public function delivers()
+    {
+      return $this->belongsToMany('App\Deliver','deliver_good','good_id','deliver_id');
+    }
     public function spec()
     {
       return $this->hasOne('App\Specification');
