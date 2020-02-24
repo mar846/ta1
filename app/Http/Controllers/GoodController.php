@@ -61,7 +61,7 @@ class GoodController extends Controller
         'type'=>'required|numeric',
         'price'=>'required|numeric',
         'description'=>'',
-        'supplier'=>'required',
+        'supplier'=>'required|numeric',
         'current' => 'nullable',
         'capacity' => 'nullable|numeric|min:1',
         'minVolt' => 'nullable|numeric',
@@ -74,12 +74,10 @@ class GoodController extends Controller
         'unit_id' => $data['unit'],
         'price' => $data['price'],
         'capacity' => $data['capacity'],
+        'company_id' => $data['supplier'],
         'description' => $data['description'],
         'type_id' => $data['type'],
       ]);
-      if ($data['supplier'] != null) {
-        $good->companies()->attach($data['supplier']);
-      }
       if ($data['type'] == '1' || $data['type'] == '2') {
         if ($data['maxVolt'] != null || $data['efficiency'] != null || $data['capacity'] != null) {
           Specification::create([

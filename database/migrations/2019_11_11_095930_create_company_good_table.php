@@ -13,14 +13,14 @@ class CreateCompanyGoodTable extends Migration
      */
     public function up()
     {
-        Schema::create('company_good', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('company_id');
-            $table->foreign('company_id')->references('id')->on('companies');
-            $table->unsignedBigInteger('good_id');
-            $table->foreign('good_id')->references('id')->on('goods');
-            $table->timestamps();
-        });
+        // Schema::create('company_good', function (Blueprint $table) {
+        //     $table->bigIncrements('id');
+        //     $table->unsignedBigInteger('company_id');
+        //     $table->foreign('company_id')->references('id')->on('companies');
+        //     $table->unsignedBigInteger('good_id');
+        //     $table->foreign('good_id')->references('id')->on('goods');
+        //     $table->timestamps();
+        // });
     }
 
     /**

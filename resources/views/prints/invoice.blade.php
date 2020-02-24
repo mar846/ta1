@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Invoice')
+@section('title','PUrchase Order')
 @section('content')
 <div class="invoice p-3 mb-3">
   <!-- title row -->
@@ -86,7 +86,6 @@
     </div>
     <!-- /.col -->
     <div class="col-6">
-      <p class="lead">Amount Due 2/22/2014</p>
 
       <div class="table-responsive">
         <table class="table">

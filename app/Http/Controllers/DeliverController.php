@@ -31,7 +31,7 @@ class DeliverController extends Controller
     public function create(Request $request)
     {
       $sale = Sale::find($request['id']);
-      return view('sales.deliveryPage',compact('sale'));
+      return view('delivers.add',compact('sale'));
     }
 
     /**
@@ -43,9 +43,9 @@ class DeliverController extends Controller
     public function store(Request $request)
     {
       $data = $request->validate([
-        'sale' => 'required|numeric|min:1'
+        'id' => 'required|numeric|min:1'
       ]);
-      $sale = Sale::find($data['sale']);
+      $sale = Sale::find($data['id']);
       $goodCount = count($sale->goods);
       $itemRules = [];
       for ($i=0; $i < $goodCount; $i++) {

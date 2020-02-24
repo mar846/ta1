@@ -82,20 +82,21 @@
   <div class="form-group row">
     <label class="col-sm-1 col-form-label">Supplier</label>
     <div class="col-sm-11">
-      <div class="form-check">
+      <select class="form-control" name="supplier">
         @foreach($company as $data)
           @if($data->type == 'supplier')
-            <input type="checkbox" class="form-check-input" name="supplier[]" value="{{ $data->id }}">
-            <label class="form-check-label">{{  $data->name }}</label><br>
+            <option value="{{ $data->id }}">{{ $data->name }}</option>
+            <!-- <input type="checkbox" class="form-check-input" name="supplier[]" value="{{ $data->id }}">
+            <label class="form-check-label">{{  $data->name }}</label><br> -->
           @endif
         @endforeach
-      </div>
+      </select>
     </div>
   </div>
   <div class="form-group row">
     <label class="col-sm-1 col-label-form">Capacity</label>
     <div class="col-sm-11">
-      <input type="number" class="form-control @error('capacity') is-invalid @enderror" name="capacity" placeholder="Capacity Wp" value="{{ old('capacity') }}">
+      <input type="number" class="form-control @error('capacity') is-invalid @enderror" name="capacity" placeholder="Capacity Wp" value="{{ old('capacity') }}" step="0.01">
       @error('capacity')
           <span class="invalid-feedback" role="alert">
               <strong>{{ $message }}</strong>
@@ -106,7 +107,7 @@
   <div class="form-group row">
     <label class="col-sm-1 col-label-form">Max Current</label>
     <div class="col-sm-11">
-      <input type="number" class="form-control @error('current') is-invalid @enderror" name="current" placeholder="Capacity Wp" value="{{ old('current') }}">
+      <input type="number" class="form-control @error('current') is-invalid @enderror" name="current" placeholder="Max Current" value="{{ old('current') }}" step="0.01">
       @error('current')
           <span class="invalid-feedback" role="alert">
               <strong>{{ $message }}</strong>
@@ -118,7 +119,7 @@
     <label class="col-sm-1 col-label-form">Minimum and Maximum Voltage</label>
     <div class="form-row pl-3">
       <div class="col">
-        <input type="number" class="form-control @error('minVolt') is-invalid @enderror" name="minVolt" placeholder="Minimum Volt" value="{{ old('minVolt') }}">
+        <input type="number" class="form-control @error('minVolt') is-invalid @enderror" name="minVolt" placeholder="Minimum Volt" value="{{ old('minVolt') }}" step="0.01">
         @error('minVolt')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -126,7 +127,7 @@
         @enderror
       </div>
       <div class="col">
-        <input type="number" class="form-control @error('maxVolt') is-invalid @enderror" name="maxVolt" placeholder="Maximum Volt" value="{{ old('maxVolt') }}">
+        <input type="number" class="form-control @error('maxVolt') is-invalid @enderror" name="maxVolt" placeholder="Maximum Volt" value="{{ old('maxVolt') }}" step="0.01">
         @error('maxVolt')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -138,7 +139,7 @@
   <div class="form-group row">
     <label class="col-sm-1 col-label-form">Efficiency</label>
     <div class="col-sm-11">
-      <input type="number" class="form-control @error('efficiency') is-invalid @enderror" name="efficiency" placeholder="Efficiency" value="{{ old('efficiency','97') }}">
+      <input type="number" class="form-control @error('efficiency') is-invalid @enderror" name="efficiency" placeholder="Efficiency" value="{{ old('efficiency','97') }}" step="0.01">
       @error('efficiency')
           <span class="invalid-feedback" role="alert">
               <strong>{{ $message }}</strong>

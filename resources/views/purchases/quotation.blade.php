@@ -57,21 +57,16 @@
               <input type="hidden" name="qty{{ $key }}" value="{{ old('qty.$key',$datas->pivot->qty) }}" id="qty{{ $key }}">
             </td>
             <td>
-              {{ $datas->companies }}
+              {{ $datas->companies->name }}
             </td>
             <td>
-              <button type="button" class="btn btn-primary" name="button">Make Quotation</button>
+              <a href="{{ route('addPurchaseQuotation',[$project->id,$datas->company_id]) }}" class="btn btn-primary">Make Quotation</a>
           </tr>
         @endforeach
         @break
       @endforeach
     </tbody>
   </table>
-  <hr>
-  <div class="form-group row">
-    <input type="hidden" name="totalItem" value="{{ $key }}">
-    <button type="submit" class="btn btn-success col-12" name="button">Make Quotation</button>
-  </div>
 </form>
 @endsection
 @section('script')

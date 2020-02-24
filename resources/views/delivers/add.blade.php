@@ -14,7 +14,7 @@
     <p class="form-control">SO-{{ $sale->so }}/V{{ $sale->version }}</p>
   </div>
 </div>
-<form action="{{ route('deliveries.store') }}" method="post">
+<form action="{{ route('delivers.store') }}" method="post">
   {{ csrf_field() }}
   <table class="table table-hover">
     <thead>

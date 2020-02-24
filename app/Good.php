@@ -31,7 +31,7 @@ class Good extends Model
     }
     public function companies()
     {
-        return $this->belongsToMany('App\Company');
+        return $this->belongsTo('App\Company','company_id');
     }
     public function units()
     {

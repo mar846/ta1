@@ -43,8 +43,11 @@ class PurchaseController extends Controller
     public function create()
     {
       $this->authorize('create',Purchase::class);
-      $project = Project::all();
-      return view('purchases.add',compact('project'));
+      $company = Company::IsSupplier()->get();
+       $good = Good::all();
+       $unit = Unit::limit(3)->get();
+       $project = Project::all();
+       return view('purchases.add',compact('company', 'good', 'unit', 'project'));
     }
     public function quotation(Request $request)
     {
@@ -56,33 +59,20 @@ class PurchaseController extends Controller
       // dd($project);
       return view('purchases.quotation', compact('project'));
     }
+    public function addQuotation($project, $company)
+    {
+      $this->authorize('create',Purchase::class);
+      $project = Project::with(['companies.addresses','designers.goods.units'])->find($project);
+      $company = Company::find($company);
+      $company = $company;
+      // dd($good);
+      return view('purchases.makeQuotation', compact('project','company'));
+    }
     public function request()
     {
       $this->authorize('create',Purchase::class);
       $designer = Designer::with(['goods','projects'])->whereNull('supervisor_id')->get();
       return view('purchases.request', compact('designer'));
-    }
-    public function requestApprove($id, $good)
-    {
-      $this->authorize('create',Purchase::class);
-      $designer = Designer::find($id);
-      $designer->goods()->syncWithoutDetaching([
-        $good => [
-          'status' => 'Approved',
-        ]
-      ]);
-      return redirect(action('PurchaseController@request'));
-    }
-    public function requestDispprove($id, $good)
-    {
-      $this->authorize('create',Purchase::class);
-      $designer = Designer::find($id);
-      $designer->goods()->syncWithoutDetaching([
-        $good => [
-          'status' => 'Rejected',
-        ]
-      ]);
-      return redirect(action('PurchaseController@request'));
     }
 
     /**
@@ -96,29 +86,43 @@ class PurchaseController extends Controller
       $this->authorize('create',Purchase::class);
       $data = $request->validate([
         'project' => 'required|numeric',
-        'company' => 'required',
-        'address' => 'required',
+        'company' => 'required|numeric',
+        'address' => 'required|numeric',
         'phone' => '',
-        'reference' => '',
-        'referenceDate' => '',
+        'reference' => 'required',
+        'referenceDate' => 'required',
         'paymentTerms' => 'required',
         'deliveryTime' => 'required',
-        'totalItem' => 'bail|required|numeric|min:1',
       ]);
-      $itemRules=[];
-      for ($i=0; $i < $data['totalItem']; $i++) {
-        $itemRules['item'.$i] = 'nullable';
-        $itemRules['qty'.$i] = 'nullable|numeric|min:1';
-        $itemRules['unit'.$i] = 'nullable';
-        $itemRules['price'.$i] = 'nullable|numeric|min:1';
-        $itemRules['subtotal'.$i] = 'nullable|numeric|min:1';
+      $designer = Designer::with('goods.units')->where('project_id',$data['project'])->get();
+      $totalItem = 0;
+      $goods = [];
+      foreach ($designer as $key => $value) {
+        foreach ($value->goods as $index => $content) {
+          if ($content['company_id'] == $data['company']) {
+            $goods[] = $content['id'];
+            $totalItem += 1;
+          }
+        };
+      }
+      $itemRules = [];
+      for ($i=0; $i < $totalItem; $i++) {
+        $itemRules['qty'.$i] = 'numeric';
+        $itemRules['price'.$i] = 'numeric';
+        $itemRules['subtotal'.$i] = 'numeric';
       }
       $itemData = $request->validate($itemRules);
-      $supplier = Address::SearchOrInsert($data, 'address', 'supplier');
+      $total = 0;
+      for ($i=0; $i < $totalItem; $i++) {
+        if (isset($itemData['qty'.$i])) {
+          $total += $itemData['price'.$i] * $itemData['qty'.$i];
+        }
+      }
+      // $supplier = Address::SearchOrInsert($data, 'address', 'supplier');
       $countPurchase = Purchase::CountPurchase();
       $purchase = Purchase::create([
         'project_id' => $data['project'],
-        'address_id' => $supplier['id'],
+        'address_id' => $data['company'],
         'po' => $countPurchase.date('Ymd',time()),
         'reference' => $data['reference'],
         'paymentTerms' => $data['paymentTerms'],
@@ -126,26 +130,18 @@ class PurchaseController extends Controller
         'downPayment' => '0',
         'user_id' => Auth::user()->id,
         'referenceDate' => date('Y-m-d', strtotime($data['referenceDate'])),
-        'total' => '7750000',
+        'total' => $total,
       ]);
-      for ($i=0; $i < $data['totalItem'] ; $i++) {
-        if ($itemData['item'.$i] != '') {
-          $good = Good::SearchOrInsert($itemData, $i, '');
+      for ($i=0; $i < $totalItem ; $i++) {
+          // $good = Good::SearchOrInsert($itemData, $i, '');
           $purchase->goods()->syncWithoutDetaching([
-            $good['id'] => [
-              'qty' => $itemData['qty'.$i],
-              'price' => $itemData['price'.$i],
-              'subtotal' => $itemData['price'.$i]*$itemData['qty'.$i],
-              'memo' => '',
-            ]
-          ]);
-          $good->companies()->syncWithoutDetaching([
-            $supplier['company_id'] => [
-              'created_at' => now(),
-              'updated_at' => now(),
-            ]
-          ]);
-        }
+          $goods[$i] => [
+            'qty' => $itemData['qty'.$i],
+            'price' => $itemData['price'.$i],
+            'subtotal' => $itemData['price'.$i]*$itemData['qty'.$i],
+            'memo' => '',
+          ]
+        ]);
       }
       return redirect(action('PurchaseController@index'));
     }

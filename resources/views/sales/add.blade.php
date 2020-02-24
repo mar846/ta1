@@ -32,8 +32,8 @@
         </div>
       </div>
     <button type="submit" class="btn btn-success col-12">Search Sale</button>
-  </form>
-</div>
+  </div>
+</form>
 </div>
 @endsection
 @section('script')

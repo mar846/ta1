@@ -13,7 +13,7 @@
     </style>
     <link rel="stylesheet" href="/css/app.css">
     <!-- REQUIRED SCRIPTS -->
-    <script src="js/app.js" charset="utf-8"></script>
+    <script src="{{ asset('js/app.js') }}" charset="utf-8"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   </head>
   <body class="sidebar-mini" style="height: auto;">

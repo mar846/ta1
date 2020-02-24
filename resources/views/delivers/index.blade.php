@@ -8,7 +8,7 @@
 @endsection
 @section('content')
 <div class="m-3">
-  <form action="{{ route('delivers.store') }}" method="post">
+  <form action="{{ route('delivers.create') }}" method="get">
     {{ csrf_field() }}
     <div class="row">
       <div class="col-12">

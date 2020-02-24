@@ -11,7 +11,7 @@
 <div class="row justify-content-end">
   <div class="col-2 text-right  mb-2">
     @can('view',$purchase)
-      <a href="{{ route('makeInvoice',$purchase->id) }}" class="btn btn-primary">Make Invoice</a>
+      <a href="{{ route('makePurchaseInvoice',$purchase->id) }}" class="btn btn-primary">Make Invoice</a>
     @endcan
     @can('update',$purchase)
       <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-warning">Edit</a>

@@ -41,12 +41,13 @@ Route::post('goodReceiptSearch','GoodController@goodReceiptSearch');
 Route::post('goodDeliverFinish','GoodController@goodDeliverFinish');
 Route::post('goodReceiptFinish','GoodController@goodReceiptFinish');
 
-Route::get('makeInvoice/{id}','PurchaseController@makeInvoice')->name('makeInvoice')->middleware('auth');
+Route::get('makePurchaseInvoice/{id}','PurchaseController@makeInvoice')->name('makePurchaseInvoice')->middleware('auth');
 Route::get('price','PurchaseController@price')->name('price');
 Route::get('purchaseRequest','PurchaseController@request')->name('purchaseRequest');
-Route::get('requestApprove/{id}/{good}','PurchaseController@requestApprove')->name('requestApprove');
-Route::get('requestDispprove/{id}/{good}','PurchaseController@requestDispprove')->name('requestDispprove');
-Route::get('purchaseQuotation/','PurchaseController@quotation')->name('purchaseQuotation');
+Route::get('requestApprove/{designer}/{id}','DesignerController@requestApprove')->name('requestApprove');
+Route::get('requestDispprove/{designer}/{id}','DesignerController@requestDisapprove')->name('requestDispprove');
+Route::post('purchaseQuotation/','PurchaseController@quotation')->name('purchaseQuotation');
+Route::get('addPurchaseQuotation/{good}/{project}','PurchaseController@addQuotation')->name('addPurchaseQuotation');
 
 Route::get('reports','ReportController@index')->name('reports');
 Route::get('reports/{page}','ReportController@show')->name('reportPage');
@@ -55,7 +56,7 @@ Route::get('saleApproval/{id}','SaleController@approve')->name('saleApproval');
 Route::get('saleDisapproval/{id}','SaleController@disapprove')->name('saleDisapproval');
 // Route::post('questionPage','SaleController@quotationPage')->name('quotationPage');
 Route::get('quotation/','SaleController@quotation')->name('quotation');
-Route::get('makeInvoice/{id}','SaleController@makeInvoice')->name('makeSaleInvoice')->middleware('auth');
+Route::get('makeSaleInvoice/{id}','SaleController@makeInvoice')->name('makeSaleInvoice')->middleware('auth');
 // Route::get('delivery','SaleController@delivery')->name('delivery')->middleware('auth');
 // Route::get('deliveryPage','SaleController@deliveryPage')->name('deliveryPage')->middleware('auth');
 // Route::get('makeDeliveryOrder/{id}','SaleController@makeDeliveryOrder')->name('makeSaleDeliveryOrder')->middleware('auth');

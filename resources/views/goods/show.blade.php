@@ -48,11 +48,7 @@
 <div class="form-group row">
   <label class="col-sm-1 col-form-label">Supplier</label>
   <div class="col-sm-11">
-    <p>
-    @foreach($good->companies as $key => $data)
-    {{ ($key>0)?', ':'' }}{{ $data->name }}
-    @endforeach
-    </p>
+    <p class="form-control">{{ $good->companies->name }}</p>
   </div>
 </div>
 @if($good->spec != null)

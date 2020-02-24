@@ -60,7 +60,7 @@ class CriteriaController extends Controller
     {
       if ($request->ajax()) {
         $project = Project::find($request['id']);
-        // $project = Project::find(1);
+        // $project = Project::find(2);
         $capacity =0;
         if ($project['unit'] == 'MW') {
           $capacity = $project['capacity']*1000000*1.05;
@@ -336,8 +336,8 @@ class CriteriaController extends Controller
                 $item[$value['id']]['price'] = $i*$value['price'];
                 $inverterList[] = $value['id'];
               }
-              // echo $value['name'].' * '.$i.' | '.number_format($capacity,0,',','.').' == '.number_format($i*$value['capacity'],0,',','.').'<br>';
             }
+            // echo $value['name'].' * '.$i.' | '.number_format($capacity,0,',','.').' == '.number_format($i*$value['capacity'],0,',','.').'<br>';
           }
         }
         $scale = [];
@@ -591,15 +591,18 @@ class CriteriaController extends Controller
         $winner['inverterUnit'] = $inverterWinner['units']['name'];
 
         $maxVolt = $inverterWinner['spec']['maxVolt'];
+        // dd($maxVolt);
+
         $panel = Good::find($highest_key)->first();
-        // dd($panel);
         $series = 0;
         for ($i=1; $i < 51; $i++) {
           if ((($panel['spec']['maxVolt'] * $i)*$panel['spec']['efficiency']/100) > $maxVolt) {
+            echo $i;
             $series =  $i-1;
             break;
           }
         }
+        $series = ($series == 0)?1:0;
         $seriesVolt = $series * $panel['spec']['maxVolt'];
         // dd($seriesVolt);
         // PV Combiner
@@ -611,6 +614,7 @@ class CriteriaController extends Controller
             break;
           }
         }
+        $parallel = ($parallel == 0)?1:0;
         $winner['pvCombiner'] = 'PV Combiner';
         $winner['pvCombinerQty'] = $parallel;
         $winner['pvCombinerUnit'] = 'unit';

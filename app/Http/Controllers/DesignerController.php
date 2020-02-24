@@ -185,7 +185,28 @@ class DesignerController extends Controller
       }
     }
 
-
+    public function requestApprove(Designer $designers, $designer, $id)
+    {
+      $this->authorize('approval',$designers);
+      $designer = Designer::find($designer);
+      $designer->goods()->syncWithoutDetaching([
+        $id => [
+          'status' => 'Approved',
+        ]
+      ]);
+      return redirect(action('DesignerController@show',$designer));
+    }
+    public function requestDisapprove($id, $good)
+    {
+      $this->authorize('create',Purchase::class);
+      $designer = Designer::find($id);
+      $designer->goods()->syncWithoutDetaching([
+        $good => [
+          'status' => 'Rejected',
+        ]
+      ]);
+      return redirect(action('PurchaseController@request'));
+    }
     public function approve(Designer $designer, $id)
     {
       $this->authorize('approval', $designer);
