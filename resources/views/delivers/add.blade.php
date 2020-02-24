@@ -1,11 +1,11 @@
 @extends('layouts.master')
-@section('title','Sale Quotation')
+@section('title','Delivery')
 @section('order','active')
 @section('sale','active')
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-<li class="breadcrumb-item"><a href="{{ route('sales.index') }}">Sales</a></li>
-<li class="breadcrumb-item active">Add Sale</li>
+<li class="breadcrumb-item"><a href="{{ route('sales.index') }}">Deliver</a></li>
+<li class="breadcrumb-item active">Make Delivery</li>
 @endsection
 @section('content')
 <div class="form-group row">

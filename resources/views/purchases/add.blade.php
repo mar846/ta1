@@ -22,9 +22,7 @@
         <div class="col-sm-10">
           <select class="form-control" name="project">
             @foreach($project as $data)
-              @if(count($data->purchases) == 0)
                 <option value="{{ $data->id }}">{{ $data->name }}</option>
-              @endif
             @endforeach
           </select>
         </div>

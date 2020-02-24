@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title','Purchase Quotation')
 @section('order','active')
-@section('sale','active')
+@section('purchase','active')
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
 <li class="breadcrumb-item"><a href="{{ route('purchases.index') }}">Purchases</a></li>
@@ -22,14 +22,14 @@
   <div class="row">
     <div class="col-md-12">
       <div class="form-group row">
-        <label class="col-sm-1 col-form-label">Project</label>
-        <div class="col-sm-11">
+        <label class="col-sm-2 col-form-label">Project</label>
+        <div class="col-sm-10">
           <p class="form-control">{{ $project->name }}</p>
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-1 col-form-label">Description</label>
-        <div class="col-sm-11">
+        <label class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
           <textarea class="form-control">{{ $project->description }}</textarea>
         </div>
       </div>
@@ -60,7 +60,13 @@
               {{ $datas->companies->name }}
             </td>
             <td>
-              <a href="{{ route('addPurchaseQuotation',[$project->id,$datas->company_id]) }}" class="btn btn-primary">Make Quotation</a>
+              @foreach($project->purchases as $datass)
+              @if($datass->address_id != $datas->company_id)
+                <a href="{{ route('addPurchaseQuotation',[$project->id,$datas->company_id]) }}" class="btn btn-primary">Make Quotation</a>
+              @else
+                <a href="{{ route('purchases.show',[$datass->id]) }}" class="btn btn-success">View Purchase</a>
+              @endif
+              @endforeach
           </tr>
         @endforeach
         @break

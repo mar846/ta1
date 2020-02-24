@@ -43,9 +43,9 @@ class DeliverController extends Controller
     public function store(Request $request)
     {
       $data = $request->validate([
-        'id' => 'required|numeric|min:1'
+        'sale' => 'required|numeric|min:1'
       ]);
-      $sale = Sale::find($data['id']);
+      $sale = Sale::find($data['sale']);
       $goodCount = count($sale->goods);
       $itemRules = [];
       for ($i=0; $i < $goodCount; $i++) {
@@ -56,6 +56,7 @@ class DeliverController extends Controller
         $good[] = $value['id'];
       }
       $itemData = $request->validate($itemRules);
+      // dd($itemData);
       $deliver = Deliver::create([
         'sale_id' => $sale->id,
         'user_id' => Auth::user()->id,
@@ -63,14 +64,17 @@ class DeliverController extends Controller
         'updated_at' => now(),
       ]);
       for ($i=0; $i < $goodCount; $i++) {
+        if ($itemData['qty'.$i] != null) {
+          $deliver->goods()->attach([
+            $good[$i] => [
+              'qty' => $itemData['qty'.$i],
+              'created_at' => now(),
+              'updated_at' => now(),
+            ]
+          ]);
+        }
         echo $good[$i].' = '.$itemData['qty'.$i].'<br>';
-        $deliver->goods()->attach([
-          $good[$i] => [
-            'qty' => $itemData['qty'.$i],
-            'created_at' => now(),
-            'updated_at' => now(),
-          ]
-        ]);
+
       }
       return redirect(action('DeliverController@show',$deliver->id));
     }
