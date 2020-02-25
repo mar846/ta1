@@ -41,6 +41,8 @@ Route::post('goodReceiptSearch','GoodController@goodReceiptSearch');
 Route::post('goodDeliverFinish','GoodController@goodDeliverFinish');
 Route::post('goodReceiptFinish','GoodController@goodReceiptFinish');
 
+Route::get('makeSaleInvoice/{id}','InvoiceController@makeInvoice')->name('makeSaleInvoice')->middleware('auth');
+
 Route::get('makePurchaseInvoice/{id}','PurchaseController@makeInvoice')->name('makePurchaseInvoice')->middleware('auth');
 Route::get('price','PurchaseController@price')->name('price');
 Route::get('purchaseRequest','PurchaseController@request')->name('purchaseRequest');
@@ -49,6 +51,7 @@ Route::get('requestDispprove/{designer}/{id}','DesignerController@requestDisappr
 Route::post('purchaseQuotation/','PurchaseController@quotation')->name('purchaseQuotation');
 Route::get('addPurchaseQuotation/{good}/{project}','PurchaseController@addQuotation')->name('addPurchaseQuotation');
 
+
 Route::get('reports','ReportController@index')->name('reports');
 Route::get('reports/{page}','ReportController@show')->name('reportPage');
 
@@ -56,7 +59,7 @@ Route::get('saleApproval/{id}','SaleController@approve')->name('saleApproval');
 Route::get('saleDisapproval/{id}','SaleController@disapprove')->name('saleDisapproval');
 // Route::post('questionPage','SaleController@quotationPage')->name('quotationPage');
 Route::get('quotation/','SaleController@quotation')->name('quotation');
-Route::get('makeSaleInvoice/{id}','SaleController@makeInvoice')->name('makeSaleInvoice')->middleware('auth');
+
 // Route::get('delivery','SaleController@delivery')->name('delivery')->middleware('auth');
 // Route::get('deliveryPage','SaleController@deliveryPage')->name('deliveryPage')->middleware('auth');
 // Route::get('makeDeliveryOrder/{id}','SaleController@makeDeliveryOrder')->name('makeSaleDeliveryOrder')->middleware('auth');
@@ -74,8 +77,10 @@ Route::resource('delivers', 'DeliverController')->middleware('auth');
 Route::resource('designers', 'DesignerController')->middleware('auth');
 Route::resource('files', 'FileController')->middleware('auth');
 Route::resource('goods','GoodController')->middleware('auth');
+Route::resource('invoices','InvoiceController')->middleware('auth');
 Route::resource('projects', 'ProjectController')->middleware('auth');
 Route::resource('purchases', 'PurchaseController')->middleware('auth');
+Route::resource('receipts', 'ReceiptController')->middleware('auth');
 Route::resource('roles', 'RoleController')->middleware('auth');
 Route::resource('sales', 'SaleController')->middleware('auth');
 Route::resource('surveyors', 'SurveyorController')->middleware('auth');

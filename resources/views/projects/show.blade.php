@@ -49,37 +49,7 @@
   </div>
   <div class="col-md-6">
     <div class="row">
-      <div class="col-xl-6">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Surveyors</h3>
-          </div>
-          <div class="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Surveyors</th>
-                  <th>Supervisor</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($project->Surveyors as $data)
-                <tr>
-                  <td>{{$data->users->name}}</td>
-                  <td>{{$data->supervisors->name}}</td>
-                  <td>{{ date('D, d F Y', strtotime($data->created_at)) }}</td>
-                  <td class="alert alert-{{ ($data->supervisor_id == null)?'secondary':'success' }} text-center pt-3"><b>{{ ($data->supervisor_id == null)?'Waiting for Approval':'Finish' }}<b></td>
-                  <td><a href="{{ route('surveyors.show',$data->id) }}" class="btn btn-info text-white"><i class="fas fa-eye"></i></a></td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-6">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Designer</h3>
@@ -102,6 +72,38 @@
                   <td>{{ date('D, d F Y', strtotime($data->created_at)) }}</td>
                   <td class="alert alert-{{ ($data->supervisor_id == null)?'secondary':'success' }} text-center pt-3"><b>{{ ($data->supervisor_id == null)?'Waiting for Approval':'Finish' }}<b></td>
                   <td><a href="{{ route('designers.show',$data->id) }}" class="btn btn-info text-white"><i class="fas fa-eye"></i></a></td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Surveyors</h3>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Surveyors</th>
+                  <th>Supervisor</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($project->Surveyors as $data)
+                <tr>
+                  <td>{{$data->users->name}}</td>
+                  <td>{{$data->supervisors->name}}</td>
+                  <td>{{ date('D, d F Y', strtotime($data->created_at)) }}</td>
+                  <td class="alert alert-{{ ($data->supervisor_id == null)?'secondary':'success' }} text-center pt-3"><b>{{ ($data->supervisor_id == null)?'Waiting for Approval':'Finish' }}<b></td>
+                  <td><a href="{{ route('surveyors.show',$data->id) }}" class="btn btn-info text-white"><i class="fas fa-eye"></i></a></td>
                 </tr>
                 @endforeach
               </tbody>

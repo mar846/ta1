@@ -107,4 +107,12 @@ class PurchasePolicy
     {
         //
     }
+    public function viewReceipt(User $user)
+    {
+      return in_array($user->role_id,[
+        '1',
+        '9',
+        '10,'
+      ]);
+    }
 }

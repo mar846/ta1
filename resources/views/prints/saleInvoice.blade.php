@@ -27,25 +27,25 @@
     <div class="col-sm-3 invoice-col">
       Bill To
       <address>
-        <strong>{{ $sale->bills->companies->name }}</strong><br>
-        {{ $sale->bills->address }}<br>
-        Phone: {{ $sale->bills->phone }}<br>
+        <strong>{{ $invoice->sales->bills->companies->name }}</strong><br>
+        {{ $invoice->sales->bills->address }}<br>
+        Phone: {{ $invoice->sales->bills->phone }}<br>
       </address>
     </div>
     <div class="col-sm-3 invoice-col">
       Ship To
       <address>
-        <strong>{{ $sale->ships->companies->name }}</strong><br>
-        {{ $sale->ships->address }}<br>
-        <!-- Phone: {{ $sale->ships->phone }}<br> -->
+        <strong>{{ $invoice->sales->ships->companies->name }}</strong><br>
+        {{ $invoice->sales->ships->address }}<br>
+        <!-- Phone: {{ $invoice->sales->ships->phone }}<br> -->
       </address>
     </div>
     <!-- /.col -->
     <div class="col-sm-3 invoice-col">
-      <b>Invoice: SO-{{ $sale->so }}/V{{ $sale->version }}</b><br>
+      <b>Invoice: SO-{{ $invoice->sales->so }}/V{{ $invoice->sales->version }}/P{{ $invoice->id }}</b><br>
       <br>
-      <b>Your Order ID:</b> {{ $sale->reference }}<br>
-      <b>Your Order Date:</b> {{ date('D, d F Y',strtotime($sale->referenceDate)) }}<br>
+      <b>Your Order ID:</b> {{ $invoice->sales->reference }}<br>
+      <b>Your Order Date:</b> {{ date('D, d F Y',strtotime($invoice->sales->referenceDate)) }}<br>
       <!-- <b>Payment Due:</b> 2/22/2014<br>
       <b>Account:</b> 968-34567 -->
     </div>
@@ -66,7 +66,7 @@
         </tr>
         </thead>
         <tbody>
-          @foreach($sale->goods as $data)
+          @foreach($invoice->sales->goods as $data)
             <tr>
               <td>{{ $data->name }}</td>
               <td>{{ $data->pivot->qty }} {{ $data->units->name }}</td>
@@ -86,28 +86,35 @@
     <div class="col-6">
       <p class="lead">Payment Methods :</p>
       <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-        {{ $sale->paymentTerms }}
+        {{ $invoice->sales->paymentTerms }}
       </p>
       <p class="lead">Delivery Time :</p>
       <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-        {{ $sale->deliveryTime }}
+        {{ $invoice->sales->deliveryTime }}
       </p>
     </div>
     <!-- /.col -->
     <div class="col-6">
       <div class="table-responsive">
         <table class="table">
-          <tbody><tr>
-            <th style="width:50%">Subtotal:</th>
-            <td>IDR. {{ number_format($sale->total, 2, ',', '.') }}</td>
+          <tbody>
+            <tr>
+            <th style="width:50%">Down Payments:</th>
+            <td>IDR. {{ number_format($downpayment, 2, ',', '.') }}</td>
           </tr>
+          @if($type == 'lunas')
+            <tr>
+            <th style="width:50%">Repayment:</th>
+            <td>IDR. {{ number_format($repayment, 2, ',', '.') }}</td>
+          </tr>
+          @endif
           <tr>
             <th>Tax (10%)</th>
-            <td>IDR. {{ number_format(($sale->total * 0.1), 2, ',', '.') }}</td>
+            <td>IDR. {{ number_format(($repayment * 0.1), 2, ',', '.') }}</td>
           </tr>
           <tr>
             <th>Total:</th>
-            <td>IDR. {{ number_format(($sale->total * 1.1), 2, ',', '.') }}</td>
+            <td>IDR. {{ number_format(($repayment * 1.1), 2, ',', '.') }}</td>
           </tr>
         </tbody></table>
       </div>

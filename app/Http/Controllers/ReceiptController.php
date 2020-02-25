@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Validator;
+use Auth;
+
+use App\Good;
+use App\Purchase;
 use App\Receipt;
+
 use Illuminate\Http\Request;
 
 class ReceiptController extends Controller
@@ -14,7 +21,9 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        //
+      // $receipt = Receipt::all();
+      $purchase = Purchase::all();
+      return view('receipts.index',compact('purchase'));
     }
 
     /**
@@ -22,10 +31,11 @@ class ReceiptController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+     public function create(Request $request)
+     {
+       $purchase = Purchase::find($request['id']);
+       return view('receipts.add',compact('purchase'));
+     }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +45,39 @@ class ReceiptController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $data = $request->validate([
+        'purchase' => 'required|numeric|min:1'
+      ]);
+      $purchase = Purchase::find($data['purchase']);
+      $goodCount = count($purchase->goods);
+      $itemRules = [];
+      for ($i=0; $i < $goodCount; $i++) {
+        $itemRules['qty'.$i] = "nullable|numeric|min:1";
+      }
+      $good = [];
+      foreach ($purchase->goods as $key => $value) {
+        $good[] = $value['id'];
+      }
+      $itemData = $request->validate($itemRules);
+      $receipt = Receipt::create([
+        'purchase_id' => $purchase->id,
+        'user_id' => Auth::user()->id,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
+      for ($i=0; $i < $goodCount; $i++) {
+        if ($itemData['qty'.$i] != null) {
+          $receipt->goods()->attach([
+            $good[$i] => [
+              'qty' => $itemData['qty'.$i],
+              'created_at' => now(),
+              'updated_at' => now(),
+            ]
+          ]);
+          Good::find($good[$i])->increment('qty', $itemData['qty'.$i]);
+        }
+      }
+      return redirect(action('ReceiptController@index'));
     }
 
     /**

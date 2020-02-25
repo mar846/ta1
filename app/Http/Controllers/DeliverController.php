@@ -7,6 +7,7 @@ use Auth;
 use Validator;
 
 use App\Deliver;
+use App\Good;
 use App\Sale;
 
 use Illuminate\Http\Request;
@@ -72,9 +73,8 @@ class DeliverController extends Controller
               'updated_at' => now(),
             ]
           ]);
+          Good::find($good[$i])->decrement('qty',$itemData['qty'.$i]);
         }
-        echo $good[$i].' = '.$itemData['qty'.$i].'<br>';
-
       }
       return redirect(action('DeliverController@show',$deliver->id));
     }

@@ -11,7 +11,7 @@
   <div class="row justify-content-between px-3 pb-2">
     @can('create',App\Purchase::class)
       <a href="{{ route('purchases.create') }}" class="btn btn-primary">Make Quotation</a>
-      <a href="{{ route('purchaseRequest') }}" class="btn btn-primary">Purchase Request</a>
+      <!-- <a href="{{ route('purchaseRequest') }}" class="btn btn-primary">Purchase Request</a> -->
     @endcan
   </div>
   <table class="table" id="table">
