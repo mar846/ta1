@@ -20,6 +20,6 @@ class Receipt extends Model
   }
   public function goods()
   {
-    return $this->belongsToMany('App\Good','good_receipt','receipt_id','good_id');
+    return $this->belongsToMany('App\Good','good_receipt','receipt_id','good_id')->withPivot('qty');
   }
 }

@@ -190,13 +190,14 @@
       </div>
       <div class="card-body">
         @foreach($project->files as $data)
-          <div class="card float-left mr-3" style="width: 15rem;">
-            <i class="fas fa-file-image col-12 pt-3 pl-4" style="font-size: 130px;"></i>
+        <a href="{{ asset('storage/'.$data->name) }}">
+          <div class="card">
             <div class="card-body">
-              <h5 class="card-text">{{ $data->name }}</h5>
-               <a href="{{ url('storage/'.$data->name) }}" class="btn btn-primary">Preview</a>
+              <span class="pr-3"><i class="fas fa-image" style="font-size:30px;"></i></span>
+                {{ $data->name }}
             </div>
           </div>
+        </a>
         @endforeach
       </div>
     </div>

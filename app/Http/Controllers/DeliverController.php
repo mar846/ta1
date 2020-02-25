@@ -65,7 +65,8 @@ class DeliverController extends Controller
         'updated_at' => now(),
       ]);
       for ($i=0; $i < $goodCount; $i++) {
-        if ($itemData['qty'.$i] != null) {
+        if (isset($itemData['qty'.$i])) {
+          if ($itemData['qty'.$i] != null) {
           $deliver->goods()->attach([
             $good[$i] => [
               'qty' => $itemData['qty'.$i],
@@ -74,6 +75,7 @@ class DeliverController extends Controller
             ]
           ]);
           Good::find($good[$i])->decrement('qty',$itemData['qty'.$i]);
+        }
         }
       }
       return redirect(action('DeliverController@show',$deliver->id));

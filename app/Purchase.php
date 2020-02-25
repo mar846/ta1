@@ -23,7 +23,7 @@ class Purchase extends Model
   }
   public function receipts()
   {
-    return $this->belongsToMany('App\Good','good_receipt','purchase_id','good_id');
+    return $this->hasMany('App\Receipt');
   }
   public function scopeCountPurchase($query)
   {

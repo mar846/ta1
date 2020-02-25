@@ -14,28 +14,39 @@
   </div>
 </div>
 @endcan
-<table class="table">
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Supplier</th>
-    <th>QTY</th>
-    <th>Type</th>
-    <th></th>
-  </tr>
-  @foreach($good as $data)
+<table class="table table-hover" id="table">
+  <thead>
     <tr>
-      <td>{{ $data->id }}</td>
-      <td>{{ $data->name }}</td>
-      <td>{{ $data->companies->name }}</td>
-      <td>{{ $data->qty }} {{ $data->units->name }}</td>
-      <td>{{ ($data->type_id != null)?$data->types->name:'' }}</td>
-      <td>
-        @can('viewAny',$data)
-        <a href="{{ route('goods.show',[$data->id]) }}" class="btn btn-primary">Info</a>
-        @endcan
-      </td>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Supplier</th>
+      <th>QTY</th>
+      <th>Type</th>
+      <th></th>
     </tr>
-  @endforeach
+  </thead>
+  <tbody>
+    @foreach($good as $data)
+      <tr>
+        <td>{{ $data->id }}</td>
+        <td>{{ $data->name }}</td>
+        <td>{{ $data->companies->name }}</td>
+        <td>{{ $data->qty }} {{ $data->units->name }}</td>
+        <td>{{ ($data->type_id != null)?$data->types->name:'' }}</td>
+        <td>
+          @can('viewAny',$data)
+          <a href="{{ route('goods.show',[$data->id]) }}" class="btn btn-primary">Info</a>
+          @endcan
+        </td>
+      </tr>
+    @endforeach
+  </tbody>
 </table>
+@endsection
+@section("script")
+<script type="text/javascript">
+  $(document).ready(function() {
+       $('#table').DataTable();
+  });
+</script>
 @endsection

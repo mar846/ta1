@@ -54,7 +54,15 @@
                   foreach ($file as $image) {
                     if ($value == $image->id) {
                       ?>
-                      <a href="{{ asset('storage/'.$image->name) }}"><img src="{{ asset('storage/'.$image->name) }}" alt="" class="img-thumbnail" style="width:250px;"></a>
+                      <a href="{{ asset('storage/'.$image->name) }}">
+                        <div class="card">
+                          <div class="card-body">
+                            <span class="pr-3"><i class="fas fa-image" style="font-size:30px;"></i></span>
+                              {{ $image->name }}
+                          </div>
+                        </div>
+                        <!-- <img src="{{ asset('storage/'.$image->name) }}" alt="" class="img-thumbnail" style="width:250px;"> -->
+                      </a>
                       <?php
                     }
                   }
@@ -68,13 +76,15 @@
     <label class="pt-3">Files</label>
     <div class="form-group">
       @foreach($surveyor->projects->files as $data)
-          <div class="card float-left mr-3" style="width: 10rem;">
-            <i class="fas fa-file-image col-12 pt-3 pl-4" style="font-size: 130px;"></i>
-            <div class="card-body">
-              <h5 class="card-text">{{ $data->name }}</h5>
-               <a href="{{ url('storage/'.$data->name) }}" class="btn btn-primary">Preview</a>
-            </div>
+      <a href="{{ asset('storage/'.$image->name) }}">
+        <div class="card">
+          <div class="card-body">
+            <span class="pr-3"><i class="fas fa-image" style="font-size:30px;"></i></span>
+              {{ $image->name }}
           </div>
+        </div>
+        <!-- <img src="{{ asset('storage/'.$image->name) }}" alt="" class="img-thumbnail" style="width:250px;"> -->
+      </a>
       @endforeach
     </div>
   </div>

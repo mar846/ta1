@@ -11,10 +11,10 @@
       display: none;
     }
     </style>
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <!-- REQUIRED SCRIPTS -->
     <script src="{{ asset('js/app.js') }}" charset="utf-8"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
   </head>
   <body class="sidebar-mini" style="height: auto;">
   <div class="wrapper">
@@ -36,7 +36,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="{{ url('/') }}" class="brand-link">
-        <img src="logo.svg" alt="Skripsi Logo" class="brand-image">
+        <img src="{{ asset('logo.svg') }}" alt="Skripsi Logo" class="brand-image">
         <span class="brand-text font-weight-light">Guna Elektro</span>
       </a>
 
@@ -45,7 +45,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="user.svg" class="img-circle elevation-2" alt="User Image">
+            <img src="{{ asset('user.svg') }}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
             <!-- <a href="#" class="d-block">{{ ucwords(Auth::user()->name) }}</a> -->
@@ -214,7 +214,7 @@
             @can('viewReceipt',App\Purchase::class)
             <li class="nav-item">
               <a href="{{ route('receipts.index') }}" class="nav-link">
-                <i class="nav-icon fas fa-truck"></i>
+                <i class="nav-icon fas fa-boxes"></i>
                 <p>Receipt</p>
               </a>
             </li>

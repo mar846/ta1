@@ -22,9 +22,9 @@ class Sale extends Model
   public function ships(){
      return $this->belongsTo('App\Address','shipTo');
   }
-  public function deliveries()
+  public function delivers()
   {
-    return $this->belongsToMany('App\Good','good_deliver','sale_id','good_id');
+    return $this->hasMany('App\Deliver');
   }
   public function goods(){
      return $this->belongsToMany('App\Good','sale_details','sale_id','good_id')->withPivot('qty','price','subtotal');

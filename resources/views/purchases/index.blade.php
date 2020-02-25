@@ -14,31 +14,35 @@
       <!-- <a href="{{ route('purchaseRequest') }}" class="btn btn-primary">Purchase Request</a> -->
     @endcan
   </div>
-  <table class="table" id="table">
-    <tr>
-      <th>ID</th>
-      <th>Item</th>
-      <th>QTY</th>
-      <th>Project</th>
-      <th>Action</th>
-    </tr>
-    @foreach($purchase as $data)
+  <table class="table table-hover" id="table">
+    <thead>
       <tr>
-        <td>{{ $data->id }}</td>
-        <td>{{ date('D, d F Y', strtotime($data->created_at)) }}</td>
-        <td>{{ $data->addresses->companies->name }}</td>
-        <td>{{ $data->po }}</td>
-        <td>
-          @can('view',$data)
-          <a href="{{ route('purchases.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>
-          @endcan
-        </td>
+        <th>ID</th>
+        <th>Item</th>
+        <th>QTY</th>
+        <th>Project</th>
+        <th>Action</th>
       </tr>
-    @endforeach
+    </thead>
+    <tbody>
+      @foreach($purchase as $data)
+        <tr>
+          <td>{{ $data->id }}</td>
+          <td>{{ date('D, d F Y', strtotime($data->created_at)) }}</td>
+          <td>{{ $data->addresses->companies->name }}</td>
+          <td>{{ $data->po }}</td>
+          <td>
+            @can('view',$data)
+            <a href="{{ route('purchases.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>
+            @endcan
+          </td>
+        </tr>
+      @endforeach
+    </tbody>
   </table>
 </div>
 @endsection
-@section('script')
+@section("script")
 <script type="text/javascript">
   $(document).ready(function() {
        $('#table').DataTable();

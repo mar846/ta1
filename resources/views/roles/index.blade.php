@@ -32,5 +32,10 @@
     </tbody>
   </table>
 @endsection
-@section('script')
+@section("script")
+<script type="text/javascript">
+  $(document).ready(function() {
+       $('#table').DataTable();
+  });
+</script>
 @endsection
