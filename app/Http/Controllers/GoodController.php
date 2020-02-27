@@ -139,6 +139,7 @@ class GoodController extends Controller
         'type' => 'required',
         'price' => '',
         'description' => '',
+        'supplier' => 'required|numeric',
         'capacity' => 'nullable|numeric|min:1',
         'current' => 'nullable',
         'minVolt' => 'nullable|numeric',
@@ -146,23 +147,36 @@ class GoodController extends Controller
         'efficiency' => 'nullable|numeric|min:1|max:100',
         'safetyMargin' => 'nullable|numeric|min:1|max:100',
       ]);
-      Good::find($good->id)->update([
-          'name' => $data['name'],
-          'unit_id' => $data['unit'],
-          'type_id' => $data['type'],
-          'price' => $data['price'],
-          'capacity' => $data['capacity'],
-          'updated_at' => now(),
-      ]);
-      if ($data['maxVolt'] != null || $data['efficiency'] != null || $data['capacity'] != null) {
-        Specification::where('good_id',$good['id'])->update([
-          'capacity' => $data['capacity'],
-          'current' => $data['current'],
-          'maxVolt' => $data['maxVolt'],
-          'minVolt' => $data['minVolt'],
-          'efficiency' => $data['efficiency'],
-          'safetyMargin' => $data['safetyMargin'],
-          'good_id' => $good->id
+      if ($data['type'] == 'Panel' || $data['type'] == 'Inverter') {
+        Good::find($good->id)->update([
+            'name' => $data['name'],
+            'unit_id' => $data['unit'],
+            'type_id' => $data['type'],
+            'price' => $data['price'],
+            'capacity' => $data['capacity'],
+            'company_id' => $data['supplier'],
+            'updated_at' => now(),
+        ]);
+        if ($data['maxVolt'] != null || $data['efficiency'] != null || $data['capacity'] != null) {
+          Specification::where('good_id',$good['id'])->update([
+            'capacity' => $data['capacity'],
+            'current' => $data['current'],
+            'maxVolt' => $data['maxVolt'],
+            'minVolt' => $data['minVolt'],
+            'efficiency' => $data['efficiency'],
+            'safetyMargin' => $data['safetyMargin'],
+            'good_id' => $good->id
+          ]);
+        }
+      }
+      else {
+        Good::find($good->id)->update([
+            'name' => $data['name'],
+            'unit_id' => $data['unit'],
+            'type_id' => $data['type'],
+            'price' => $data['price'],
+            'company_id' => $data['supplier'],
+            'updated_at' => now(),
         ]);
       }
       return redirect(action('GoodController@index'));

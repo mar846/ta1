@@ -26,7 +26,12 @@
   <div class="form-group row">
     <label class="col-md-2 col-form-label">Amount</label>
     <div class="col-md-10">
-      <input type="number" name="amount" class="form-control">
+      <input type="number" name="amount" class="form-control @error('amount') is-invalid @enderror">
+      @error('amount')
+          <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+          </span>
+      @enderror
     </div>
   </div>
   <div class="form-group">

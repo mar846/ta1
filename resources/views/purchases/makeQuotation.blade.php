@@ -8,15 +8,6 @@
 <li class="breadcrumb-item active">Purchase Quotation</li>
 @endsection
 @section('content')
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 <form action="{{ route('purchases.store') }}" method="post">
   {{ csrf_field() }}
   <div class="row">
@@ -56,19 +47,30 @@
       <div class="form-group row">
         <label class="col-sm-2 col-form-label">Reference</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" name="reference" value="{{ old('reference') }}">
+          <input type="text" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') }}">
+          @error('reference')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
         </div>
       </div>
       <div class="form-group row">
         <label class="col-sm-2 col-form-label">Reference Date</label>
         <div class="col-sm-10">
-          <input type="date" class="form-control" name="referenceDate" placeholder="dd-mm-yyyy" value="{{ old('referenceDate') }}">
+          <input type="date" class="form-control @error('referenceDate') is-invalid @enderror" name="referenceDate" placeholder="dd-mm-yyyy" value="{{ old('referenceDate') }}">
+          @error('referenceDate')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
         </div>
       </div>
       <div class="form-group row">
         <label class="col-sm-2 col-form-label">Payment Terms</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control @error('paymentTerms') is-invalid @enderror" name="paymentTerms" value="{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}">
+          <textarea name="paymentTerms" class="form-control @error('paymentTerms') is-invalid @enderror" rows="3" cols="80">{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}</textarea>
+          <!-- <input type="text" class="form-control @error('paymentTerms') is-invalid @enderror" name="paymentTerms" value="{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}"> -->
           @error('paymentTerms')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>

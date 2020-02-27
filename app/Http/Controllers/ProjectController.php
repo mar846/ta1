@@ -47,7 +47,7 @@ class ProjectController extends Controller
     {
       $this->authorize('create',Project::class);
         $data = $request->validate([
-          'name' => 'required',
+          'name' => 'required|unique:projects',
           'location' => 'required',
           'description' => 'max:191',
           'company' => 'required',

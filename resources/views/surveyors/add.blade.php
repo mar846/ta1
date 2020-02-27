@@ -7,9 +7,6 @@
 <li class="breadcrumb-item active">Add Survey</li>
 @endsection
 @section('content')
-@if ($errors->any())
-        {{ implode('', $errors->all('<div>:message</div>')) }}
-@endif
 <form action="{{ route('surveyors.store') }}" method="post" enctype="multipart/form-data">
   {{ csrf_field() }}
   <div class="card">
@@ -44,7 +41,14 @@
             <tr>
               <td>{{ $data->id }}</td>
               <td>{{ $data->question }}</td>
-              <td><input type="text" name="answer{{ $key }}" class="form-control" <?php echo (rand(0,1) == 1)? 'value="yes"':'value="no"'; ?>></td>
+              <td>
+                <input type="text" name="answer{{ $key }}" class="form-control @error('answer'.$key) is-invalid @enderror" <?php echo (rand(0,1) == 1)? 'value="yes"':'value="no"'; ?>>
+                @error('answer'.$key)
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </td>
               <td><input type="file" name="file{{ $key }}[]" class="form-control" accept="image/*" multiple></td>
             </tr>
           @endforeach

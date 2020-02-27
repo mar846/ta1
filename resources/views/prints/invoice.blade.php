@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-12">
       <h4>
-        <img src="logo.svg" alt=""> PT. Guna Elektro
+        <img src="{{ asset('logo.svg') }}" alt=""> PT. Guna Elektro
       </h4>
     </div>
     <!-- /.col -->

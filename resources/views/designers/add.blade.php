@@ -13,7 +13,7 @@
       <div class="card-body">
         <div class="form-group">
           <label>Project</label>
-          <select class="form-control" name="project" onchange="getProjectDetail(this)">
+          <select class="form-control @error('project') is-invalid @enderror" name="project" onchange="getProjectDetail(this)">
             <option>Choose Project</option>
             @foreach($project as $data)
               @foreach($data->surveyors as $datas)
@@ -23,6 +23,11 @@
               @endforeach
             @endforeach
           </select>
+          @error('project')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
         </div>
         <div class="form-group d-flex flex-column">
           <label for="exampleInputFile">File input</label>
@@ -38,18 +43,6 @@
             </tr>
           </thead>
           <tbody id="tableItem">
-            <!-- <tr>
-              <td><input type="text" name="item" + i + "" class="form-control" placeholder="@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" list="dataGoods"></td>
-              <td>
-                <div class="input-group mb-2">
-                  <input type="number" class="form-control" name="qty0" placeholder="1" onkeyup="calculate(this)" id="qty0">
-                  <div class="input-group-prepend">
-                    <input type="text" name="unit0" class="input-group-text" placeholder="@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach" id="unit0" list="dataUnits">
-                  </div>
-                </div>
-              </td>
-              <td><button type="button" class="btn btn-danger btn-sm" id="button0" name="button0" onclick="deleteRow(this)">X</button></td>
-            </tr> -->
           </tbody>
         </table>
         <button type="button" name="button" class="btn btn-secondary" onclick="addRow()">Add Item</button>

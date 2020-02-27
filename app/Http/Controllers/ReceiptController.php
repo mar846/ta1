@@ -33,7 +33,12 @@ class ReceiptController extends Controller
      */
      public function create(Request $request)
      {
-       $purchase = Purchase::find($request['id']);
+       $data = $request->validate([
+         'id' => 'required|numeric',
+       ],[
+         'id.numeric' => 'You have to choose purchase',
+       ]);
+       $purchase = Purchase::find($data['id']);
        return view('receipts.add',compact('purchase'));
      }
 
@@ -47,6 +52,8 @@ class ReceiptController extends Controller
     {
       $data = $request->validate([
         'purchase' => 'required|numeric|min:1'
+      ],[
+        'purchase.numeric' => 'You have to choose purchase',
       ]);
       $purchase = Purchase::find($data['purchase']);
       $goodCount = count($purchase->goods);
@@ -66,15 +73,17 @@ class ReceiptController extends Controller
         'updated_at' => now(),
       ]);
       for ($i=0; $i < $goodCount; $i++) {
-        if ($itemData['qty'.$i] != null) {
-          $receipt->goods()->attach([
-            $good[$i] => [
-              'qty' => $itemData['qty'.$i],
-              'created_at' => now(),
-              'updated_at' => now(),
-            ]
-          ]);
-          Good::find($good[$i])->increment('qty', $itemData['qty'.$i]);
+        if (isset($itemData['qty'.$i])) {
+          if ($itemData['qty'.$i] != null) {
+            $receipt->goods()->attach([
+              $good[$i] => [
+                'qty' => $itemData['qty'.$i],
+                'created_at' => now(),
+                'updated_at' => now(),
+              ]
+            ]);
+            Good::find($good[$i])->increment('qty', $itemData['qty'.$i]);
+          }
         }
       }
       return redirect(action('ReceiptController@index'));

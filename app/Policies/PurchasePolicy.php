@@ -112,7 +112,8 @@ class PurchasePolicy
       return in_array($user->role_id,[
         '1',
         '9',
-        '10,'
+        '10',
+        '11',
       ]);
     }
 }

@@ -55,12 +55,14 @@ class DesignerController extends Controller
       $data = $request->validate([
         'project' => 'required|numeric',
         'totalItem' => 'required|numeric',
+      ],[
+        'project.numeric' => 'You need to choose a project',
       ]);
       $itemRules=[];
       for ($i=0; $i < $data['totalItem']; $i++) {
-        $itemRules['item'.$i] = 'nullable';
-        $itemRules['qty'.$i] = 'nullable|numeric|min:1';
-        $itemRules['unit'.$i] = 'nullable';
+        $itemRules['item'.$i] = 'required';
+        $itemRules['qty'.$i] = 'required|numeric|min:1';
+        $itemRules['unit'.$i] = 'required';
       }
       $itemData = $request->validate($itemRules);
       $designer = Designer::create([

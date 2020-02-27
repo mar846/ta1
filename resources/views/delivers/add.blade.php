@@ -14,6 +14,18 @@
     <p class="form-control">SO-{{ $sale->so }}/V{{ $sale->version }}</p>
   </div>
 </div>
+<div class="form-group row">
+  <label class="col-sm-2 col-form-label">Customer</label>
+  <div class="col-sm-10">
+    <p class="form-control">{{ $sale->ships->companies->name }}</p>
+  </div>
+</div>
+<div class="form-group row">
+  <label class="col-sm-2 col-form-label">Customer</label>
+  <div class="col-sm-10">
+    <p class="form-control">{{ $sale->ships->address }}</p>
+  </div>
+</div>
 <form action="{{ route('delivers.store') }}" method="post">
   {{ csrf_field() }}
   <table class="table table-hover">

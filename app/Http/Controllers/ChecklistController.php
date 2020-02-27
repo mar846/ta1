@@ -32,7 +32,7 @@ class ChecklistController extends Controller
      */
     public function create()
     {
-      $this->authorize('view',Checklist::class);
+      $this->authorize('create',Checklist::class);
       return view('checklists.add');
     }
 
@@ -63,8 +63,7 @@ class ChecklistController extends Controller
      */
     public function show(Checklist $checklist)
     {
-      $this->authorize('viewAny',$checklist);
-        //
+      //
     }
 
     /**

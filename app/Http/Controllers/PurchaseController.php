@@ -54,6 +54,8 @@ class PurchaseController extends Controller
       $this->authorize('create',Purchase::class);
       $data = $request->validate([
         'project' => 'required|numeric',
+      ],[
+        'project.numeric' => 'You have to choose a project',
       ]);
       $project = Project::with(['companies.addresses','designers.goods.units'])->find($data['project']);
       // dd($project);

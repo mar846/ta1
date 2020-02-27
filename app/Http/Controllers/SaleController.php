@@ -46,6 +46,8 @@ class SaleController extends Controller
       $this->authorize('create',Sale::class);
       $data = $request->validate([
         'project' => 'required|numeric',
+      ],[
+        'project.numeric' => 'You have to choose a project',
       ]);
       $project = Project::with(['companies.addresses','designers.goods.units'])->find($data['project']);
       return view('sales.quotation', compact('project'));
@@ -79,7 +81,7 @@ class SaleController extends Controller
         $itemRules['qty'.$i] = 'nullable|numeric|min:1';
         $itemRules['unit'.$i] = 'nullable';
         $itemRules['price'.$i] = 'nullable|numeric|min:1';
-        $itemRules['subtotal'.$i] = 'nullable|numeric|';
+        $itemRules['subtotal'.$i] = 'nullable|numeric|min:1';
       }
       $itemData = $request->validate($itemRules);
       $totalSale =0;
@@ -178,7 +180,7 @@ class SaleController extends Controller
         'deliveryTime' => 'required',
       ]);
       $itemRules = [];
-      for ($i=0; $i < $goodCount; $i++) {
+      for ($i=0; $i <= $goodCount; $i++) {
         $itemRules['price'.$i] = 'nullable|numeric|min:1';
       }
       $total = null;
@@ -204,7 +206,7 @@ class SaleController extends Controller
         'created_at' => now(),
         'updated_at' => now(),
       ]);
-      for ($i=0; $i < $goodCount; $i++) {
+      for ($i=0; $i <= $goodCount; $i++) {
         $newSale->goods()->syncWithoutDetaching([
           $good[$i] => [
             'qty' => $qty[$i],

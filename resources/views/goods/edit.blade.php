@@ -61,12 +61,17 @@
   <div class="form-group row">
     <label class="col-sm-2 col-form-label">Supplier</label>
     <div class="col-sm-10">
-      <div class="form-check">
+      <select class="form-control" name="supplier">
         @foreach($company as $data)
+          @if($data->type == 'supplier')
+          <option value="{{ $data->id }}">{{ $data->name }}</option>
+          @endif
+        @endforeach
+      </select>
+        <!-- @foreach($company as $data)
             <input type="checkbox" class="form-check-input" name="supplier[]" value="{{ $data->id }}">
             <label class="form-check-label">{{  $data->name }}</label><br>
-          @endforeach
-      </div>
+          @endforeach -->
     </div>
   </div>
   <div class="form-group row">
@@ -75,6 +80,7 @@
       <input type="number" class="form-control" name="price" value="{{ old('price',$good->price) }}">
     </div>
   </div>
+  @if($good->types->name == 'Panel' || $good->types->name == 'Inverter')
   <div class="form-group row">
     <label class="col-sm-2 col-label-form">Capacity</label>
     <div class="col-sm-10">
@@ -129,6 +135,7 @@
       @enderror
     </div>
   </div>
+  @endif
   <!--
   <div class="form-group row">
     <label class="col-sm-2 col-form-label">Storage Location</label>

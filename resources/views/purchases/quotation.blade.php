@@ -60,7 +60,7 @@
               {{ $datas->companies->name }}
             </td>
             <td>
-              @foreach($project->purchases as $datass)
+              @foreach($project->designers as $datass)
               @if($datass->address_id != $datas->company_id)
                 <a href="{{ route('addPurchaseQuotation',[$project->id,$datas->company_id]) }}" class="btn btn-primary">Make Quotation</a>
               @else

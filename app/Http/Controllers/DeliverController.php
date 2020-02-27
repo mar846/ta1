@@ -31,6 +31,11 @@ class DeliverController extends Controller
      */
     public function create(Request $request)
     {
+      $data = $request->validate([
+        'id' => 'required|numeric',
+      ],[
+        'id.numeric' => 'You have to choose sales',
+      ]);
       $sale = Sale::find($request['id']);
       return view('delivers.add',compact('sale'));
     }

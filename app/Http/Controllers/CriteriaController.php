@@ -326,7 +326,7 @@ class CriteriaController extends Controller
         $item = [];
         $inverterList = [];
         foreach ($inverter as $key => $value) {
-          for ($i=1; $i < 6; $i++) {
+          for ($i=1; $i < 1000; $i++) {
             if ($value['capacity'] * $i > $capacity) {
               if (!isset($item[$value['id']])) {
                 // echo $value['name'].' | '.$value['capacity'].' | '.$i.' | '.number_format($value['price'],0,',','.').' | '.number_format($i * $value['price'],0,',','.').' | '.($value['capacity'] * $i).'<br>';
@@ -387,6 +387,7 @@ class CriteriaController extends Controller
         foreach ($inverterSort as $key => $value) {
           ksort($inverterSort[$key]);
         }
+        // dd($inverterSort);
         // step 1
         // scoring
         $score = [];
@@ -395,7 +396,7 @@ class CriteriaController extends Controller
             foreach ($scale as $i => $content) {
               foreach ($content as $iteration => $info) {
                 if ($key == $i) {
-                  if ($data<$content[0]) {
+                  if ($data<=$content[0]) {
                     if (!isset($score[$key][$index])) {
                       $score[$key][$index] = $iteration+1;
                     }

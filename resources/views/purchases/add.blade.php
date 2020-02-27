@@ -8,11 +8,6 @@
 <li class="breadcrumb-item active">Purchase Quotation</li>
 @endsection
 @section('content')
-@if ($errors->any())
-  @foreach ($errors->all() as $error)
-      <div class="alert alert-danger">{{ $error }}</div>
-  @endforeach
-@endif
 <form class="m-3" action="{{ route('purchaseQuotation') }}" method="post">
   {{ csrf_field() }}
   <div class="row">
@@ -20,11 +15,17 @@
       <div class="form-group row">
         <label class="col-sm-2 col-form-label">Project</label>
         <div class="col-sm-10">
-          <select class="form-control" name="project">
+          <select class="form-control @error('project') is-invalid @enderror" name="project">
+            <option>Choose a project</option>
             @foreach($project as $data)
                 <option value="{{ $data->id }}">{{ $data->name }}</option>
             @endforeach
           </select>
+          @error('project')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
         </div>
       </div>
     </div>

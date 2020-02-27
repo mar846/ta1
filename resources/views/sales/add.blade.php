@@ -16,7 +16,7 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Project</label>
           <div class="col-sm-10">
-            <select class="form-control" name="project" onchange="getCustomerData(this)">
+            <select class="form-control @error('project') is-invalid @enderror" name="project" onchange="getCustomerData(this)">
               <option>Choose Project</option>
               @foreach($project as $data)
                 @foreach($data->designers as $datas)
@@ -28,6 +28,11 @@
                 @endforeach
               @endforeach
             </select>
+            @error('project')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
         </div>
       </div>

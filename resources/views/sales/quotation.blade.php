@@ -8,36 +8,27 @@
 <li class="breadcrumb-item active">Add Sale</li>
 @endsection
 @section('content')
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 <form action="{{ route('sales.store') }}" method="post">
   {{ csrf_field() }}
   <div class="row">
     <div class="col-md-6">
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Project</label>
-        <div class="col-sm-10">
+        <label class="col-sm-3 col-form-label">Project</label>
+        <div class="col-sm-9">
           <input type="hidden" name="project" value="{{ old('project',$project->id) }}">
           <p class="form-control">{{ $project->name }}</p>
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Customer</label>
-        <div class="col-sm-10">
+        <label class="col-sm-3 col-form-label">Customer</label>
+        <div class="col-sm-9">
           <input type="hidden" name="company" value="{{ old('company',$project->companies->name) }}">
           <p class="form-control">{{ $project->companies->name }}</p>
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Bill To</label>
-        <div class="col-sm-10">
+        <label class="col-sm-3 col-form-label">Bill To</label>
+        <div class="col-sm-9">
           <select class="form-control" name="billTo">
             @foreach($project->companies->addresses as $data)
               @if($data->name == 'billTo')
@@ -49,8 +40,8 @@
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Ship To</label>
-        <div class="col-sm-10">
+        <label class="col-sm-3 col-form-label">Ship To</label>
+        <div class="col-sm-9">
           <select class="form-control" name="shipTo">
             @foreach($project->companies->addresses as $data)
               @if($data->name == 'shipTo')
@@ -63,8 +54,8 @@
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Phone</label>
-        <div class="col-sm-10">
+        <label class="col-sm-3 col-form-label">Phone</label>
+        <div class="col-sm-9">
           <p class="form-control">
             @foreach($project->companies->addresses as $data)
               @if($data->name == 'billTo')
@@ -82,27 +73,43 @@
     </div>
     <div class="col-md-6">
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Valid Till</label>
-        <div class="col-sm-10">
-          <input type="date" class="form-control" name="validTill" value="{{ old('validTill') }}" min="{{ date('Y-m-d',time()) }}" max="{{ date('Y-m-d',(time()+5184000)) }}">
+        <label class="col-sm-3 col-form-label">Valid Till</label>
+        <div class="col-sm-9">
+          <input type="date" class="form-control @error('validTill') is-invalid @enderror" name="validTill" value="{{ old('validTill') }}" min="{{ date('Y-m-d',time()) }}" max="{{ date('Y-m-d',(time()+5184000)) }}">
+          @error('validTill')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Reference</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="reference" value="{{ old('reference') }}">
+        <label class="col-sm-3 col-form-label">Reference</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') }}">
+          @error('reference')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Reference Date</label>
-        <div class="col-sm-10">
-          <input type="date" class="form-control" name="referenceDate" placeholder="dd-mm-yyyy" value="{{ old('referenceDate') }}">
+        <label class="col-sm-3 col-form-label">Reference Date</label>
+        <div class="col-sm-9">
+          <input type="date" class="form-control @error('referenceDate') is-invalid @enderror" name="referenceDate" placeholder="dd-mm-yyyy" value="{{ old('referenceDate') }}">
+          @error('referenceDate')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Payment Terms</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control @error('paymentTerms') is-invalid @enderror" name="paymentTerms" value="{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}">
+        <label class="col-sm-3 col-form-label">Payment Terms</label>
+        <div class="col-sm-9">
+          <textarea name="paymentTerms" class="form-control @error('paymentTerms') is-invalid @enderror" rows="3" cols="80">{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}</textarea>
+          <!-- <input type="text" class="form-control @error('paymentTerms') is-invalid @enderror" name="paymentTerms" value="{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}"> -->
           @error('paymentTerms')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -111,8 +118,8 @@
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Delivery Time</label>
-        <div class="col-sm-10">
+        <label class="col-sm-3 col-form-label">Delivery Time</label>
+        <div class="col-sm-9">
           <input type="text" class="form-control @error('deliveryTime') is-invalid @enderror" name="deliveryTime" value="{{ old('deliveryTime', '4 - 5 bulan setelah terima DP') }}">
           @error('deliveryTime')
               <span class="invalid-feedback" role="alert">
@@ -149,7 +156,12 @@
                 <div class="input-group-prepend">
                   <div class="input-group-text">Rp.</div>
                 </div>
-                <input type="number" class="form-control" name="price{{ $key }}" placeholder="1000" onkeyup="calculate(this)" id="price{{ $key }}" value="{{ old('price.$key',($datas->price * $datas->profit)) }}">
+                <input type="number" class="form-control @error('price.$key') is-invalid @enderror" name="price{{ $key }}" placeholder="1000" onkeyup="calculate(this)" id="price{{ $key }}" value="{{ old('price.$key',($datas->price * $datas->profit)) }}">
+                @error('price.$key')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
             </td>
             <td>

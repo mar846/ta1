@@ -16,13 +16,13 @@ class ChecklistPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
-    {
-      return in_array($user->role_id,[
-        '1',
-        '3',
-      ]);
-    }
+     public function viewAny(User $user)
+     {
+       return in_array($user->role_id,[
+           '1',
+           '3',
+         ]);
+     }
 
     /**
      * Determine whether the user can view the checklist.
@@ -31,13 +31,12 @@ class ChecklistPolicy
      * @param  \App\Checklist  $checklist
      * @return mixed
      */
-    public function view(User $user, Checklist $checklist)
-    {
-      return in_array($user->role_id,[
-        '1',
-        '3',
-      ]);
-    }
+     public function view(User $user, Checklist $checklist)
+     {
+       return in_array($user->role_id,[
+           '1',
+         ]);
+     }
 
     /**
      * Determine whether the user can create checklists.

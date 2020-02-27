@@ -100,7 +100,7 @@
                 @foreach($project->Surveyors as $data)
                 <tr>
                   <td>{{$data->users->name}}</td>
-                  <td>{{$data->supervisors->name}}</td>
+                  <td>{{ ($data->supervisor_id != null)?$data->supervisors->name:'' }}</td>
                   <td>{{ date('D, d F Y', strtotime($data->created_at)) }}</td>
                   <td class="alert alert-{{ ($data->supervisor_id == null)?'secondary':'success' }} text-center pt-3"><b>{{ ($data->supervisor_id == null)?'Waiting for Approval':'Finish' }}<b></td>
                   <td><a href="{{ route('surveyors.show',$data->id) }}" class="btn btn-info text-white"><i class="fas fa-eye"></i></a></td>
@@ -165,7 +165,7 @@
                   <tr>
                     <td>PO-{{ $data->po }}</td>
                     <td>{{ $data->users->name }}</td>
-                    <td>{{ $data->cr4created_at }}</td>
+                    <td>{{ $data->created_at }}</td>
                     <td>
                       <a href="{{ route('purchases.show',$data->id) }}" class="btn btn-info text-white">
                         <i class="fas fa-eye"></i>

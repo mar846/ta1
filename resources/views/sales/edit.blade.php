@@ -86,7 +86,7 @@
         </div>
       </div>
       <div class="row">
-        <table class="table table-hover table-bordered col-12" id="table">
+        <table class="table table-hover table-bordered col-12">
           <thead>
             <th>Item</th>
             <th>QTY</th>
