@@ -219,6 +219,14 @@
               </a>
             </li>
             @endcan
+            @can('viewReceipt',App\Purchase::class)
+            <li class="nav-item">
+              <a href="{{ route('users.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+                <p>Users</p>
+              </a>
+            </li>
+            @endcan
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
