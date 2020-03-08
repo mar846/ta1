@@ -16,11 +16,17 @@ class Sale extends Model
   public function users(){
    return $this->belongsTo('App\User','user_id');
   }
+  public function supervisors(){
+   return $this->belongsTo('App\User','supervisor_id');
+  }
   public function bills(){
      return $this->belongsTo('App\Address','billTo');
   }
   public function ships(){
      return $this->belongsTo('App\Address','shipTo');
+  }
+  public function invoices(){
+     return $this->hasMany('App\Invoice');
   }
   public function delivers()
   {

@@ -26,11 +26,14 @@ Route::post('deleteCatalogGood','CatalogController@deleteGood')->name('deleteCat
 
 Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompanyData');
 
+Route::post('getProjectDetail','CriteriaController@electre')->name('getProjectDetail');
+
 Route::get('designerApproval/{id}','DesignerController@approve')->name('designerApproval');
 Route::get('designerDisapproval/{id}','DesignerController@disapprove')->name('designerDisapproval');
 Route::post('getDesignerData','DesignerController@getDesignerData')->name('getDesignerData');
 Route::post('deleteDesignerGood','DesignerController@deleteGood')->name('deleteDesignerGood');
-Route::post('getProjectDetail','CriteriaController@electre')->name('getProjectDetail');
+Route::get('requestApprove/{designer}/{id}','DesignerController@requestApprove')->name('requestApprove');
+Route::get('requestDispprove/{designer}/{id}','DesignerController@requestDisapprove')->name('requestDispprove');
 
 Route::post('deleteFile','FileController@deleteFile')->name('deleteFile');
 
@@ -46,10 +49,10 @@ Route::get('makeSaleInvoice/{id}','InvoiceController@makeInvoice')->name('makeSa
 Route::get('makePurchaseInvoice/{id}','PurchaseController@makeInvoice')->name('makePurchaseInvoice')->middleware('auth');
 Route::get('price','PurchaseController@price')->name('price');
 Route::get('purchaseRequest','PurchaseController@request')->name('purchaseRequest');
-Route::get('requestApprove/{designer}/{id}','DesignerController@requestApprove')->name('requestApprove');
-Route::get('requestDispprove/{designer}/{id}','DesignerController@requestDisapprove')->name('requestDispprove');
 Route::post('purchaseQuotation/','PurchaseController@quotation')->name('purchaseQuotation');
 Route::get('addPurchaseQuotation/{good}/{project}','PurchaseController@addQuotation')->name('addPurchaseQuotation');
+Route::get('purchaseApproval/{id}','PurchaseController@approve')->name('purchaseApproval');
+Route::get('purchaseDisapproval/{id}','PurchaseController@disapprove')->name('purchaseDisapproval');
 
 Route::get('projectFinish/{id}','ProjectController@finish')->name('projectFinish');
 

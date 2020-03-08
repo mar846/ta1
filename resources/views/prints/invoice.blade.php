@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','PUrchase Order')
+@section('title','Purchase Order')
 @section('content')
 <div class="invoice p-3 mb-3">
   <!-- title row -->
@@ -98,10 +98,6 @@
             <td>IDR. {{ number_format(($purchase->total * 0.1), 2, ',', '.') }}</td>
           </tr>
           <tr>
-            <th>Shipping:</th>
-            <td>IDR.</td>
-          </tr>
-          <tr>
             <th>Total:</th>
             <td>IDR. {{ number_format(($purchase->total * 1.1), 2, ',', '.') }}</td>
           </tr>
@@ -113,7 +109,7 @@
   <!-- /.row -->
 
   <!-- this row will not appear when printing -->
-  <div class="row no-print">
+  <!-- <div class="row no-print">
     <div class="col-12">
       <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
       <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
@@ -123,6 +119,6 @@
         <i class="fas fa-download"></i> Generate PDF
       </button>
     </div>
-  </div>
+  </div> -->
 </div>
 @endsection

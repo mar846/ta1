@@ -37,29 +37,42 @@
     </thead>
     <?php
       $array = [];
+      $stock = [];
+      foreach ($good as $key => $value) {
+        $stock[$value['id']] = $value['qty'];
+      }
       foreach ($sale->delivers as $datas) {
         foreach ($datas->goods as $datass) {
           if (isset($array[$datass['id']])) {
             $array[$datass['id']] += $datass->pivot->qty;
           }
+
           else {
             $array[$datass['id']] = $datass->pivot->qty;
           }
         }
       }
+      print_r($stock);
     ?>
     <tbody>
       @foreach($sale->goods as $key => $data)
         <tr>
           <td>{{ $data->name }}</td>
           <td>
-            @if(isset($array[$data->id]))
-              @if($array[$data->id] < $data->pivot->qty)
-                <input type="number" name="qty{{ $key }}" class="form-control" max="{{ $data->pivot->qty-$array[$data->id] }}">
-              @endif
-            @else
-              <input type="number" name="qty{{ $key }}" class="form-control" max="{{ $data->pivot->qty }}">
-            @endif
+            @isset($stock[$data->id])
+              @isset($array[$data->id])
+                @if($array[$data->id] < $data->pivot->qty)
+                  @if($data->pivot->qty - $array[$data->id] > $stock[$data->id])
+                    <input type="number" name="qty{{ $key }}" class="form-control" min="0" max="{{ $stock[$data->id] }}">
+                  @else
+                    <input type="number" name="qty{{ $key }}" class="form-control" min="0" max="{{ $data->pivot->qty-$array[$data->id] }}">
+                  @endif
+                @endif
+              @endisset
+              @empty($array[$data->id])
+                <input type="number" name="qty{{ $key }}" class="form-control" min="0" max="{{ $stock[$data->id] }}">
+              @endempty
+            @endisset
           </td>
         </tr>
       @endforeach

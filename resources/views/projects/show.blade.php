@@ -199,6 +199,7 @@
                 <tr>
                   <th>Number</th>
                   <th>User</th>
+                  <th>Supervisor</th>
                   <th>Date</th>
                   <th>Action</th>
                 </tr>
@@ -208,7 +209,8 @@
                   <tr>
                     <td>SO-{{ $data->so }}/V{{ $data->version }}</td>
                     <td>{{ $data->users->name }}</td>
-                    <td>{{ $data->created_at }}</td>
+                    <td>{{ ($data->supervisor_id != null)?$data->supervisors->name:'' }}</td>
+                    <td>{{ date('D, d F Y',strtotime($data->created_at)) }}</td>
                     <td>
                       <a href="{{ route('sales.show',$data->id) }}" class="btn btn-info text-white">
                         <i class="fas fa-eye"></i>
@@ -231,6 +233,7 @@
                 <tr>
                   <th>Number</th>
                   <th>User</th>
+                  <th>Supervisor</th>
                   <th>Date</th>
                   <th>Action</th>
                 </tr>
@@ -240,7 +243,8 @@
                   <tr>
                     <td>PO-{{ $data->po }}</td>
                     <td>{{ $data->users->name }}</td>
-                    <td>{{ $data->created_at }}</td>
+                    <td>{{ ($data->supervisor_id != null)?$data->supervisors->name:'' }}</td>
+                    <td>{{ date('D, d F Y',strtotime($data->created_at)) }}</td>
                     <td>
                       <a href="{{ route('purchases.show',$data->id) }}" class="btn btn-info text-white">
                         <i class="fas fa-eye"></i>

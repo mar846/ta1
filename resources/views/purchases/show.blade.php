@@ -8,14 +8,30 @@
 <li class="breadcrumb-item active">Purchase Info</li>
 @endsection
 @section('content')
-<div class="row justify-content-end">
+<div class="row justify-content-between">
+  <div class="col-2 text-left  mb-2">
+    @can('approve',$purchase)
+      @empty($purchase->supervisor_id)
+        <a href="{{ route('purchaseApproval',$purchase->id) }}" class="btn btn-primary">Approve</a>
+      @endempty
+      @isset($purchase->supervisor_id)
+        <a href="{{ route('purchaseDisapproval', $purchase->id) }}" class="btn btn-warning">Disapprove</a>
+      @endisset
+    @endcan
+  </div>
   <div class="col-2 text-right  mb-2">
-    @can('view',$purchase)
-      <a href="{{ route('makePurchaseInvoice',$purchase->id) }}" class="btn btn-primary">Make Invoice</a>
-    @endcan
-    @can('update',$purchase)
-      <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-warning">Edit</a>
-    @endcan
+    @if(Auth::user()->id == $purchase->user_id)
+      @isset($purchase->supervisor_id)
+        @can('view',$purchase)
+          <a href="{{ route('makePurchaseInvoice',$purchase->id) }}" class="btn btn-primary">Make Invoice</a>
+        @endcan
+      @endisset
+      @empty($purchase->supervisor_id)
+        @can('update',$purchase)
+          <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-warning">Edit</a>
+        @endcan
+      @endempty
+    @endif
   </div>
 </div>
 <div class="card card-default">

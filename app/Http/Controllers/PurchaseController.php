@@ -215,7 +215,22 @@ class PurchaseController extends Controller
     {
         //
     }
-
+    public function approve(Purchase $purchase,$id)
+    {
+      $this->authorize('approval',$purchase);
+      Purchase::find($id)->update([
+        'supervisor_id' => Auth::user()->id,
+      ]);
+      return redirect(action('PurchaseController@index'));
+    }
+    public function disapprove(Purchase $purchase, $id)
+    {
+      $this->authorize('approval',$purchase);
+      Purchase::find($id)->update([
+        'supervisor_id' => null,
+      ]);
+      return redirect(action('PurchaseController@index'));
+    }
     public function makeInvoice(Purchase $purchase)
     {
       $this->authorize('view',$purchase);

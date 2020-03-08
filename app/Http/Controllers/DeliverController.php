@@ -37,7 +37,8 @@ class DeliverController extends Controller
         'id.numeric' => 'You have to choose sales',
       ]);
       $sale = Sale::find($request['id']);
-      return view('delivers.add',compact('sale'));
+      $good = Good::where('qty','>','0')->get();
+      return view('delivers.add',compact('sale','good'));
     }
 
     /**

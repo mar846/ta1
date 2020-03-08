@@ -37,7 +37,7 @@ class InvoiceController extends Controller
     }
     public function makeInvoice($id)
     {
-      $sale = Sale::find($id);
+      $sale = Sale::with(['terms', 'projects', 'invoices'])->find($id);
       return view('invoices.add',compact('sale'));
     }
 

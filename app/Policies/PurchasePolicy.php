@@ -107,6 +107,20 @@ class PurchasePolicy
     {
         //
     }
+    public function approve(User $user)
+    {
+      return in_array($user->role_id,[
+        '1',
+        '9',
+      ]);
+    }
+    public function approval(User $user, Purchase $purchase)
+    {
+      return in_array($user->role_id,[
+        '1',
+        '9',
+      ]);
+    }
     public function viewReceipt(User $user)
     {
       return in_array($user->role_id,[
