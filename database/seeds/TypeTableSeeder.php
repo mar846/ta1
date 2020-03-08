@@ -18,9 +18,11 @@ class TypeTableSeeder extends Seeder
         ['name' => 'Panel Meter'],
         ['name' => 'Trafo'],
         ['name' => 'Jasa'],
+        ['name' => 'PV Combiner'],
+        ['name' => 'Sun Logger'],
       );
-      for ($i=0; $i < 6; $i++) {
-        App\Type::create($type[$i]);
+      foreach ($type as $key => $value) {
+        App\Type::create($type[$key]);
       }
     }
 }

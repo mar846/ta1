@@ -5,7 +5,7 @@
   <!-- <div class="card-header">{{ __('Register') }}</div> -->
 
   <div class="card-body">
-      <form method="POST" action="{{ route('register') }}">
+      <form method="POST" action="{{ route('users.store') }}">
           @csrf
 
           <div class="form-group row">
@@ -60,18 +60,11 @@
 
           <div class="form-group row">
               <label for="role" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
-
               <div class="col-md-6">
                 <select class="form-control" name="role" required id="role">
-                  <option value="1">Admin</option>
-                  <option value="2">Surveyor</option>
-                  <option value="3">SurveyorSPV</option>
-                  <option value="4">Designer</option>
-                  <option value="5">DesignerSPV</option>
-                  <option value="6">Sale</option>
-                  <option value="7">SaleSPV</option>
-                  <option value="8">Purchasing</option>
-                  <option value="9">PurchasingSPV</option>
+                  @foreach($role as $data)
+                    <option value="{{ $data->id }}">{{ $data->name }}</option>
+                  @endforeach
                 </select>
                   <!-- <input id="role" type="text" class="form-control" name="role" required autocomplete="role"> -->
               </div>

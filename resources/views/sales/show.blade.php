@@ -29,9 +29,9 @@
     @if($sale->supervisor_id != null)
     <a href="{{ route('makeSaleInvoice',$sale->id) }}" class="btn btn-primary">Make Invoice</a>
     @endif
-    @if($sale->supervisor_id != null)
+    <!-- @if($sale->supervisor_id != null)
     <a href="{{ route('delivers.show',$sale->id) }}" class="btn btn-info">Make Delivery Order</a>
-    @endif
+    @endif -->
     @if($sale->supervisor_id == null)
     <a href="{{ route('sales.edit',$sale->id) }}" class="btn btn-warning">Edit</a>
     @endif
@@ -48,25 +48,25 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Date</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ date('D, d F Y', strtotime($sale->created_at)) }}" disabled>
+            <p class="form-control">{{ date('D, d F Y', strtotime($sale->created_at)) }} </p>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Customer</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->bills->companies->name }}" disabled>
+            <p class="form-control">{{ $sale->bills->companies->name }} </p>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Bill To</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->bills->address }}" disabled>
+            <p class="form-control">{{ $sale->bills->address }} </p>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Ship To</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->ships->address }}" disabled>
+            <p class="form-control">{{ $sale->ships->address }} </p>
           </div>
         </div>
       </div>
@@ -74,25 +74,27 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Reference</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->reference }}" disabled>
+            <p class="form-control">{{ $sale->reference }} </p>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Reference Date</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ date('D, d F Y'. strtotime('$sale->referenceDate')) }}" disabled>
+            <p class="form-control">{{ date('D, d F Y'. strtotime('$sale->referenceDate')) }} </p>
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Payment Terms</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->paymentTerms }}" disabled>
+            @foreach($sale->terms as $data)
+              <p class="form-control">{{ $data->percentage }}% {{ $data->description }}</p>
+            @endforeach
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Delivery Time</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control-plaintext border rounded pl-3" value="{{ $sale->deliveryTime }}" disabled>
+            <p class="form-control">{{ $sale->deliveryTime }} </p>
           </div>
         </div>
       </div>

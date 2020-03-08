@@ -23,10 +23,7 @@ class CreateSalesTable extends Migration
             $table->string('reference');
             $table->date('referenceDate');
             $table->bigInteger('total');
-            $table->date('validTill');
-            $table->string('paymentTerms');
             $table->string('deliveryTime');
-            $table->string('downPayment');
             $table->integer('version');
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');

@@ -51,18 +51,15 @@ Route::get('requestDispprove/{designer}/{id}','DesignerController@requestDisappr
 Route::post('purchaseQuotation/','PurchaseController@quotation')->name('purchaseQuotation');
 Route::get('addPurchaseQuotation/{good}/{project}','PurchaseController@addQuotation')->name('addPurchaseQuotation');
 
+Route::get('projectFinish/{id}','ProjectController@finish')->name('projectFinish');
 
 Route::get('reports','ReportController@index')->name('reports');
 Route::get('reports/{page}','ReportController@show')->name('reportPage');
 
 Route::get('saleApproval/{id}','SaleController@approve')->name('saleApproval');
 Route::get('saleDisapproval/{id}','SaleController@disapprove')->name('saleDisapproval');
-// Route::post('questionPage','SaleController@quotationPage')->name('quotationPage');
 Route::get('quotation/','SaleController@quotation')->name('quotation');
 
-// Route::get('delivery','SaleController@delivery')->name('delivery')->middleware('auth');
-// Route::get('deliveryPage','SaleController@deliveryPage')->name('deliveryPage')->middleware('auth');
-// Route::get('makeDeliveryOrder/{id}','SaleController@makeDeliveryOrder')->name('makeSaleDeliveryOrder')->middleware('auth');
 
 Route::get('surveyorApproval/{id}','SurveyorController@approve')->name('surveyorApproval');
 Route::get('surveyorDisapproval/{id}','SurveyorController@disapprove')->name('surveyorDisapproval');

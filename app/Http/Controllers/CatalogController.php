@@ -51,7 +51,7 @@ class CatalogController extends Controller
       $data = $request->validate([
         'name'=>'required|max:191',
         'capacity'=>'required',
-        'description'=>'max:191',
+        'description'=>'required|max:191',
         'totalItem' => 'required|numeric',
       ]);
       $itemRules=[];

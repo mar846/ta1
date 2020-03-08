@@ -12,6 +12,7 @@ use App\Company;
 use App\Good;
 use App\Unit;
 use App\Project;
+use App\Term;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -66,14 +67,13 @@ class SaleController extends Controller
         'project'=>'required',
         'company'=>'required',
         'billTo'=>'required',
-        'validTill'=>'required',
         'shipTo'=>'required',
         'phone'=>'nullable',
         'reference'=>'required',
         'referenceDate'=>'required',
-        'paymentTerms'=>'required',
         'deliveryTime'=>'required',
-        'totalItem' => 'required|numeric'
+        'totalItem' => 'required|numeric',
+        'totalTerm'=>'required|numeric',
       ]);
       $itemRules=[];
       for ($i=0; $i <= $data['totalItem']; $i++) {
@@ -84,6 +84,12 @@ class SaleController extends Controller
         $itemRules['subtotal'.$i] = 'nullable|numeric|min:1';
       }
       $itemData = $request->validate($itemRules);
+      $termRules=[];
+      for ($i=0; $i < $data['totalTerm']; $i++) {
+        $termRules['percentage'.$i] = 'required|numeric';
+        $termRules['description'.$i] = 'required';
+      }
+      $termData = $request->validate($termRules);
       $totalSale =0;
       for ($i=0; $i <= $data['totalItem'] ; $i++) {
         $totalSale += $itemData['qty'.$i]*$itemData['price'.$i];
@@ -97,16 +103,22 @@ class SaleController extends Controller
           'user_id' => Auth::user()->id,
           'billTo' => $billTo['id'],
           'shipTo' => $shipTo['id'],
-          'validTill' => $data['validTill'],
           'so' => str_pad(date('y',time()), 3, '0').$countSale,
           'reference' => $request['reference'],
           'version' => 1,
           'referenceDate' => date('Y-m-d',strtotime($request['referenceDate'])),
-          'paymentTerms' => $data['paymentTerms'],
           'deliveryTime' => $data['deliveryTime'],
-          'downPayment' => '0',
           'total' => $totalSale,
         ]);
+        for ($i=0; $i < $data['totalTerm']; $i++) {
+          Term::create([
+            'sale_id' => $sale['id'],
+            'percentage' => $termData['percentage'.$i],
+            'description' => $termData['description'.$i],
+            'created_at' => now(),
+            'updated_at' => now(),
+          ]);
+        }
         for ($i=0; $i <= $data['totalItem']; $i++) {
           if ($itemData['item'.$i] != '') {
             $good = Good::SearchOrInsert($itemData, $i, 'Product');
@@ -250,6 +262,7 @@ class SaleController extends Controller
     public function makeInvoice(Sale $sale)
     {
       $this->authorize('view',$sale);
+      dd($sale);
       $sale = Sale::find(1);
       return view('prints.saleInvoice',compact('sale'));
     }

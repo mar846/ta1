@@ -55,13 +55,11 @@
                     if ($value == $image->id) {
                       ?>
                       <a href="{{ asset('storage/'.$image->name) }}">
-                        <div class="card">
+                        <div class="card float-left" style="">
                           <div class="card-body">
-                            <span class="pr-3"><i class="fas fa-image" style="font-size:30px;"></i></span>
-                              {{ $image->name }}
+                            <span class="pr-3"><i class="fas fa-image" style="font-size:40px;"></i></span>
                           </div>
                         </div>
-                        <!-- <img src="{{ asset('storage/'.$image->name) }}" alt="" class="img-thumbnail" style="width:250px;"> -->
                       </a>
                       <?php
                     }

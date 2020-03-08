@@ -51,7 +51,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'role' => ['required','string'],
+            'role' => ['required','numeric'],
         ]);
     }
 
@@ -66,7 +66,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => ucwords($data['name']),
             'email' => $data['email'],
-            'role' => ucfirst($data['role']),
+            'role_id' => $data['role'],
             'password' => Hash::make($data['password']),
         ]);
     }

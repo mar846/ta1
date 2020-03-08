@@ -8,6 +8,15 @@
 <li class="breadcrumb-item active">Add Sale</li>
 @endsection
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <form action="{{ route('sales.store') }}" method="post">
   {{ csrf_field() }}
   <div class="row">
@@ -29,28 +38,24 @@
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Bill To</label>
         <div class="col-sm-9">
-          <select class="form-control" name="billTo">
-            @foreach($project->companies->addresses as $data)
-              @if($data->name == 'billTo')
-              <option value="{{ $data->address }}">{{ $data->address }}</option>
-              <input type="hidden" name="billTo" value="{{ old('billTo',$data->address) }}">
-              @endif
-            @endforeach
-          </select>
+          @foreach($project->companies->addresses as $data)
+            @if($data->name == 'billTo')
+            <p class="form-control">{{ $data->address }}</p>
+            <input type="hidden" name="billTo" value="{{ old('billTo',$data->address) }}">
+            @endif
+          @endforeach
         </div>
       </div>
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Ship To</label>
         <div class="col-sm-9">
-          <select class="form-control" name="shipTo">
-            @foreach($project->companies->addresses as $data)
-              @if($data->name == 'shipTo')
-              <option value="{{ $data->address }}">{{ $data->address }}</option>
-              <input type="hidden" name="shipTo" value="{{ old('shipTo',$data->address) }}">
-              @break
-              @endif
-            @endforeach
-          </select>
+          @foreach($project->companies->addresses as $data)
+            @if($data->name == 'shipTo')
+            <p class="form-control">{{ $data->address }}</p>
+            <input type="hidden" name="shipTo" value="{{ old('shipTo',$data->address) }}">
+            @break
+            @endif
+          @endforeach
         </div>
       </div>
       <div class="form-group row">
@@ -72,17 +77,17 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="form-group row">
+      <!-- <div class="form-group row">
         <label class="col-sm-3 col-form-label">Valid Till</label>
         <div class="col-sm-9">
-          <input type="date" class="form-control @error('validTill') is-invalid @enderror" name="validTill" value="{{ old('validTill') }}" min="{{ date('Y-m-d',time()) }}" max="{{ date('Y-m-d',(time()+5184000)) }}">
+          <input type="date" class="form-control @error('validTill') is-invalid @enderror" name="validTill" value="{{ old('validTill', date('Y-m-d',time()+2592000)) }}" min="{{ date('Y-m-d',time()) }}" max="{{ date('Y-m-d',(time()+5184000)) }}">
           @error('validTill')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
               </span>
           @enderror
         </div>
-      </div>
+      </div> -->
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Reference</label>
         <div class="col-sm-9">
@@ -108,13 +113,33 @@
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Payment Terms</label>
         <div class="col-sm-9">
-          <textarea name="paymentTerms" class="form-control @error('paymentTerms') is-invalid @enderror" rows="3" cols="80">{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}</textarea>
+          <?php for ($i=0; $i < 3; $i++) {?>
+            <div class="row">
+              <div class="col-sm-12">
+               <div class="input-group">
+                 <input type="number" name="percentage{{ $i }}" class="form-control @error('percentage'.$i) is-invalid @enderror" placeholder="10" value="{{ old('percentage'.$i) }}">
+                 @error('percentage.$i')
+                     <span class="invalid-feedback" role="alert">
+                         <strong>{{ $message }}</strong>
+                     </span>
+                 @enderror
+                 <div class="input-group-prepend">
+                   <div class="input-group-text">%</div>
+                 </div>
+                 <input type="text" name="description{{ $i }}" class="form-control @error('description'.$i) is-invalid @enderror" placeholder="description" value="{{ old('description'.$i) }}">
+                 @error('description.$i')
+                     <span class="invalid-feedback" role="alert">
+                         <strong>{{ $message }}</strong>
+                     </span>
+                 @enderror
+               </div>
+             </div>
+            </div>
+          <?php } ?>
+          <button type="button" class="btn btn-secondary btn-sm col-12" name="button">Add Terms</button>
+          <!-- <textarea name="paymentTerms" class="form-control @error('paymentTerms') is-invalid @enderror" rows="3" cols="80">{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}</textarea> -->
           <!-- <input type="text" class="form-control @error('paymentTerms') is-invalid @enderror" name="paymentTerms" value="{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}"> -->
-          @error('paymentTerms')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-          @enderror
+
         </div>
       </div>
       <div class="form-group row">
@@ -182,6 +207,7 @@
   <hr>
   <div class="form-group row">
     <input type="hidden" name="totalItem" value="{{ $key }}">
+    <input type="hidden" name="totalTerm" value="{{ $i }}">
     <button type="submit" class="btn btn-success col-12" name="button">Make Quotation</button>
   </div>
 </form>

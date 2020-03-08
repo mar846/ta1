@@ -57,7 +57,7 @@
               <input type="hidden" name="qty{{ $key }}" value="{{ old('qty.$key',$datas->pivot->qty) }}" id="qty{{ $key }}">
             </td>
             <td>
-              {{ $datas->companies->name }}
+              {{ ($datas->companies != null)?$datas->companies->name:'' }}
             </td>
             <td>
               @foreach($project->designers as $datass)

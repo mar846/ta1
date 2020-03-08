@@ -60,8 +60,8 @@ class CriteriaController extends Controller
     {
       if ($request->ajax()) {
         $project = Project::find($request['id']);
-        // $project = Project::find(2);
-        $capacity =0;
+        // $project = Project::find(1);
+        $capacity = 0;
         if ($project['unit'] == 'MW') {
           $capacity = $project['capacity']*1000000*1.05;
         }
@@ -301,7 +301,7 @@ class CriteriaController extends Controller
         for ($i=0; $i < $goodCount; $i++) {
           for ($j=0; $j < $goodCount; $j++) {
             if ($i!=$j) {
-              if ($concordance[($i+1).($j+1)] == $discordance[($i+1).($j+1)]) {
+              if ($concordance[($i+1).($j+1)] == $discordance[($i+1).($j+1)] && $concordance[($i+1).($j+1)] != 0) {
                 $dominance[$i][] = $i;
               }
             }
@@ -318,9 +318,6 @@ class CriteriaController extends Controller
 
 
 
-
-
-
         // search Inverter
         $inverter = Good::where('type_id',2)->orderBy('capacity','asc')->get();
         $item = [];
@@ -331,9 +328,9 @@ class CriteriaController extends Controller
               if (!isset($item[$value['id']])) {
                 // echo $value['name'].' | '.$value['capacity'].' | '.$i.' | '.number_format($value['price'],0,',','.').' | '.number_format($i * $value['price'],0,',','.').' | '.($value['capacity'] * $i).'<br>';
                 $choosen[$value['name']] = $value['name'].' & '.$i.' = '.$i*$value['capacity'].' | '.number_format($i*$value['price'],0,',','.');
-                $item[$value['id']]['qty'] = $i;
-                $item[$value['id']]['capacity'] = $i*$value['capacity'];
+                $item[$value['id']]['capacity'] = $value['capacity'];
                 $item[$value['id']]['price'] = $i*$value['price'];
+                $item[$value['id']]['qty'] = $i;
                 $inverterList[] = $value['id'];
               }
             }
@@ -568,6 +565,7 @@ class CriteriaController extends Controller
           }
         }
         // reorder discordance array
+        ksort($discordance);
         // end of step 3
         // step 4
         //determined dominance matrix
@@ -575,14 +573,17 @@ class CriteriaController extends Controller
         for ($i=0; $i < $inverterCount; $i++) {
           for ($j=0; $j < $inverterCount; $j++) {
             if ($i!=$j) {
-              if ($concordance[($i+1).($j+1)] == $discordance[($i+1).($j+1)]) {
+              if ($concordance[($i+1).($j+1)] == $discordance[($i+1).($j+1)] && $concordance[($i+1).($j+1)] != 0) {
                 $dominance[$i][] = $i;
-              }
+              };
             }
           }
         };
         foreach ($dominance as $key => $value) {
           $dominance[$key] = count($dominance[$key]);
+        }
+        if (sizeof($dominance) == 0) {
+          return $winner;
         }
         $highest_num = max($dominance);
         $inverter_highest_key = max(array_keys($dominance,$highest_num));

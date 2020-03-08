@@ -86,7 +86,9 @@
     <div class="col-6">
       <p class="lead">Payment Methods :</p>
       <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-        {{ $invoice->sales->paymentTerms }}
+        @foreach($invoice->sales->terms as $data)
+        {{ $data->percentage }}% {{ $data->description }}<br>
+        @endforeach
       </p>
       <p class="lead">Delivery Time :</p>
       <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
@@ -124,7 +126,7 @@
   <!-- /.row -->
 
   <!-- this row will not appear when printing -->
-  <div class="row no-print">
+  <!-- <div class="row no-print">
     <div class="col-12">
       <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
       <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
@@ -134,6 +136,6 @@
         <i class="fas fa-download"></i> Generate PDF
       </button>
     </div>
-  </div>
+  </div> -->
 </div>
 @endsection

@@ -26,6 +26,10 @@ class Sale extends Model
   {
     return $this->hasMany('App\Deliver');
   }
+  public function terms()
+  {
+    return $this->hasMany('App\Term');
+  }
   public function goods(){
      return $this->belongsToMany('App\Good','sale_details','sale_id','good_id')->withPivot('qty','price','subtotal');
   }

@@ -18,6 +18,15 @@ class Address extends Model
   {
     return $query->where('address', $request);
   }
+  public function scopeShipToAddress($query, $request, $company)
+  {
+    Address::create([
+      'company_id' => $company,
+      'name' => 'shipTo',
+      'address' => ucwords($request['shipTo']),
+      'phone' => $request['phone'],
+    ]);
+  }
   public function scopeSearchOrInsert($query, $request, $type, $transaction)
   {
     if(Address::SearchAddress($request[$type])->first() == null){
@@ -36,7 +45,7 @@ class Address extends Model
           Address::create([
             'company_id' => $customer['id'],
             'name' => $type,
-            'address' => ucwords(strtolower($request[$type])),
+            'address' => ucwords($request[$type]),
             'phone' => $request['phone'],
           ]);
           return $customer;

@@ -52,7 +52,7 @@ class SurveyorController extends Controller
       ]);
       $itemRules=[];
       for ($i=0; $i < Checklist::count(); $i++) {
-        $itemRules['answer'.$i] = 'required';
+        $itemRules['answer'.$i] = 'required|max:191';
       }
       $itemData = $request->validate($itemRules);
       $surveyor = Surveyor::create([

@@ -27,7 +27,7 @@
             </span>
         @enderror
       </div>
-      <table class="table table-bordered table-hover">
+      <table class="table table-hover">
         <thead>
           <tr>
             <th>No</th>
@@ -42,14 +42,14 @@
               <td>{{ $data->id }}</td>
               <td>{{ $data->question }}</td>
               <td>
-                <input type="text" name="answer{{ $key }}" class="form-control @error('answer'.$key) is-invalid @enderror" <?php echo (rand(0,1) == 1)? 'value="yes"':'value="no"'; ?>>
+                <textarea name="answer{{ $key }}" class="form-control @error('answer'.$key) is-invalid @enderror" rows="3" cols="80">{{ (rand(0,1) == 1)? 'yes':'no' }}</textarea>
                 @error('answer'.$key)
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
               </td>
-              <td><input type="file" name="file{{ $key }}[]" class="form-control" accept="image/*" multiple></td>
+              <td><input type="file" name="file{{ $key }}[]" accept="image/*" multiple></td>
             </tr>
           @endforeach
         </tbody>

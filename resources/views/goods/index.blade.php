@@ -30,7 +30,7 @@
       <tr>
         <td>{{ $data->id }}</td>
         <td>{{ $data->name }}</td>
-        <td>{{ $data->companies->name }}</td>
+        <td>{{ ($data->companies != null)?$data->companies->name:'' }}</td>
         <td>{{ $data->qty }} {{ $data->units->name }}</td>
         <td>{{ ($data->type_id != null)?$data->types->name:'' }}</td>
         <td>

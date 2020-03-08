@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <!-- REQUIRED SCRIPTS -->
     <script src="{{ asset('js/app.js') }}" charset="utf-8"></script>
-    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
   </head>
   <body class="sidebar-mini" style="height: auto;">
   <div class="wrapper">
@@ -227,15 +226,6 @@
               </a>
             </li>
             @endcan
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Simple Link
-                  <span class="right badge badge-danger">New</span>
-                </p>
-              </a>
-            </li>
           </ul>
         </nav>
         <!-- /.sidebar-menu -->

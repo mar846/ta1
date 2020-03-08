@@ -7,7 +7,11 @@ use Auth;
 
 use App\User;
 use App\Role;
+
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class UserController extends Controller
 {
@@ -31,7 +35,8 @@ class UserController extends Controller
     public function create()
     {
       $this->authorize('create',User::class);
-      return view('auth.register');
+      $role = Role::all();
+      return view('auth.register',compact('role'));
     }
 
     /**
@@ -42,7 +47,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $data = $request->validate([
+          'name' => ['required', 'string', 'max:255'],
+          'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+          'password' => ['required', 'string', 'min:6', 'confirmed'],
+          'role' => ['required','numeric'],
+      ]);
+      User::create([
+          'name' => ucwords($data['name']),
+          'email' => $data['email'],
+          'role_id' => $data['role'],
+          'password' => Hash::make($data['password']),
+      ]);
+      return redirect(action('UserController@index'));
     }
 
     /**

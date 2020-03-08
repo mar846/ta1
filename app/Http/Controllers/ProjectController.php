@@ -58,7 +58,12 @@ class ProjectController extends Controller
           'unit' => 'required',
         ]);
         $billTo = Address::SearchOrInsert($data,'billTo', 'customer');
-        $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
+        if ($data['billTo'] == $data['shipTo']) {
+          $shipTo = Address::ShipToAddress($data,$billTo['company_id']);
+        }
+        else {
+          $shipTo = Address::SearchOrInsert($data, 'shipTo', 'customer');
+        }
         Project::create([
           'name' => $data['name'],
           'location' => $data['location'],
@@ -141,6 +146,12 @@ class ProjectController extends Controller
       Project::find($project->id)->update([
         'status' => 'Canceled'
       ]);
+      return redirect(action('ProjectController@index'));
+    }
+
+    public function finish($id)
+    {
+      Project::find($id)->update(['status' => 'Finish']);
       return redirect(action('ProjectController@index'));
     }
 }

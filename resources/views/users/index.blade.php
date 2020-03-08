@@ -7,14 +7,14 @@
 @endsection
 @section('content')
 <div class="row justify-content-left px-3 pb-3">
-  <a href="{{ route('register') }}" class="btn btn-primary">Add User</a>
+  <a href="{{ route('users.create') }}" class="btn btn-primary">Add User</a>
 </div>
 <table class="table table-hover" id="table">
   <thead>
     <th>ID</th>
     <th>Name</th>
     <th>Role</th>
-    <th>Action</th>
+    <!-- <th>Action</th> -->
   </thead>
   <tbody>
     @foreach($user as $data)
@@ -22,9 +22,9 @@
       <td>{{ $data->id }}</td>
       <td>{{ $data->name }}</td>
       <td>{{ $data->roles->name }}</td>
-      <td>
+      <!-- <td>
         <a href="{{ route('users.show',$data->id) }}" class="btn btn-info">Info</a>
-      </td>
+      </td> -->
     </tr>
     @endforeach
   </tbody>

@@ -7,25 +7,37 @@
 <li class="breadcrumb-item active">Designers Info</li>
 @endsection
 @section('content')
-@can('approve',$designer)
-  @if($designer->supervisor_id == null)
-    <div class="row justify-content-left px-3 pb-3">
-      <a href="{{ route('designerApproval',$designer->id) }}" class="btn btn-primary">Approve</a>
-    </div>
-    @else
-    <div class="row justify-content-left px-3 pb-3">
-      <a href="{{ route('designerDisapproval',$designer->id) }}" class="btn btn-warning">Disapprove</a>
-    </div>
-  @endif
-@endif
-@if($designer->user_id == Auth::user()->id)
-  @can('update',$designer)
-    <div class="row justify-content-end">
-      <div class="col-2 text-right  mb-2">
-        <a href="{{ route('designers.edit',$designer->id) }}" class="btn btn-warning">Edit</a>
+<?php
+  $bool = true;
+  foreach ($designer->goods as $key => $value) {
+    if ($value->pivot->status != 'Approved') {
+      $bool = false;
+    }
+  }
+?>
+@if($bool != false)
+  @can('approve',$designer)
+    @if($designer->supervisor_id == null)
+      <div class="row justify-content-left px-3 pb-3">
+        <a href="{{ route('designerApproval',$designer->id) }}" class="btn btn-primary">Approve</a>
       </div>
-    </div>
-@endcan
+      @else
+      <div class="row justify-content-left px-3 pb-3">
+        <a href="{{ route('designerDisapproval',$designer->id) }}" class="btn btn-warning">Disapprove</a>
+      </div>
+    @endif
+  @endcan
+@endif
+@if($designer->supervisor_id == null)
+  @if($designer->user_id == Auth::user()->id)
+    @can('update',$designer)
+      <div class="row justify-content-end">
+        <div class="col-2 text-right  mb-2">
+          <a href="{{ route('designers.edit',$designer->id) }}" class="btn btn-warning">Edit</a>
+        </div>
+      </div>
+    @endcan
+  @endif
 @endif
 <div class="card">
     <div class="card-body">
@@ -37,13 +49,13 @@
       <div class="form-group">
         @foreach($designer->projects->files as $data)
         @if($data->type == 'designer')
-          <div class="card float-left mr-3" style="width: 10rem;">
-            <i class="fas fa-file-image col-12 pt-3 pl-4" style="font-size: 130px;"></i>
-            <div class="card-body">
-              <h5 class="card-text">{{ $data->name }}</h5>
-               <a href="{{ url('storage/'.$data->name) }}" class="btn btn-primary">Preview</a>
+          <a href="{{ asset('storage/'.$data->name) }}">
+            <div class="card float-left">
+              <div class="card-body">
+                <i class="fas fa-image" style="font-size:70px;"></i>
+              </div>
             </div>
-          </div>
+          </a>
           @endif
         @endforeach
       </div>
