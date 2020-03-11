@@ -8,7 +8,7 @@
 <li class="breadcrumb-item active">Purchase Quotation</li>
 @endsection
 @section('content')
-<form class="m-3" action="{{ route('purchaseQuotation') }}" method="post">
+<form class="m-3" action="{{ route('purchaseQuotation') }}" method="get">
   {{ csrf_field() }}
   <div class="row">
     <div class="col-12">

@@ -61,14 +61,19 @@ class PurchaseController extends Controller
       // dd($project);
       return view('purchases.quotation', compact('project'));
     }
-    public function addQuotation($project, $company)
+    public function addQuotation($project, $company, $good)
     {
       $this->authorize('create',Purchase::class);
       $project = Project::with(['companies.addresses','designers.goods.units'])->find($project);
-      $company = Company::find($company);
-      $company = $company;
-      // dd($good);
-      return view('purchases.makeQuotation', compact('project','company'));
+      if ($company != 'new') {
+        $company = Company::find($company);
+        $company = $company;
+      }
+      else {
+        $company = null;
+      }
+      $good = $good;
+      return view('purchases.makeQuotation', compact('project','company','good'));
     }
     public function request()
     {
@@ -87,62 +92,119 @@ class PurchaseController extends Controller
     {
       $this->authorize('create',Purchase::class);
       $data = $request->validate([
-        'project' => 'required|numeric',
-        'company' => 'required|numeric',
-        'address' => 'required|numeric',
-        'phone' => '',
-        'reference' => 'required',
-        'referenceDate' => 'required',
-        'paymentTerms' => 'required',
-        'deliveryTime' => 'required',
+        'status' => 'required',
       ]);
-      $designer = Designer::with('goods.units')->where('project_id',$data['project'])->get();
-      $totalItem = 0;
-      $goods = [];
-      foreach ($designer as $key => $value) {
-        foreach ($value->goods as $index => $content) {
-          if ($content['company_id'] == $data['company']) {
-            $goods[] = $content['id'];
-            $totalItem += 1;
+      if ($data['status'] == 'existing') {
+        $data = $request->validate([
+          'project' => 'required|numeric',
+          'company' => 'required|numeric',
+          'address' => 'required|numeric',
+          'phone' => '',
+          'reference' => 'required',
+          'referenceDate' => 'required',
+          'paymentTerms' => 'required',
+          'deliveryTime' => 'required',
+        ]);
+        $designer = Designer::with('goods.units')->where('project_id',$data['project'])->get();
+        $totalItem = 0;
+        $goods = [];
+        foreach ($designer as $key => $value) {
+          foreach ($value->goods as $index => $content) {
+            if ($content['company_id'] == $data['company']) {
+              $goods[] = $content['id'];
+              $totalItem += 1;
+            }
+          };
+        }
+        $itemRules = [];
+        for ($i=0; $i < $totalItem; $i++) {
+          $itemRules['qty'.$i] = 'numeric';
+          $itemRules['price'.$i] = 'numeric';
+          $itemRules['subtotal'.$i] = 'numeric';
+        }
+        $itemData = $request->validate($itemRules);
+        $total = 0;
+        for ($i=0; $i < $totalItem; $i++) {
+          if (isset($itemData['qty'.$i])) {
+            $total += $itemData['price'.$i] * $itemData['qty'.$i];
           }
-        };
-      }
-      $itemRules = [];
-      for ($i=0; $i < $totalItem; $i++) {
-        $itemRules['qty'.$i] = 'numeric';
-        $itemRules['price'.$i] = 'numeric';
-        $itemRules['subtotal'.$i] = 'numeric';
-      }
-      $itemData = $request->validate($itemRules);
-      $total = 0;
-      for ($i=0; $i < $totalItem; $i++) {
-        if (isset($itemData['qty'.$i])) {
-          $total += $itemData['price'.$i] * $itemData['qty'.$i];
+        }
+        // $supplier = Address::SearchOrInsert($data, 'address', 'supplier');
+        $countPurchase = Purchase::CountPurchase();
+        $purchase = Purchase::create([
+          'project_id' => $data['project'],
+          'address_id' => $data['company'],
+          'po' => $countPurchase.date('Ymd',time()),
+          'reference' => $data['reference'],
+          'paymentTerms' => $data['paymentTerms'],
+          'deliveryTime' => $data['deliveryTime'],
+          'downPayment' => '0',
+          'user_id' => Auth::user()->id,
+          'referenceDate' => date('Y-m-d', strtotime($data['referenceDate'])),
+          'total' => $total,
+        ]);
+        for ($i=0; $i < $totalItem ; $i++) {
+            // $good = Good::SearchOrInsert($itemData, $i, '');
+            $purchase->goods()->syncWithoutDetaching([
+            $goods[$i] => [
+              'qty' => $itemData['qty'.$i],
+              'price' => $itemData['price'.$i],
+              'subtotal' => $itemData['price'.$i]*$itemData['qty'.$i],
+              'memo' => '',
+            ]
+          ]);
         }
       }
-      // $supplier = Address::SearchOrInsert($data, 'address', 'supplier');
-      $countPurchase = Purchase::CountPurchase();
-      $purchase = Purchase::create([
-        'project_id' => $data['project'],
-        'address_id' => $data['company'],
-        'po' => $countPurchase.date('Ymd',time()),
-        'reference' => $data['reference'],
-        'paymentTerms' => $data['paymentTerms'],
-        'deliveryTime' => $data['deliveryTime'],
-        'downPayment' => '0',
-        'user_id' => Auth::user()->id,
-        'referenceDate' => date('Y-m-d', strtotime($data['referenceDate'])),
-        'total' => $total,
-      ]);
-      for ($i=0; $i < $totalItem ; $i++) {
-          // $good = Good::SearchOrInsert($itemData, $i, '');
-          $purchase->goods()->syncWithoutDetaching([
-          $goods[$i] => [
-            'qty' => $itemData['qty'.$i],
-            'price' => $itemData['price'.$i],
-            'subtotal' => $itemData['price'.$i]*$itemData['qty'.$i],
+      else {
+        $data = $request->validate([
+          'project' => 'required|numeric',
+          'company' => 'required',
+          'address' => 'required',
+          'phone' => '',
+          'reference' => 'required',
+          'referenceDate' => 'required',
+          'paymentTerms' => 'required',
+          'deliveryTime' => 'required',
+          'item0' => 'required',
+          'qty0' => 'required|numeric',
+          'price0' => 'required|numeric',
+          'subtotal0' => 'required|numeric',
+        ]);
+        $designer = Designer::with('goods.units')->where('project_id',$data['project'])->get();
+        $totalItem = 0;
+        $goods = [];
+        foreach ($designer as $key => $value) {
+          foreach ($value->goods as $index => $content) {
+            if ($content['name'] == $data['item0']) {
+              $goods[] = $content['id'];
+              $totalItem += 1;
+            }
+          };
+        }
+        $address = Address::SearchOrInsert($data,'address','supplier');
+        $countPurchase = Purchase::CountPurchase();
+        $purchase = Purchase::create([
+          'project_id' => $data['project'],
+          'address_id' => $address['id'],
+          'po' => $countPurchase.date('Ymd',time()),
+          'reference' => $data['reference'],
+          'paymentTerms' => $data['paymentTerms'],
+          'deliveryTime' => $data['deliveryTime'],
+          'downPayment' => '0',
+          'user_id' => Auth::user()->id,
+          'referenceDate' => date('Y-m-d', strtotime($data['referenceDate'])),
+          'total' => $data['price0']*$data['qty0'],
+        ]);
+        $purchase->goods()->syncWithoutDetaching([
+          $goods[0] => [
+            'qty' => $data['qty0'],
+            'price' => $data['price0'],
+            'subtotal' => $data['price0']*$data['qty0'],
             'memo' => '',
           ]
+        ]);
+        Good::find($goods[0])->update([
+          'company_id' => $address['companies']['id'],
         ]);
       }
       return redirect(action('PurchaseController@index'));
@@ -231,10 +293,10 @@ class PurchaseController extends Controller
       ]);
       return redirect(action('PurchaseController@index'));
     }
-    public function makeInvoice(Purchase $purchase)
+    public function makeInvoice(Purchase $purchase, $id)
     {
       $this->authorize('view',$purchase);
-      $purchase = Purchase::find(1);
+      $purchase = Purchase::find($id);
       return view('prints.invoice',compact('purchase'));
     }
 }

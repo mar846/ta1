@@ -80,62 +80,64 @@
       <input type="number" class="form-control" name="price" value="{{ old('price',$good->price) }}">
     </div>
   </div>
-  @if($good->types->name == 'Panel' || $good->types->name == 'Inverter')
-  <div class="form-group row">
-    <label class="col-sm-2 col-label-form">Capacity</label>
-    <div class="col-sm-10">
-      <input type="number" class="form-control @error('capacity') is-invalid @enderror" name="capacity" placeholder="Capacity Wp" value="{{ old('capacity',$good->spec->capacity) }}">
-      @error('capacity')
-          <span class="invalid-feedback" role="alert">
-              <strong>{{ $message }}</strong>
-          </span>
-      @enderror
-    </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-sm-2 col-label-form">Minimum and Maximum Voltage</label>
-    <div class="form-row pl-3">
-      <div class="col">
-        <input type="number" class="form-control @error('minVolt') is-invalid @enderror" name="minVolt" placeholder="Minimum Volt" value="{{ old('minVolt',$good->spec->minVolt) }}">
-        @error('minVolt')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div>
-      <div class="col">
-        <input type="number" class="form-control @error('maxVolt') is-invalid @enderror" name="maxVolt" placeholder="Maximum Volt" value="{{ old('maxVolt',$good->spec->maxVolt) }}">
-        @error('maxVolt')
+  @isset($good->type_id)
+    @if($good->types->name == 'Panel' || $good->types->name == 'Inverter')
+    <div class="form-group row">
+      <label class="col-sm-2 col-label-form">Capacity</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control @error('capacity') is-invalid @enderror" name="capacity" placeholder="Capacity Wp" value="{{ old('capacity',$good->spec->capacity) }}">
+        @error('capacity')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
         @enderror
       </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-sm-2 col-label-form">Efficiency</label>
-    <div class="col-sm-10">
-      <input type="number" class="form-control @error('efficiency') is-invalid @enderror" name="efficiency" placeholder="Efficiency" value="{{ old('efficiency',$good->spec->efficiency) }}">
-      @error('efficiency')
-          <span class="invalid-feedback" role="alert">
-              <strong>{{ $message }}</strong>
-          </span>
-      @enderror
+    <div class="form-group row">
+      <label class="col-sm-2 col-label-form">Minimum and Maximum Voltage</label>
+      <div class="form-row pl-3">
+        <div class="col">
+          <input type="number" class="form-control @error('minVolt') is-invalid @enderror" name="minVolt" placeholder="Minimum Volt" value="{{ old('minVolt',$good->spec->minVolt) }}">
+          @error('minVolt')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
+        </div>
+        <div class="col">
+          <input type="number" class="form-control @error('maxVolt') is-invalid @enderror" name="maxVolt" placeholder="Maximum Volt" value="{{ old('maxVolt',$good->spec->maxVolt) }}">
+          @error('maxVolt')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+          @enderror
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-sm-2 col-label-form">Safety Margin</label>
-    <div class="col-sm-10">
-      <input type="number" class="form-control @error('safetyMargin') is-invalid @enderror" name="safetyMargin" placeholder="Safety Martgin in percentage" value="{{ old('safetyMargin',$good->spec->safetyMargin) }}">
-      @error('safetyMargin')
-          <span class="invalid-feedback" role="alert">
-              <strong>{{ $message }}</strong>
-          </span>
-      @enderror
+    <div class="form-group row">
+      <label class="col-sm-2 col-label-form">Efficiency</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control @error('efficiency') is-invalid @enderror" name="efficiency" placeholder="Efficiency" value="{{ old('efficiency',$good->spec->efficiency) }}">
+        @error('efficiency')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+      </div>
     </div>
-  </div>
-  @endif
+    <div class="form-group row">
+      <label class="col-sm-2 col-label-form">Safety Margin</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control @error('safetyMargin') is-invalid @enderror" name="safetyMargin" placeholder="Safety Martgin in percentage" value="{{ old('safetyMargin',$good->spec->safetyMargin) }}">
+        @error('safetyMargin')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+      </div>
+    </div>
+    @endif
+  @endisset
   <!--
   <div class="form-group row">
     <label class="col-sm-2 col-form-label">Storage Location</label>

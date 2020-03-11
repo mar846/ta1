@@ -49,8 +49,8 @@ Route::get('makeSaleInvoice/{id}','InvoiceController@makeInvoice')->name('makeSa
 Route::get('makePurchaseInvoice/{id}','PurchaseController@makeInvoice')->name('makePurchaseInvoice')->middleware('auth');
 Route::get('price','PurchaseController@price')->name('price');
 Route::get('purchaseRequest','PurchaseController@request')->name('purchaseRequest');
-Route::post('purchaseQuotation/','PurchaseController@quotation')->name('purchaseQuotation');
-Route::get('addPurchaseQuotation/{good}/{project}','PurchaseController@addQuotation')->name('addPurchaseQuotation');
+Route::get('purchaseQuotation/','PurchaseController@quotation')->name('purchaseQuotation');
+Route::get('addPurchaseQuotation/{project}/{company}/{good}','PurchaseController@addQuotation')->name('addPurchaseQuotation');
 Route::get('purchaseApproval/{id}','PurchaseController@approve')->name('purchaseApproval');
 Route::get('purchaseDisapproval/{id}','PurchaseController@disapprove')->name('purchaseDisapproval');
 

@@ -60,12 +60,23 @@
               {{ ($datas->companies != null)?$datas->companies->name:'' }}
             </td>
             <td>
-              @foreach($project->designers as $datass)
-              @if($datass->address_id != $datas->company_id)
-                <a href="{{ route('addPurchaseQuotation',[$project->id,$datas->company_id]) }}" class="btn btn-primary">Make Quotation</a>
-              @else
-                <a href="{{ route('purchases.show',[$datass->id]) }}" class="btn btn-success">View Purchase</a>
-              @endif
+              @foreach($project->purchases as $purchase)
+                @foreach($purchase->goods as $goods)
+                  @foreach($project->designers as $datass)
+                    @isset($datas->companies)
+                      @if($datas->id != $goods->id)
+                        <a href="{{ route('addPurchaseQuotation',[$project->id,$datas->company_id,$datas->id]) }}" class="btn btn-primary">Make Quotation</a>
+                        @break
+                      @else
+                        <a href="{{ route('purchases.show',[$datass->id]) }}" class="btn btn-success">View Purchase</a>
+                        @break
+                      @endif
+                    @endisset
+                    @empty($datas->companies)
+                    <a href="{{ route('addPurchaseQuotation',[$project->id,'new',$datas->id]) }}" class="btn btn-primary">Make Quotation</a>
+                    @endempty
+                  @endforeach
+                @endforeach
               @endforeach
           </tr>
         @endforeach

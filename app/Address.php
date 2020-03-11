@@ -31,24 +31,24 @@ class Address extends Model
   {
     if(Address::SearchAddress($request[$type])->first() == null){
       if (Company::SearchID($request['company'])->first() == null){
-          $customer = Company::create(['name' => ucwords($request['company']),'type' => $transaction]);
-          Address::create([
-            'company_id' => $customer['id'],
+          $company = Company::create(['name' => ucwords($request['company']),'type' => $transaction]);
+          $address = Address::create([
+            'company_id' => $company['id'],
             'name' => $type,
             'address' => ucwords($request[$type]),
             'phone' => $request['phone'],
           ]);
-          return $customer;
+          return $address;
         }
         else {
-          $customer = Company::SearchID(ucwords($request['company']))->first();
-          Address::create([
-            'company_id' => $customer['id'],
+          $company = Company::SearchID(ucwords($request['company']))->first();
+          $address = Address::create([
+            'company_id' => $company['id'],
             'name' => $type,
             'address' => ucwords($request[$type]),
             'phone' => $request['phone'],
           ]);
-          return $customer;
+          return $address;
         }
     }
     else {

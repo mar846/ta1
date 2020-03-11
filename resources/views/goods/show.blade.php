@@ -35,7 +35,7 @@
     <label class="col-form-label">Type</label>
   </div>
   <div class="col-sm-11">
-    <p class="form-control">{{ $good->types->name }}</p>
+    <p class="form-control">{{ ($good->types != null)?$good->types->name:'' }}</p>
     </select>
   </div>
 </div>
@@ -48,7 +48,7 @@
 <div class="form-group row">
   <label class="col-sm-1 col-form-label">Supplier</label>
   <div class="col-sm-11">
-    <p class="form-control">{{ $good->companies->name }}</p>
+    <p class="form-control">{{ ($good->companies != null)?$good->companies->name:'' }}</p>
   </div>
 </div>
 @if($good->spec != null)

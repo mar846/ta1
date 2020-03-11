@@ -19,29 +19,53 @@
           <p class="form-control">{{ $project->name }}</p>
         </div>
       </div>
+      @isset($company)
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Supplier</label>
+          <div class="col-sm-10">
+            <input type="hidden" name="company" value="{{ old('company',$company->id) }}">
+            <p class="form-control">{{ $company->name }}</p>
+          </div>
+        </div>
+        @foreach($company->addresses as $data)
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+              <input type="hidden" name="address" value="{{ old('company', $data->id) }}">
+              <p class="form-control">{{ $data->address }}</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Phone</label>
+            <div class="col-sm-10">
+              <p class="form-control">{{ $data->phone }}</p>
+              <input type="hidden" name="phone" value="{{ old('phone',$data->phone) }}">
+            </div>
+          </div>
+        @endforeach
+        <input type="hidden" name="status" value="existing">
+      @endisset
+      @empty($company)
       <div class="form-group row">
         <label class="col-sm-2 col-form-label">Supplier</label>
         <div class="col-sm-10">
-          <input type="hidden" name="company" value="{{ old('company',$company->id) }}">
-          <p class="form-control">{{ $company->name }}</p>
+          <input type="text" class="form-control" name="company" value="{{ old('company') }}">
         </div>
       </div>
-      @foreach($company->addresses as $data)
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Address</label>
-          <div class="col-sm-10">
-            <input type="hidden" name="address" value="{{ old('company', $data->id) }}">
-            <p class="form-control">{{ $data->address }}</p>
-          </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Address</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" name="address">{{ old('company') }}</textarea>
         </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Phone</label>
-          <div class="col-sm-10">
-            <p class="form-control">{{ $data->phone }}</p>
-            <input type="hidden" name="phone" value="{{ old('phone',$data->phone) }}">
-          </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Phone</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="phone" value="{{ old('phone') }}">
         </div>
-      @endforeach
+      </div>
+      <input type="hidden" name="status" value="new">
+      @endempty
     </div>
     <div class="col-md-6">
       <div class="form-group row">
@@ -70,7 +94,6 @@
         <label class="col-sm-2 col-form-label">Payment Terms</label>
         <div class="col-sm-10">
           <textarea name="paymentTerms" class="form-control @error('paymentTerms') is-invalid @enderror" rows="3" cols="80">{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}</textarea>
-          <!-- <input type="text" class="form-control @error('paymentTerms') is-invalid @enderror" name="paymentTerms" value="{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}"> -->
           @error('paymentTerms')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -102,43 +125,80 @@
     </thead>
     <tbody>
       @php $i = 0; @endphp
-      @foreach($project->designers as $key =>$data)
-        @foreach($data->goods as $index => $datas)
-        @if($datas->company_id == $company->id)
-        <tr>
-            <td>
-              {{ $datas->name }}
-              <input type="hidden" name="item{{ $i }}" value="{{ old('item.$i',$datas->name) }}">
-            </td>
-            <td>
-              {{ $datas->pivot->qty }} {{ $datas->units->name }}
-              <input type="hidden" name="qty{{ $i }}" value="{{ old('qty.$i',$datas->pivot->qty) }}" id="qty{{ $i }}">
-            </td>
-            <td>
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">Rp.</div>
-                </div>
-                <input type="number" class="form-control" name="price{{ $i }}" placeholder="1000" onkeyup="calculate(this)" id="price{{ $i }}" value="{{ old('price.$i',($datas->price)) }}">
-              </div>
-            </td>
-            <td>
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">Rp.</div>
-                </div>
-                <p class="form-control" id="subTotalShow{{$i}}">{{ $datas->pivot->qty * $datas->price }}</p>
-                <input type="hidden" class="form-control" name="subtotal{{ $i }}" placeholder="1000" onkeyup="calculate(this)" id="subtotal{{ $i }}" value="{{ old('subtotal.$index',($datas->pivot->qty * $datas->price * $datas->profit)) }}">
-              </div>
-            </td>
-          </tr>
-          @php $i+=1; @endphp
-        @endif
+      @isset($company)
+        @foreach($project->designers as $key =>$data)
+          @foreach($data->goods as $index => $datas)
+            @if($datas->company_id == $company->id)
+              <tr>
+                <td>
+                  {{ $datas->name }}
+                  <input type="hidden" name="item{{ $i }}" value="{{ old('item.$i',$datas->name) }}">
+                </td>
+                <td>
+                  {{ $datas->pivot->qty }} {{ $datas->units->name }}
+                  <input type="hidden" name="qty{{ $i }}" value="{{ old('qty.$i',$datas->pivot->qty) }}" id="qty{{ $i }}">
+                </td>
+                <td>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">Rp.</div>
+                    </div>
+                    <input type="number" class="form-control" name="price{{ $i }}" placeholder="1000" onkeyup="calculate(this)" id="price{{ $i }}" value="{{ old('price.$i',($datas->price)) }}">
+                  </div>
+                </td>
+                <td>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">Rp.</div>
+                    </div>
+                    <p class="form-control" id="subTotalShow{{$i}}">{{ $datas->pivot->qty * $datas->price }}</p>
+                    <input type="hidden" class="form-control" name="subtotal{{ $i }}" placeholder="1000" onkeyup="calculate(this)" id="subtotal{{ $i }}" value="{{ old('subtotal.$index',($datas->pivot->qty * $datas->price * $datas->profit)) }}">
+                  </div>
+                </td>
+              </tr>
+              @php $i+=1; @endphp
+            @endif
+          @endforeach
         @endforeach
-      @endforeach
+      @endisset
+      @empty($company)
+        @foreach($project->designers as $key =>$data)
+          @foreach($data->goods as $index => $datas)
+            @if($datas->id == $good)
+              <tr>
+                <td>
+                  {{ $datas->name }}
+                  <input type="hidden" name="item{{ $i }}" value="{{ old('item.$i',$datas->name) }}">
+                </td>
+                <td>
+                  {{ $datas->pivot->qty }} {{ $datas->units->name }}
+                  <input type="hidden" name="qty{{ $i }}" value="{{ old('qty.$i',$datas->pivot->qty) }}" id="qty{{ $i }}">
+                </td>
+                <td>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">Rp.</div>
+                    </div>
+                    <input type="number" class="form-control" name="price{{ $i }}" placeholder="1000" onkeyup="calculate(this)" id="price{{ $i }}" value="{{ old('price.$i',($datas->price)) }}">
+                  </div>
+                </td>
+                <td>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">Rp.</div>
+                    </div>
+                    <p class="form-control" id="subTotalShow{{$i}}">{{ $datas->pivot->qty * $datas->price }}</p>
+                    <input type="hidden" class="form-control" name="subtotal{{ $i }}" placeholder="1000" onkeyup="calculate(this)" id="subtotal{{ $i }}" value="{{ old('subtotal.$index',($datas->pivot->qty * $datas->price * $datas->profit)) }}">
+                  </div>
+                </td>
+              </tr>
+              @php $i+=1; @endphp
+            @endif
+          @endforeach
+        @endforeach
+      @endempty
     </tbody>
   </table>
-  <hr>
   <div class="form-group row">
     <button type="submit" class="btn btn-success col-12" name="button">Make Quotation</button>
   </div>

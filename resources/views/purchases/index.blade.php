@@ -21,6 +21,7 @@
         <th>Item</th>
         <th>QTY</th>
         <th>Project</th>
+        <th>Status</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -31,6 +32,7 @@
           <td>{{ date('D, d F Y', strtotime($data->created_at)) }}</td>
           <td>{{ $data->addresses->companies->name }}</td>
           <td>{{ $data->po }}</td>
+          <td class="alert alert-{{ ($data->supervisor_id != null)?'success':'secondary' }} text-center"><b>{{ ($data->supervisor_id != null)?'Approved':'Waiting' }}</b></td>
           <td>
             @can('view',$data)
             <a href="{{ route('purchases.show',[$data->id]) }}"><button type="button" class="btn btn-secondary" name="button">Info</button></a>
