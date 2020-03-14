@@ -33,7 +33,7 @@
       <?php
         $array = [];
         foreach ($sale->invoices as $key => $value) {
-          $array[$value['amount']] = 1;
+          $array[$value['amount']] = $value['id'];
         }
       ?>
       @foreach($sale->terms as $data)
@@ -41,12 +41,15 @@
         <td>{{ $data->percentage }}%</td>
         <td>{{ $data->description }}</td>
         <td>
+          @isset($array[($sale->total*($data->percentage/100))])
+              <a href="{{ route('invoices.show',$array[($sale->total*($data->percentage/100))]) }}" class="btn btn-success">View Invoice</a>
+          @endisset
           @empty($array[($sale->total*($data->percentage/100))])
             <form action="{{ route('invoices.store') }}" method="post">
               {{ csrf_field() }}
               <input type="hidden" name="sale" value="{{ $sale->id }}">
               <input type="hidden" name="amount" value="{{ ($sale->total*($data->percentage/100)) }}">
-              <button type="submit" class="btn btn-success" name="button">Make Invoice</button>
+              <button type="submit" class="btn btn-primary" name="button">Make Invoice</button>
             </form>
           @endempty
         </td>

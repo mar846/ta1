@@ -33,7 +33,7 @@ Route::get('designerDisapproval/{id}','DesignerController@disapprove')->name('de
 Route::post('getDesignerData','DesignerController@getDesignerData')->name('getDesignerData');
 Route::post('deleteDesignerGood','DesignerController@deleteGood')->name('deleteDesignerGood');
 Route::get('requestApprove/{designer}/{id}','DesignerController@requestApprove')->name('requestApprove');
-Route::get('requestDispprove/{designer}/{id}','DesignerController@requestDisapprove')->name('requestDispprove');
+Route::post('requestDispprove/{designer}/{id}','DesignerController@requestDisapprove')->name('requestDispprove');
 
 Route::post('deleteFile','FileController@deleteFile')->name('deleteFile');
 

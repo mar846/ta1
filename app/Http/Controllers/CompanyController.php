@@ -45,7 +45,6 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-
       $data = $request->validate([
         'name'=>'required|max:191',
         'type'=>'required',

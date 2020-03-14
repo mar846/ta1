@@ -52,7 +52,6 @@
           }
         }
       }
-      print_r($stock);
     ?>
     <tbody>
       @foreach($sale->goods as $key => $data)

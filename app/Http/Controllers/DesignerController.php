@@ -198,16 +198,19 @@ class DesignerController extends Controller
       ]);
       return redirect(action('DesignerController@show',$designer));
     }
-    public function requestDisapprove($id, $good)
+    public function requestDisapprove(Request $request, $id, $good)
     {
-      $this->authorize('create',Purchase::class);
+      // $this->authorize('approval',Purchase::class);
+      $rule['reason'.$good] = 'required|max:191';
+      $acknowledge['reason'.$good.'.required'] = 'Rejection reason must be filled';
+      $data = $request->validate($rule,$acknowledge);
       $designer = Designer::find($id);
       $designer->goods()->syncWithoutDetaching([
         $good => [
-          'status' => 'Rejected',
+          'status' => $data['reason'.$good],
         ]
       ]);
-      return redirect(action('PurchaseController@request'));
+      return redirect(action('DesignerController@show',$id));
     }
     public function approve(Designer $designer, $id)
     {

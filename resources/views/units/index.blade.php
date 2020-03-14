@@ -20,10 +20,7 @@
     <tr>
       <td>{{ $data->id }}</td>
       <td>{{ $data->name }}</td>
-      <td>
-        <a href="{{ route('units.show',$data->id) }}" class="btn btn-info">Info</a>
-        <a href="{{ route('units.edit',$data->id) }}" class="btn btn-warning">Edit</a>
-      </td>
+      <td><a href="{{ route('units.show',$data->id) }}" class="btn btn-info">Info</a></td>
     </tr>
     @endforeach
   </tbody>

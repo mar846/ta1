@@ -1,6 +1,11 @@
 @extends('layouts.master')
 @section('title','Edit Criteria')
 @section('criteria','active')
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+<li class="breadcrumb-item active"><a href="{{ route('criterias.index') }}">Criteria</a></li>
+<li class="breadcrumb-item active">Criteria Edit</li>
+@endsection
 @section('content')
 <form action="{{ route('criterias.update',$criteria->id) }}" method="post">
   {{ csrf_field() }}
@@ -16,6 +21,9 @@
       <label class="col-sm-2 col-form-label">Weight</label>
       <div class="col-sm-10">
         <input type="number" name="weight" class="form-control @error('weight') is-invalid @enderror" placeholder="1-5" value="{{ old('weight',$criteria->weight) }}">
+        <small id="passwordHelpBlock" class="form-text text-muted">
+          Higher are prioritize from 1 to 5
+        </small>
         @error('weight')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>

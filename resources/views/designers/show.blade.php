@@ -72,16 +72,26 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($designer->goods as $data)
+            @foreach($designer->goods as $key => $data)
               <tr>
                 <td>{{ $data->name }}</td>
                 <td>{{ $data->pivot->qty }} {{ $data->units->name }}</td>
-                <td class="@if($data->pivot->status == 'waiting') alert alert-secondary @elseif($data->pivot->status == 'Approved') alert alert-success @elseif($data->pivot->status == 'Rejected') alert alert-danger @endif text-center pt-3"><label for="status">{{ $data->pivot->status }}</label></td>
+                <td class="@if($data->pivot->status == 'waiting') alert alert-secondary @elseif($data->pivot->status == 'Approved') alert alert-success @else alert alert-danger @endif text-center pt-3"><label for="status">{{ $data->pivot->status }}</label></td>
                 @can('approval',$designer)
                 <td>
                   @if($data->pivot->status === 'waiting')
-                    <a href="{{ route('requestApprove',[$designer->id, $data->id]) }}" class="btn btn-success">Approve</a>
-                    <a href="{{ route('requestDispprove',[$designer->id, $data->id]) }}" class="btn btn-warning">Reject</a>
+                    <a href="{{ route('requestApprove',[$designer->id, $data->id]) }}" class="btn btn-success float-left">Approve</a>
+                    <form class="form-inline float-left pl-2" action="{{ route('requestDispprove',[$designer->id, $data->id]) }}" method="post">
+                      {{ csrf_field() }}
+                      <button type="submit" class="btn btn-warning">Reject</button>
+                      <input type="text" name="reason{{ $data->id }}" class="@error('reason'.$data->id) is-invalid @enderror" value="{{ old('reason'.$data->id) }}">
+                      @error('reason'.$data->id)
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                    </form>
+                    <!-- <a href="{{ route('requestDispprove',[$designer->id, $data->id]) }}" class="btn btn-warning">Reject</a> -->
                   @endif
                 </td>
                 @endcan

@@ -138,16 +138,6 @@
     </div>
     @endif
   @endisset
-  <!--
-  <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Storage Location</label>
-    <div class="col-sm-10">
-      <select class="form-control" name="warehouse">
-        <option value="">Select Warehouse</option>
-
-      </select>
-    </div>
-  </div> -->
   <div class="form-group row">
     <button type="submit" class="btn btn-warning col-12" name="button">Update</button>
   </div>

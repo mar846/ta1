@@ -22,7 +22,6 @@
             <th>Capacity</th>
             <th>Client</th>
             <th>Location</th>
-            <th>Progress</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -35,18 +34,6 @@
               <td>{{ $data->capacity }} {{ $data->unit }}</td>
               <td>{{ $data->companies->name }}</td>
               <td>{{ $data->location }}</td>
-              <td>
-                @if($data->surveyor != null)
-                <span class="btn btn-warning">
-                {{ ($data->surveyor != null)?'Surveyors':'' }}
-                </span>
-                @endif
-                @if($data->designer != null)
-                <span class="btn btn-success">
-                  {{ ($data->designer != null)?'Designers':'' }}
-                </span>
-                @endif
-              </td>
               @if($data->status == 'On Progress')
                 @php $status = 'alert alert-secondary'; @endphp
               @elseif($data->status == 'Finish')
