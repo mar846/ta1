@@ -167,9 +167,4 @@
     <option value="{{ $data->name }}">
   @endforeach
 </datalist>
-<datalist id="dataWarehouse">
-  @foreach($warehouse as $data)
-    <option value="{{ $data->name }}">
-  @endforeach
-</datalist>
 @endsection

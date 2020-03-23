@@ -57,9 +57,9 @@ class PurchaseController extends Controller
       ],[
         'project.numeric' => 'You have to choose a project',
       ]);
-      $project = Project::with(['companies.addresses','designers.goods.units'])->find($data['project']);
-      // dd($project);
-      return view('purchases.quotation', compact('project'));
+      $project = Project::with(['companies.addresses','designers.goods.units', 'purchases.addresses'])->find($data['project']);
+      $dataPurchase = DB::table('purchases')->join('addresses', 'purchases.address_id', '=', 'addresses.id')->select('addresses.company_id')->where('purchases.project_id',$data['project'])->get();
+      return view('purchases.quotation', compact('project','dataPurchase'));
     }
     public function addQuotation($project, $company, $good)
     {

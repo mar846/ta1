@@ -8,6 +8,12 @@
 <li class="breadcrumb-item active">Add Purchase</li>
 @endsection
 @section('content')
+<?php $purchase = array(); ?>
+@foreach($project->purchases as $purchase)
+@endforeach
+@foreach($dataPurchase as $test)
+  <?php $purchase[$test->company_id] = 'test' ?>
+@endforeach
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -57,27 +63,29 @@
               <input type="hidden" name="qty{{ $key }}" value="{{ old('qty.$key',$datas->pivot->qty) }}" id="qty{{ $key }}">
             </td>
             <td>
-              {{ ($datas->companies != null)?$datas->companies->name:'' }}
+              {{ ($datas->companies != null) ? $datas->companies->name : '' }}
             </td>
             <td>
-              @foreach($project->purchases as $purchase)
-                @foreach($purchase->goods as $goods)
-                  @foreach($project->designers as $datass)
-                    @isset($datas->companies)
-                      @if($datas->id != $goods->id)
-                        <a href="{{ route('addPurchaseQuotation',[$project->id,$datas->company_id,$datas->id]) }}" class="btn btn-primary">Make Quotation</a>
-                        @break
-                      @else
-                        <a href="{{ route('purchases.show',[$datass->id]) }}" class="btn btn-success">View Purchase</a>
-                        @break
-                      @endif
-                    @endisset
-                    @empty($datas->companies)
-                    <a href="{{ route('addPurchaseQuotation',[$project->id,'new',$datas->id]) }}" class="btn btn-primary">Make Quotation</a>
-                    @endempty
-                  @endforeach
-                @endforeach
-              @endforeach
+              @if(count($project->purchases) > 0)
+                @isset($purchase[$datas->company_id])
+                  <a href="{{ route('purchases.show',[$purchase->id]) }}" class="btn btn-success">View Purchase</a>
+                @endisset
+                @empty($purchase[$datas->company_id])
+                  @isset($datas->companies)
+                    <a href="{{ route('addPurchaseQuotation',[$project->id,$datas->company_id,$datas->id]) }}" class="btn btn-primary">Make Purchase</a>
+                  @endisset
+                @endempty
+                @empty($datas->companies)
+                <a href="{{ route('addPurchaseQuotation',[$project->id,'new',$datas->id]) }}" class="btn btn-primary">Make Purchase</a>
+                @endempty
+              @else
+                @isset($datas->companies)
+                  <a href="{{ route('addPurchaseQuotation',[$project->id,$datas->company_id,$datas->id]) }}" class="btn btn-primary">Make Purchase</a>
+                @endisset
+                @empty($datas->companies)
+                  <a href="{{ route('addPurchaseQuotation',[$project->id,'new',$datas->id]) }}" class="btn btn-primary">Make Purchase</a>
+                @endempty
+              @endif
           </tr>
         @endforeach
         @break

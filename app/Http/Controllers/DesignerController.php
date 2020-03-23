@@ -13,6 +13,7 @@ use App\Unit;
 use App\Project;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 
 class DesignerController extends Controller
@@ -72,13 +73,13 @@ class DesignerController extends Controller
       if ($request->hasFile('files')) {
         $allowedfileExtension=['pdf','jpg','png','docx','png','xlsx'];
         $files = $request->file('files');
-        foreach ($files as $key => $value) {
+        foreach ($files as $value) {
           $filename = $value->getClientOriginalName();
           $extention = $value->getClientOriginalExtension();
           $check = in_array($extention,$allowedfileExtension);
           if ($check) {
             File::create([
-              'name' => $value->store('designers','public'),
+              'name' => Storage::disk('public')->putFileAs('designers', $value, $filename),
               'type' => 'designer',
               'project_id' => $data['project'],
               'user_id' => Auth::user()->id,

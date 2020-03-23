@@ -70,7 +70,7 @@ class ProjectController extends Controller
           'description' => $data['description'],
           'capacity' => $data['capacity'],
           'unit' => $data['unit'],
-          'company_id' => $billTo['id'],
+          'company_id' => $billTo['company_id'],
           'user_id' => Auth::user()->id,
         ]);
         return redirect(action('ProjectController@index'));

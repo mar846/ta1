@@ -8,7 +8,6 @@ use Auth;
 
 use App\Company;
 use App\Good;
-use App\Warehouse;
 use App\Purchase;
 use App\Sale;
 use App\Specification;
@@ -40,10 +39,9 @@ class GoodController extends Controller
     {
       $this->authorize('create',Good::class);
       $company = Company::all();
-      $warehouse = Warehouse::all();
       $type = Type::all();
       $unit = Unit::all();
-      return view('goods.add', compact('company', 'warehouse','type','unit'));
+      return view('goods.add', compact('company','type','unit'));
     }
 
     /**

@@ -84,7 +84,7 @@
                     <form class="form-inline float-left pl-2" action="{{ route('requestDispprove',[$designer->id, $data->id]) }}" method="post">
                       {{ csrf_field() }}
                       <button type="submit" class="btn btn-warning">Reject</button>
-                      <input type="text" name="reason{{ $data->id }}" class="@error('reason'.$data->id) is-invalid @enderror" value="{{ old('reason'.$data->id) }}">
+                      <input type="text" name="reason{{ $data->id }}" class="@error('reason'.$data->id) is-invalid @enderror" value="{{ old('reason'.$data->id) }}" placeholder="Rejection Reason">
                       @error('reason'.$data->id)
                           <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>
