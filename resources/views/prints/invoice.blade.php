@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title','Purchase Order')
 @section('content')
-<div class="invoice p-3 mb-3">
+<div class="p-3 mb-3">
   <!-- title row -->
   <div class="row">
     <div class="col-12">

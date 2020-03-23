@@ -146,13 +146,16 @@ class PurchaseController extends Controller
         for ($i=0; $i < $totalItem ; $i++) {
             // $good = Good::SearchOrInsert($itemData, $i, '');
             $purchase->goods()->syncWithoutDetaching([
-            $goods[$i] => [
-              'qty' => $itemData['qty'.$i],
+              $goods[$i] => [
+                'qty' => $itemData['qty'.$i],
+                'price' => $itemData['price'.$i],
+                'subtotal' => $itemData['price'.$i]*$itemData['qty'.$i],
+                'memo' => '',
+              ]
+            ]);
+            Good::find($goods[$i])->update([
               'price' => $itemData['price'.$i],
-              'subtotal' => $itemData['price'.$i]*$itemData['qty'.$i],
-              'memo' => '',
-            ]
-          ]);
+            ]);
         }
       }
       else {
@@ -205,6 +208,7 @@ class PurchaseController extends Controller
         ]);
         Good::find($goods[0])->update([
           'company_id' => $address['companies']['id'],
+          'price' => $data['price0'],
         ]);
       }
       return redirect(action('PurchaseController@index'));

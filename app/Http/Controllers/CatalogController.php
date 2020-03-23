@@ -172,4 +172,11 @@ class CatalogController extends Controller
         $catalog->goods()->detach($request['id']);
       }
     }
+
+
+    public function printCatalog($id)
+    {
+      $catalog = Catalog::with('goods.units')->find($id);
+      return view('prints.printCatalog',compact('catalog'));
+    }
 }

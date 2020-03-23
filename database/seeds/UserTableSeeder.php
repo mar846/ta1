@@ -62,7 +62,7 @@ class UserTableSeeder extends Seeder
         'password' => '$2y$10$Qw499iYixpzYzxvpsg5uuOAun6jNIlAZcV6S/TXXBYgR.42CBz.CG',
         'role_id' => '10'
       ]);
-      for ($i=0; $i < 9 ; $i++) {
+      for ($i=0; $i < 10 ; $i++) {
         App\User::create($user[$i]);
       }
     }

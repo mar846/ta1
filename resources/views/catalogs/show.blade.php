@@ -8,13 +8,18 @@
 <li class="breadcrumb-item active">Catalog Info</li>
 @endsection
 @section('content')
+<div class="row justify-content-between">
+@can('print',$catalog)
+  <div class="col-2 text-left  mb-2">
+    <a href="{{ route('printCatalog',$catalog->id) }}" class="btn btn-primary">Print Catalog</a>
+  </div>
+@endcan
 @can('update',$catalog)
-<div class="row justify-content-end">
   <div class="col-2 text-right  mb-2">
     <a href="{{ route('catalogs.edit',$catalog->id) }}" class="btn btn-warning">Edit</a>
   </div>
-</div>
 @endcan
+</div>
 <div class="form-group row">
   <label class="col-sm-1">Name</label>
   <p class="form-control col-sm-11">{{ $catalog->name }}</p>

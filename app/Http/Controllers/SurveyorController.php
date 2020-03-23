@@ -12,6 +12,8 @@ use App\Surveyor;
 use App\File;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 class SurveyorController extends Controller
 {
@@ -69,10 +71,8 @@ class SurveyorController extends Controller
             $extention = $photo->getClientOriginalExtension();
             $check = in_array($extention,$allowedfileExtension);
             if ($check) {
-              $photos = $request->file('files');
-              $filename = $photo->store('library');
               $file = File::create([
-                'name' => $photo->store('surveyors','public'),
+                'name' => Storage::disk('public')->putFile('surveyors', $photo),
                 'type' => 'surveyor',
                 'project_id' => $data['project'],
                 'user_id' => Auth::user()->id,

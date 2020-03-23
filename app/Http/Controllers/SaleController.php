@@ -85,7 +85,7 @@ class SaleController extends Controller
       }
       $itemData = $request->validate($itemRules);
       $termRules=[];
-      for ($i=0; $i < $data['totalTerm']; $i++) {
+      for ($i=0; $i <= $data['totalTerm']; $i++) {
         $termRules['percentage'.$i] = 'required|numeric';
         $termRules['description'.$i] = 'required';
       }
@@ -110,14 +110,16 @@ class SaleController extends Controller
           'deliveryTime' => $data['deliveryTime'],
           'total' => $totalSale,
         ]);
-        for ($i=0; $i < $data['totalTerm']; $i++) {
-          Term::create([
-            'sale_id' => $sale['id'],
-            'percentage' => $termData['percentage'.$i],
-            'description' => $termData['description'.$i],
-            'created_at' => now(),
-            'updated_at' => now(),
-          ]);
+        for ($i=0; $i <= $data['totalTerm']; $i++) {
+          if ($termData['percentage'.$i] != '') {
+            Term::create([
+              'sale_id' => $sale['id'],
+              'percentage' => $termData['percentage'.$i],
+              'description' => $termData['description'.$i],
+              'created_at' => now(),
+              'updated_at' => now(),
+            ]);
+          }
         }
         for ($i=0; $i <= $data['totalItem']; $i++) {
           if ($itemData['item'.$i] != '') {
@@ -187,16 +189,21 @@ class SaleController extends Controller
         }
       }
       $data = $request->validate([
-        'validTill' => 'required|date',
-        'paymentTerms' => 'required',
         'deliveryTime' => 'required',
+        'totalTerm' => 'required|numeric',
       ]);
       $itemRules = [];
       for ($i=0; $i <= $goodCount; $i++) {
         $itemRules['price'.$i] = 'nullable|numeric|min:1';
       }
-      $total = null;
       $itemData = $request->validate($itemRules);
+      $termRules = [];
+      for ($i=0; $i <= $data['totalTerm']; $i++) {
+        $termRules['percentage'.$i] = 'required|numeric|min:1|max:100';
+        $termRules['description'.$i] = 'required';
+      }
+      $termData = $request->validate($termRules);
+      $total = null;
       for ($i=0; $i < $goodCount ; $i++) {
         $total += $qty[$i]*$itemData['price'.$i];
       }
@@ -207,11 +214,7 @@ class SaleController extends Controller
         'total' => $total,
         'reference' => $sale->reference,
         'referenceDate' => $sale->referenceDate,
-        'validTill' => $request['validTill'],
-        'paymentTerms' => $request['paymentTerms'],
         'deliveryTime' => $request['deliveryTime'],
-        'downPayment' => '0',
-        'downPayment' => '0',
         'version' => Sale::where('project_id',$sale->project_id)->count()+1,
         'project_id' => $sale->project_id,
         'user_id' => Auth::user()->id,
@@ -226,6 +229,15 @@ class SaleController extends Controller
             'subtotal' => $qty[$i]*$itemData['price'.$i],
             'memo' => '',
           ]
+        ]);
+      }
+      for ($i=0; $i <= $data['totalTerm'] ; $i++) {
+        Term::create([
+          'sale_id' => $newSale['id'],
+          'percentage' => $termData['percentage'.$i],
+          'description' => $termData['description'.$i],
+          'created_at' => now(),
+          'updated_at' => now(),
         ]);
       }
       return redirect(action('SaleController@show',$newSale->id));

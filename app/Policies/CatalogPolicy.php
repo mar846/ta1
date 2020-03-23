@@ -22,6 +22,12 @@ class CatalogPolicy
         '1',
       ]);
     }
+    public function print(User $user)
+    {
+      return in_array($user->role_id,[
+        '1',
+      ]);
+    }
 
     /**
      * Determine whether the user can view the catalog.

@@ -23,6 +23,7 @@ Route::get('/', function () {
 })->middleware('auth');
 
 Route::post('deleteCatalogGood','CatalogController@deleteGood')->name('deleteCatalogGood');
+Route::get('printCatalog/{id}','CatalogController@printCatalog')->name('printCatalog');
 
 Route::post('getCompanyData','CompanyController@getCompanyData')->name('getCompanyData');
 

@@ -52,7 +52,7 @@
           <a href="{{ asset('storage/'.$data->name) }}">
             <div class="card float-left">
               <div class="card-body">
-                <i class="fas fa-image" style="font-size:70px;"></i>
+                <i class="fas fa-file" style="font-size:70px;"></i>
               </div>
             </div>
           </a>

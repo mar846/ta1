@@ -74,14 +74,12 @@
     <label class="pt-3">Files</label>
     <div class="form-group">
       @foreach($surveyor->projects->files as $data)
-      <a href="{{ asset('storage/'.$image->name) }}">
-        <div class="card">
+      <a href="{{ asset('storage/'.$data->name) }}">
+        <div class="card float-left">
           <div class="card-body">
-            <span class="pr-3"><i class="fas fa-image" style="font-size:30px;"></i></span>
-              {{ $image->name }}
+            <i class="fas fa-image" style="font-size:30px;"></i>
           </div>
         </div>
-        <!-- <img src="{{ asset('storage/'.$image->name) }}" alt="" class="img-thumbnail" style="width:250px;"> -->
       </a>
       @endforeach
     </div>

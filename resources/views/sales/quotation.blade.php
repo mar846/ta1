@@ -40,7 +40,7 @@
         <div class="col-sm-9">
           @foreach($project->companies->addresses as $data)
             @if($data->name == 'billTo')
-            <p class="form-control">{{ $data->address }}</p>
+            <textarea class="form-control">{{ $data->address }}</textarea>
             <input type="hidden" name="billTo" value="{{ old('billTo',$data->address) }}">
             @endif
           @endforeach
@@ -51,7 +51,7 @@
         <div class="col-sm-9">
           @foreach($project->companies->addresses as $data)
             @if($data->name == 'shipTo')
-            <p class="form-control">{{ $data->address }}</p>
+            <textarea class="form-control">{{ $data->address }}</textarea>
             <input type="hidden" name="shipTo" value="{{ old('shipTo',$data->address) }}">
             @break
             @endif
@@ -77,17 +77,6 @@
       </div>
     </div>
     <div class="col-md-6">
-      <!-- <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Valid Till</label>
-        <div class="col-sm-9">
-          <input type="date" class="form-control @error('validTill') is-invalid @enderror" name="validTill" value="{{ old('validTill', date('Y-m-d',time()+2592000)) }}" min="{{ date('Y-m-d',time()) }}" max="{{ date('Y-m-d',(time()+5184000)) }}">
-          @error('validTill')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-          @enderror
-        </div>
-      </div> -->
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Reference</label>
         <div class="col-sm-9">
@@ -113,33 +102,20 @@
       <div class="form-group row">
         <label class="col-sm-3 col-form-label">Payment Terms</label>
         <div class="col-sm-9">
-          <?php for ($i=0; $i < 3; $i++) {?>
+          <div id="paymentTerm">
             <div class="row">
               <div class="col-sm-12">
                <div class="input-group">
-                 <input type="number" name="percentage{{ $i }}" class="form-control @error('percentage'.$i) is-invalid @enderror" placeholder="10" value="{{ old('percentage'.$i) }}">
-                 @error('percentage.$i')
-                     <span class="invalid-feedback" role="alert">
-                         <strong>{{ $message }}</strong>
-                     </span>
-                 @enderror
+                 <input type="number" name="percentage0" class="form-control @error('percentage0') is-invalid @enderror" placeholder="10">
                  <div class="input-group-prepend">
                    <div class="input-group-text">%</div>
                  </div>
-                 <input type="text" name="description{{ $i }}" class="form-control @error('description'.$i) is-invalid @enderror" placeholder="description" value="{{ old('description'.$i) }}">
-                 @error('description.$i')
-                     <span class="invalid-feedback" role="alert">
-                         <strong>{{ $message }}</strong>
-                     </span>
-                 @enderror
+                 <input type="text" name="description0" class="form-control @error('description0') is-invalid @enderror" placeholder="description">
                </div>
              </div>
             </div>
-          <?php } ?>
-          <button type="button" class="btn btn-secondary btn-sm col-12" name="button">Add Terms</button>
-          <!-- <textarea name="paymentTerms" class="form-control @error('paymentTerms') is-invalid @enderror" rows="3" cols="80">{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}</textarea> -->
-          <!-- <input type="text" class="form-control @error('paymentTerms') is-invalid @enderror" name="paymentTerms" value="{{ old('paymentTerms','DP 50% pada saat surat order diterima SIsa 50% pada saat barang diambil') }}"> -->
-
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm col-12" name="button" onclick="addTerm()">Add Terms</button>
         </div>
       </div>
       <div class="form-group row">
@@ -207,7 +183,7 @@
   <hr>
   <div class="form-group row">
     <input type="hidden" name="totalItem" value="{{ $key }}">
-    <input type="hidden" name="totalTerm" value="{{ $i }}">
+    <input type="hidden" name="totalTerm" value="0" id="totalTerm">
     <button type="submit" class="btn btn-success col-12" name="button">Make Quotation</button>
   </div>
 </form>
@@ -221,6 +197,12 @@
     $('#subtotal'+row).val(subtotal);
     $('#subTotalShow'+row).html('');
     $('#subTotalShow'+row).html(subtotal);
+  }
+  var i = 1;
+  function addTerm() {
+    $('#paymentTerm').append('<div class="row"><div class="col-sm-12"><div class="input-group"><input type="number" name="percentage' + i + '" class="form-control" placeholder="10"><div class="input-group-prepend"><div class="input-group-text">%</div></div><input type="text" name="description' + i + '" class="form-control" placeholder="description"></div></div></div>');
+    $('#totalTerm').val(i);
+    i++;
   }
 </script>
 @endsection
