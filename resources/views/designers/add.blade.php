@@ -77,9 +77,10 @@
 @endsection
 @section('script')
 <script type="text/javascript">
+console.clear();
 var i = 0;
 function addRow() {
-  $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' placeholder='@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' list='dataGoods'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' placeholder='@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+  $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' placeholder='@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' list='dataGoods' onchange='getGoodUnit(this)'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' placeholder='@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
   i+=1;
   $('#totalItem').val(i);
 }
@@ -89,17 +90,23 @@ function deleteRow(id) {
   i-=1;
   $('#totalItem').val(i);
 }
+function getGoodUnit(id) {
+  var row = id.name.substring(id.name.length-1,id.name.length);
+  $.post("{{ route('getGoodUnit') }}",{id:id.value, _token:'{{ Session::token() }}'},function(data){
+      $('#unit'+row).val(data);
+      $('#unit'+row).attr('readonly','true');
+  });
+}
 function getProjectDetail(id) {
   $.post("{{ route('getProjectDetail') }}",{id:id.value, _token:'{{ Session::token() }}'},function(data){
-    console.log(data);
     $('#tableItem').html('');
-    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.panel + "' list='dataGoods'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.panelqty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.panelunit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tQ>");
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.panel + "' list='dataGoods' onchange='getGoodUnit(this)'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' id='qty" + i + "' value='" + data.panelqty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.panelunit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tQ>");
     i++;
-    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.inverter+ "' list='dataGoods'></td><td><div class='input-group mb-2'><input Qype='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.inverterQty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.inverterUnit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.inverter+ "' list='dataGoods' onchange='getGoodUnit(this)'></td><td><div class='input-group mb-2'><input Qype='number' class='form-control' name='qty" + i + "' placeholder='1' id='qty" + i + "' value='" + data.inverterQty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.inverterUnit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
     i++;
-    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.pvCombiner+ "' list='dataGoods'></td><td><div class='input-group mb-2'><input Qype='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.pvCombinerQty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.pvCombinerUnit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.pvCombiner+ "' list='dataGoods' onchange='getGoodUnit(this)'></td><td><div class='input-group mb-2'><input Qype='number' class='form-control' name='qty" + i + "' placeholder='1' id='qty" + i + "' value='" + data.pvCombinerQty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.pvCombinerUnit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
     i++;
-    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.sunLogger+ "' list='dataGoods'></td><td><div class='input-group mb-2'><input Qype='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "' value='" + data.sunLoggerQty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.sunLoggerUnit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+    $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' value='" + data.sunLogger+ "' list='dataGoods' onchange='getGoodUnit(this)'></td><td><div class='input-group mb-2'><input Qype='number' class='form-control' name='qty" + i + "' placeholder='1' id='qty" + i + "' value='" + data.sunLoggerQty + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text'value='" + data.sunLoggerUnit + "' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
     i++;
     $('#totalItem').val(i);
   });

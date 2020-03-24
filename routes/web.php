@@ -44,6 +44,7 @@ Route::post('goodDeliverSearch','GoodController@goodDeliverSearch');
 Route::post('goodReceiptSearch','GoodController@goodReceiptSearch');
 Route::post('goodDeliverFinish','GoodController@goodDeliverFinish');
 Route::post('goodReceiptFinish','GoodController@goodReceiptFinish');
+Route::post('getGoodUnit','GoodController@getGoodUnit')->name('getGoodUnit');
 
 Route::get('makeSaleInvoice/{id}','InvoiceController@makeInvoice')->name('makeSaleInvoice')->middleware('auth');
 

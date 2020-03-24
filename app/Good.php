@@ -47,14 +47,6 @@ class Good extends Model
     }
 
 
-    public function scopeIsProduct($query)
-    {
-      return $query->where('type_id','1')->limit(5);
-    }
-    public function scopeIsRaw($query)
-    {
-      return $query->where('type_id','1')->limit(5);
-    }
     public function scopeSearchGood($query, $request)
     {
       return $query->where('name',$request);
@@ -66,6 +58,10 @@ class Good extends Model
     public function scopeSubtractStock($query, $item, $qty)
     {
       return $query->find($item)->decrement('qty',$qty);
+    }
+    public function scopeGetUnit($query, $request)
+    {
+      return $query->with('units')->where('name',$request->id)->first();
     }
     public function scopeSearchOrInsert($query, $request, $i, $type)
     {

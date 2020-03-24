@@ -52,6 +52,7 @@ class DesignerController extends Controller
      */
     public function store(Request $request)
     {
+      dd($request);
       $this->authorize('create',Designer::class);
       $data = $request->validate([
         'project' => 'required|numeric',

@@ -277,4 +277,11 @@ class GoodController extends Controller
       }
       return redirect(action('GoodController@goodDeliverPage'));
     }
+    public function getGoodUnit(Request $request)
+    {
+      if ($request->ajax()) {
+        $good = Good::GetUnit($request);
+        echo $good->units->name;
+      }
+    }
 }

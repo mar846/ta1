@@ -48,7 +48,6 @@ class SurveyorController extends Controller
      */
     public function store(Request $request)
     {
-      $checklistTotal = Checklist::count();
       $data = $request->validate([
         'project' => 'required|numeric',
       ]);
@@ -61,7 +60,7 @@ class SurveyorController extends Controller
         'project_id' => $data['project'],
         'user_id' => Auth::user()->id,
       ]);
-      for ($i=0; $i < $checklistTotal; $i++) {
+      for ($i=0; $i < Checklist::count(); $i++) {
         $photoID = '';
         if ($request->hasFile('file'.$i)) {
           $allowedfileExtension=['jpg','png'];
