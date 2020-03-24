@@ -52,7 +52,6 @@ class DesignerController extends Controller
      */
     public function store(Request $request)
     {
-      dd($request);
       $this->authorize('create',Designer::class);
       $data = $request->validate([
         'project' => 'required|numeric',
@@ -162,6 +161,8 @@ class DesignerController extends Controller
               $good['id'] => [
                 'qty' => $itemData['qty'.$i],
                 'status' => 'waiting',
+                'created_at' => now(),
+                'updated_at' => now(),
               ]
             ]);
           }

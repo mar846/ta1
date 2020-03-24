@@ -55,8 +55,9 @@
             </tr>
           </thead>
           <tbody id="tableItem">
+            @isset($designer->goods)
             @foreach($designer->goods as $key => $data)
-              <tr>
+              <tr id="row{{ $data->id }}">
                 <td>
                   <label class="form-control">{{ $data->name }}</label>
                   <input type="hidden" name="item{{ $key }}" class="form-control" list="dataGoods" value="{{ old('item.$key',$data->name) }}">
@@ -77,6 +78,7 @@
                 </td>
               </tr>
             @endforeach
+            @endisset
           </tbody>
         </table>
         <button type="button" name="button" class="btn btn-secondary" onclick="addRow()">Add Item</button>
@@ -104,21 +106,29 @@
 <script type="text/javascript">
 var i = {{ $key+1 }};
 function addRow() {
-  $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' placeholder='@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' placeholder='@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
+  $('#tableItem').append("<tr><td><input type='text' name='item" + i + "' class='form-control' placeholder='@foreach($good as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' list='dataGoods' onchange='getGoodUnit(this)'></td><td><div class='input-group mb-2'><input type='number' class='form-control' name='qty" + i + "' placeholder='1' onkeyup='calculate(this)' id='qty" + i + "'><div class='input-group-prepend'><input type='text' name='unit" + i + "' class='input-group-text' placeholder='@foreach($unit as $key => $data)@if($key > 0),  @endif{{ $data->name }}@endforeach' id='unit" + i + "'></div></div></td><td><button type='button' class='btn btn-danger btn-sm' id='button" + i + "' name='button" + i + "' onclick='deleteRow(this)'>X</button></td></tr>");
   i+=1;
   $('#totalItem').val(i);
 }
 function deleteRow(id) {
-  $.post("{{ route('deleteDesignerGood') }}",{id:id.value,designer:$('#designer').val(),_token:'{{ Session::token() }}'},function(data){});
-  console.log(id);
-  var row = id.name.substring(id.name.length-1,id.name.length);
-  $('#button'+row).closest('tr').remove();
+  $.post("{{ route('deleteDesignerGood') }}",{id:id.value,designer:$('#designer').val(),_token:'{{ Session::token() }}'},function(data){
+    console.log(id);
+    var row = id.name.substring(6,id.name.length);
+    $('#row'+row).remove();
+  });
 }
 function deleteFile(id) {
   $.post("{{ route('deleteFile') }}",{id:id.id, _token:'{{ Session::token() }}'},function(data){
     if (data == 1){
       window.location.reload(); // This is not jQuery but simple plain ol' JS
     }
+  });
+}
+function getGoodUnit(id) {
+  var row = id.name.substring(id.name.length-1,id.name.length);
+  $.post("{{ route('getGoodUnit') }}",{id:id.value, _token:'{{ Session::token() }}'},function(data){
+      $('#unit'+row).val(data);
+      $('#unit'+row).attr('readonly','true');
   });
 }
 </script>
