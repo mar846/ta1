@@ -72,7 +72,6 @@ class UnitController extends Controller
     public function edit(Unit $unit)
     {
       $this->authorize('update', $unit);
-      dd($unit);
       $unit = Unit::find($unit->id);
       return view('units.edit', compact('unit'));
     }

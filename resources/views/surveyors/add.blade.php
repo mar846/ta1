@@ -22,7 +22,7 @@
     <div class="card-body">
       <div class="form-group">
         <label for="inputName">Project Name</label>
-        <select class="form-control @error('project') is-invalid @enderror" name="project">
+        <select class="form-control @error('project') is-invalid @enderror" name="project" onchange="status(this)">
           <option value="#">Choose Project</option>
           @foreach($project as $data)
             @if($data->surveyor == null && $data->status != 'Canceled')
@@ -63,20 +63,23 @@
           @endforeach
         </tbody>
       </table>
-      <!-- <div class="form-group d-flex flex-column pt-3">
-        <label for="inputFile">File</label>
-        <input type="file" name="file" value="{{ old('file') }}" accept="image/jpeg">
-        @error('file')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-      </div> -->
       <div class="form-group mt-3">
-        <button type="submit" class="btn btn-success col-12" name="button">Submit</button>
+        <button type="submit" class="btn btn-success col-12" id="btnSubmit" disabled name="button">Submit</button>
       </div>
     </div>
     <!-- /.card-body -->
   </div>
 </form>
+@endsection
+@section('script')
+  <script type="text/javascript">
+      function status(id) {
+        if (id.value === '#') {
+          $("#btnSubmit").prop('disabled', true);
+        }
+        else {
+          $("#btnSubmit").prop('disabled', false);
+        }
+      }
+  </script>
 @endsection

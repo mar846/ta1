@@ -19,6 +19,6 @@ class Deliver extends Model
   }
   public function goods()
   {
-    return $this->belongsToMany('App\Good','deliver_good','deliver_id','good_id')->withPivot('qty');
+    return $this->belongsToMany('App\Good','deliver_good','deliver_id','good_id')->withPivot('qty')->withTimestamps();
   }
 }

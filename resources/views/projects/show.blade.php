@@ -121,6 +121,22 @@
         </table>
       </div>
     </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Files</h3>
+      </div>
+      <div class="card-body">
+        @foreach($project->files as $data)
+        <a href="{{ asset('storage/'.$data->name) }}">
+          <div class="card float-left">
+            <div class="card-body">
+              <i class="fas fa-image" style="font-size:30px;"></i>
+            </div>
+          </div>
+        </a>
+        @endforeach
+      </div>
+    </div>
   </div>
   <div class="col-md-6">
     <div class="row">
@@ -321,26 +337,6 @@
             </table>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Files</h3>
-      </div>
-      <div class="card-body">
-        @foreach($project->files as $data)
-        <a href="{{ asset('storage/'.$data->name) }}">
-          <div class="card float-left">
-            <div class="card-body">
-              <i class="fas fa-image" style="font-size:30px;"></i>
-            </div>
-          </div>
-        </a>
-        @endforeach
       </div>
     </div>
   </div>
